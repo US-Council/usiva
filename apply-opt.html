@@ -51,7 +51,7 @@
     <!-- YOUR CUSTOM CSS -->
     <link href="css/custom.css" rel="stylesheet">
 
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcHIYcUAAAAAPnqH0iBwnDeFma0mWAMJKJHAoEO"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfBPhgtAAAAAOxWLMZ-tQgSGOBJPN-f_zwTswqq"></script>
 
     <script type="speculationrules">
     {"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}
@@ -1042,7 +1042,7 @@
       var form       = $('#opt-application');
       var status     = $('#opt-submit-status');
       var onsiteSection = $('#onsite-section');
-      var SITE_KEY   = '6LcHIYcUAAAAAPnqH0iBwnDeFma0mWAMJKJHAoEO';
+      var SITE_KEY   = '6LfBPhgtAAAAAOxWLMZ-tQgSGOBJPN-f_zwTswqq';
 
       if (!form) return;
 
@@ -1241,11 +1241,11 @@
       ===================================================== */
       function getRecaptchaToken() {
         return new Promise(function (resolve, reject) {
-          if (!window.grecaptcha || typeof window.grecaptcha.execute !== 'function') {
+          if (!window.grecaptcha || !window.grecaptcha.enterprise || typeof window.grecaptcha.enterprise.execute !== 'function') {
             return reject(new Error('reCAPTCHA failed to load. Please refresh the page and try again.'));
           }
-          window.grecaptcha.ready(function () {
-            window.grecaptcha.execute(SITE_KEY, { action: 'USIVA_OPT_Application' }).then(resolve, reject);
+          window.grecaptcha.enterprise.ready(function () {
+            window.grecaptcha.enterprise.execute(SITE_KEY, { action: 'USIVA_OPT_Application' }).then(resolve, reject);
           });
         });
       }
