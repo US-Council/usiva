@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="USIVA OPT Dream Quest application for F-1 Initial OPT and STEM OPT students.">
+    <meta name="description" content="Apply for F-1 OPT and STEM OPT through USIVA. Complete your intake form for Initial OPT, STEM OPT extension, I-983 training plans, and Dream Quest placement.">
     <meta name="author" content="Ansonika">
-    <title>OPT Dream Quest Application | USIVA</title>
+    <title>F-1 OPT Application — USIVA</title>
 
     <!-- Favicons-->
         <link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-icon-57x57.png">
@@ -29,8 +29,18 @@
     <meta name="theme-color" content="#ffffff">
 
 
+    <meta property="og:title" content="F-1 OPT Application — USIVA">
+    <meta property="og:description" content="Apply for F-1 OPT and STEM OPT through USIVA. Complete your intake form for Initial OPT, STEM OPT extension, and I-983 training plans.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://usiva.org/apply-opt.html">
+    <meta property="og:image" content="https://usiva.org/img/bg_home.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://usiva.org/apply-opt.html">
+
     <!-- GOOGLE WEB FONT-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300,400,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
 
     <!-- BASE CSS -->
     <link href="css/animate.min.css" rel="stylesheet">
@@ -43,9 +53,28 @@
 
     <script src="https://www.google.com/recaptcha/api.js?render=6LcHIYcUAAAAAPnqH0iBwnDeFma0mWAMJKJHAoEO"></script>
 
+    <script type="speculationrules">
+    {"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "USIVA — United States Immigration & Visa Association",
+      "url": "https://usiva.org",
+      "description": "USIVA guides F-1 international students through OPT, STEM OPT, I-983 training plans, and the Dream Quest placement pathway.",
+      "address": {"@type": "PostalAddress", "addressLocality": "Ravenswood", "addressRegion": "WV", "postalCode": "26164", "addressCountry": "US"},
+      "telephone": "+19292292918",
+      "email": "info@usiva.org"
+    }
+    </script>
+
 </head>
 
 <body>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div id="preloader">
         <div data-loader="circle-side"></div>
@@ -136,12 +165,12 @@
                                 <li><a href="media-gallery.html">Media &amp; Highlights</a></li>
                                 <li><a href="tips-faq.html">Tips and FAQs</a></li>
                                 <li><a href="pricing-2.html">Transparent Pricing</a></li>
-                                <li><a href="apply-opt.html">OPT Dream Quest Application</a></li>
+                                <li><a href="apply-opt.html">F-1 OPT Application</a></li>
                             </ul>
                         </li>
                         <li><a href="pricing.html">Pricing</a></li>
                         <li><a href="blog.html">Blog</a></li>
-                        <li><a href="apply-opt.html">OPT Dream Quest</a></li>
+                        <li><a href="apply-opt.html">F-1 OPT Application</a></li>
                         <li><a href="contacts.html">Contact</a></li>
                     </ul>
                 </div>
@@ -153,7 +182,7 @@
     <section class="parallax_window_in short" data-parallax="scroll" data-image-src="img/bg_home.jpg" data-natural-width="1600" data-natural-height="1067">
         <div id="sub_content_in">
             <div class="container">
-                <h1>OPT Dream Quest Application</h1>
+                <h1>F-1 OPT Application</h1>
                 <p>F-1 Initial OPT and STEM OPT intake for training, I-983 planning, and Dream Quest placement.</p>
             </div>
         </div>
@@ -164,14 +193,14 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
-                <li>OPT Dream Quest Application</li>
+                <li>F-1 OPT Application</li>
             </ul>
         </div>
     </div><!-- /position -->
 
-    <main>
+    <main id="main-content">
         <div class="container margin_60_35">
-            <h2 class="main_title"><em></em>OPT Dream Quest Application<span>For F-1 students exploring OPT, STEM OPT, I-983 training plans, and the Dream Quest pathway.</span></h2>
+            <h2 class="main_title"><em></em>F-1 OPT Application<span>For F-1 students exploring OPT, STEM OPT, I-983 training plans, and the Dream Quest pathway.</span></h2>
             <div class="row opt-summary-row">
                 <div class="col-sm-3">
                     <div class="opt-summary-card"><strong>Public intake</strong><span>USIVA case review</span></div>
@@ -204,7 +233,21 @@
       </ul>
     </section>
 
-    <form id="opt-application" class="opt-form" action="https://door.taolearning.org/api/form" method="POST" enctype="application/json">
+    <!-- Draft restore notice -->
+    <div id="opt-draft-notice" class="opt-draft-notice" hidden>
+      <span>Draft restored from a previous session.</span>
+      <button type="button" id="opt-clear-draft" class="opt-draft-clear">Clear draft</button>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="opt-progress-wrap" aria-label="Application completion">
+      <div class="opt-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="opt-progress-fill" class="opt-progress-fill"></div>
+      </div>
+      <p id="opt-progress-text" class="opt-progress-text">0% complete</p>
+    </div>
+
+    <form id="opt-application" class="opt-form" action="https://door.taolearning.org/api/form" method="POST">
       <input type="hidden" name="test" value="off">
       <input type="hidden" name="owner" value="1fbe138f-30f2-e911-a972-000d3a34e213">
       <input type="hidden" name="website" value="https://usiva.org">
@@ -253,11 +296,11 @@
             </div>
             <div>
               <label for="citizenship_country">Country of citizenship</label>
-              <input id="citizenship_country" name="citizenship_country" autocomplete="country-name">
+              <input id="citizenship_country" name="citizenship_country" autocomplete="country-name" list="dl-countries">
             </div>
             <div>
               <label for="country_of_birth">Country of birth</label>
-              <input id="country_of_birth" name="country_of_birth">
+              <input id="country_of_birth" name="country_of_birth" list="dl-countries">
             </div>
             <div class="wide">
               <label for="resume_url">Resume or CV link</label>
@@ -293,7 +336,7 @@
           <div class="grid">
             <div>
               <label for="school_name">School attending or recently attended</label>
-              <input id="school_name" name="school_name" required>
+              <input id="school_name" name="school_name" required list="dl-universities">
             </div>
             <div>
               <label for="school_city_state">School city and state</label>
@@ -316,14 +359,14 @@
             </div>
             <div>
               <label for="major_field">Major or field of study</label>
-              <input id="major_field" name="major_field">
+              <input id="major_field" name="major_field" list="dl-majors">
             </div>
             <div>
               <label for="cip_code">CIP code
                 <a class="info-link" href="https://studyinthestates.dhs.gov/sevis-help-hub/student-records/classification-of-instructional-programs-cip" target="_blank" rel="noopener">Learn more</a>
               </label>
               <span class="field-help">Look on your Form I-20 in the Program of Study section near Major 1, Major Code, or CIP Code. The CIP code is not on your I-94.</span>
-              <input id="cip_code" name="cip_code" placeholder="Example: 11.0101" required>
+              <input id="cip_code" name="cip_code" placeholder="Example: 11.0101" required list="dl-cip">
             </div>
             <div>
               <label for="graduation_date">Date of graduation or program completion</label>
@@ -482,7 +525,7 @@
             </div>
             <div>
               <label for="remote_timezone">Remote work time zone</label>
-              <input id="remote_timezone" name="remote_timezone" placeholder="Example: Eastern Time">
+              <input id="remote_timezone" name="remote_timezone" placeholder="Example: Eastern Time" list="dl-timezones">
             </div>
             <div class="wide">
               <label for="housing_needs">Housing needs, constraints, or accessibility considerations</label>
@@ -953,124 +996,377 @@
       </div>
       <p id="opt-submit-status" class="opt-submit-status" role="status" aria-live="polite"></p>
     </form>
+
+    <!-- Success panel (hidden until form submits successfully) -->
+    <div id="opt-success-panel" class="opt-success-panel" hidden tabindex="-1" aria-live="polite">
+      <h2>Application Received</h2>
+      <p>Thank you for submitting your F-1 OPT application. USIVA will review it and follow up through the case process within 3-5 business days.</p>
+      <p>Next steps:</p>
+      <ol>
+        <li>Watch for a confirmation email from info@usiva.org.</li>
+        <li>A USIVA case manager will contact you to begin the secure case process.</li>
+        <li>Gather your I-20, EAD (if available), and other documents for the secure case folder.</li>
+      </ol>
+    </div>
+
+            <datalist id="dl-countries">
+              <option value="Afghanistan"><option value="Albania"><option value="Algeria"><option value="Andorra"><option value="Angola"><option value="Antigua and Barbuda"><option value="Argentina"><option value="Armenia"><option value="Australia"><option value="Austria"><option value="Azerbaijan"><option value="Bahamas"><option value="Bahrain"><option value="Bangladesh"><option value="Barbados"><option value="Belarus"><option value="Belgium"><option value="Belize"><option value="Benin"><option value="Bhutan"><option value="Bolivia"><option value="Bosnia and Herzegovina"><option value="Botswana"><option value="Brazil"><option value="Brunei"><option value="Bulgaria"><option value="Burkina Faso"><option value="Burundi"><option value="Cabo Verde"><option value="Cambodia"><option value="Cameroon"><option value="Canada"><option value="Central African Republic"><option value="Chad"><option value="Chile"><option value="China"><option value="Colombia"><option value="Comoros"><option value="Congo (Brazzaville)"><option value="Congo (Kinshasa)"><option value="Costa Rica"><option value="Croatia"><option value="Cuba"><option value="Cyprus"><option value="Czechia"><option value="Denmark"><option value="Djibouti"><option value="Dominica"><option value="Dominican Republic"><option value="Ecuador"><option value="Egypt"><option value="El Salvador"><option value="Equatorial Guinea"><option value="Eritrea"><option value="Estonia"><option value="Eswatini"><option value="Ethiopia"><option value="Fiji"><option value="Finland"><option value="France"><option value="Gabon"><option value="Gambia"><option value="Georgia"><option value="Germany"><option value="Ghana"><option value="Greece"><option value="Grenada"><option value="Guatemala"><option value="Guinea"><option value="Guinea-Bissau"><option value="Guyana"><option value="Haiti"><option value="Honduras"><option value="Hungary"><option value="Iceland"><option value="India"><option value="Indonesia"><option value="Iran"><option value="Iraq"><option value="Ireland"><option value="Israel"><option value="Italy"><option value="Jamaica"><option value="Japan"><option value="Jordan"><option value="Kazakhstan"><option value="Kenya"><option value="Kiribati"><option value="Kuwait"><option value="Kyrgyzstan"><option value="Laos"><option value="Latvia"><option value="Lebanon"><option value="Lesotho"><option value="Liberia"><option value="Libya"><option value="Liechtenstein"><option value="Lithuania"><option value="Luxembourg"><option value="Madagascar"><option value="Malawi"><option value="Malaysia"><option value="Maldives"><option value="Mali"><option value="Malta"><option value="Marshall Islands"><option value="Mauritania"><option value="Mauritius"><option value="Mexico"><option value="Micronesia"><option value="Moldova"><option value="Monaco"><option value="Mongolia"><option value="Montenegro"><option value="Morocco"><option value="Mozambique"><option value="Myanmar"><option value="Namibia"><option value="Nauru"><option value="Nepal"><option value="Netherlands"><option value="New Zealand"><option value="Nicaragua"><option value="Niger"><option value="Nigeria"><option value="North Korea"><option value="North Macedonia"><option value="Norway"><option value="Oman"><option value="Pakistan"><option value="Palau"><option value="Palestine"><option value="Panama"><option value="Papua New Guinea"><option value="Paraguay"><option value="Peru"><option value="Philippines"><option value="Poland"><option value="Portugal"><option value="Qatar"><option value="Romania"><option value="Russia"><option value="Rwanda"><option value="Saint Kitts and Nevis"><option value="Saint Lucia"><option value="Saint Vincent and the Grenadines"><option value="Samoa"><option value="San Marino"><option value="Sao Tome and Principe"><option value="Saudi Arabia"><option value="Senegal"><option value="Serbia"><option value="Seychelles"><option value="Sierra Leone"><option value="Singapore"><option value="Slovakia"><option value="Slovenia"><option value="Solomon Islands"><option value="Somalia"><option value="South Africa"><option value="South Korea"><option value="South Sudan"><option value="Spain"><option value="Sri Lanka"><option value="Sudan"><option value="Suriname"><option value="Sweden"><option value="Switzerland"><option value="Syria"><option value="Taiwan"><option value="Tajikistan"><option value="Tanzania"><option value="Thailand"><option value="Timor-Leste"><option value="Togo"><option value="Tonga"><option value="Trinidad and Tobago"><option value="Tunisia"><option value="Turkey"><option value="Turkmenistan"><option value="Tuvalu"><option value="Uganda"><option value="Ukraine"><option value="United Arab Emirates"><option value="United Kingdom"><option value="United States"><option value="Uruguay"><option value="Uzbekistan"><option value="Vanuatu"><option value="Vatican City"><option value="Venezuela"><option value="Vietnam"><option value="Yemen"><option value="Zambia"><option value="Zimbabwe">
+            </datalist>
+            <datalist id="dl-universities">
+              <option value="Arizona State University"><option value="Auburn University"><option value="Boston University"><option value="Brigham Young University"><option value="Brown University"><option value="California Institute of Technology"><option value="Carnegie Mellon University"><option value="Case Western Reserve University"><option value="Clemson University"><option value="Colorado State University"><option value="Columbia University"><option value="Cornell University"><option value="Dartmouth College"><option value="Duke University"><option value="Emory University"><option value="Florida International University"><option value="Florida State University"><option value="Georgetown University"><option value="Georgia Institute of Technology"><option value="Harvard University"><option value="Howard University"><option value="Indiana University Bloomington"><option value="Iowa State University"><option value="Johns Hopkins University"><option value="Kansas State University"><option value="Louisiana State University"><option value="Massachusetts Institute of Technology"><option value="Michigan State University"><option value="Mississippi State University"><option value="New York University"><option value="North Carolina State University"><option value="Northeastern University"><option value="Northwestern University"><option value="Ohio State University"><option value="Oklahoma State University"><option value="Oregon State University"><option value="Penn State University"><option value="Purdue University"><option value="Rensselaer Polytechnic Institute"><option value="Rice University"><option value="Rutgers University"><option value="Stanford University"><option value="Stevens Institute of Technology"><option value="Stony Brook University"><option value="Syracuse University"><option value="Temple University"><option value="Texas A&amp;M University"><option value="Texas Tech University"><option value="Tufts University"><option value="Tulane University"><option value="UC Berkeley"><option value="UC Davis"><option value="UC Irvine"><option value="UC Los Angeles"><option value="UC San Diego"><option value="UC Santa Barbara"><option value="University of Alabama"><option value="University of Arizona"><option value="University of Arkansas"><option value="University of Chicago"><option value="University of Cincinnati"><option value="University of Colorado Boulder"><option value="University of Connecticut"><option value="University of Delaware"><option value="University of Florida"><option value="University of Georgia"><option value="University of Hawaii"><option value="University of Houston"><option value="University of Illinois Urbana-Champaign"><option value="University of Iowa"><option value="University of Kansas"><option value="University of Kentucky"><option value="University of Maryland"><option value="University of Massachusetts Amherst"><option value="University of Miami"><option value="University of Michigan"><option value="University of Minnesota"><option value="University of Missouri"><option value="University of Nebraska"><option value="University of New Mexico"><option value="University of North Carolina at Chapel Hill"><option value="University of Notre Dame"><option value="University of Oklahoma"><option value="University of Oregon"><option value="University of Pennsylvania"><option value="University of Pittsburgh"><option value="University of Rochester"><option value="University of South Carolina"><option value="University of Southern California"><option value="University of Tennessee"><option value="University of Texas at Austin"><option value="University of Utah"><option value="University of Virginia"><option value="University of Washington"><option value="University of Wisconsin-Madison"><option value="Utah State University"><option value="Vanderbilt University"><option value="Virginia Tech"><option value="Wake Forest University"><option value="Washington State University"><option value="Washington University in St. Louis"><option value="Wayne State University"><option value="West Virginia University"><option value="Worcester Polytechnic Institute"><option value="Yale University">
+            </datalist>
+            <datalist id="dl-majors">
+              <option value="Accounting"><option value="Aerospace Engineering"><option value="Agricultural Sciences"><option value="Anthropology"><option value="Applied Mathematics"><option value="Architecture"><option value="Artificial Intelligence"><option value="Biochemistry"><option value="Bioengineering"><option value="Biology"><option value="Biomedical Engineering"><option value="Business Administration"><option value="Chemical Engineering"><option value="Chemistry"><option value="Civil Engineering"><option value="Clinical Psychology"><option value="Communication"><option value="Computer Engineering"><option value="Computer Science"><option value="Construction Management"><option value="Criminal Justice"><option value="Cybersecurity"><option value="Data Science"><option value="Economics"><option value="Education"><option value="Electrical Engineering"><option value="Environmental Engineering"><option value="Environmental Science"><option value="Finance"><option value="Geographic Information Systems"><option value="Geology"><option value="Health Informatics"><option value="Human-Computer Interaction"><option value="Industrial Engineering"><option value="Information Systems"><option value="Information Technology"><option value="International Relations"><option value="Journalism"><option value="Kinesiology"><option value="Law"><option value="Linguistics"><option value="Machine Learning"><option value="Management Information Systems"><option value="Marketing"><option value="Materials Science"><option value="Mathematics"><option value="Mechanical Engineering"><option value="Medicine"><option value="Microbiology"><option value="Neuroscience"><option value="Nursing"><option value="Nutrition"><option value="Operations Research"><option value="Pharmacy"><option value="Philosophy"><option value="Physics"><option value="Political Science"><option value="Psychology"><option value="Public Administration"><option value="Public Health"><option value="Public Policy"><option value="Robotics"><option value="Social Work"><option value="Sociology"><option value="Software Engineering"><option value="Statistics"><option value="Supply Chain Management"><option value="Systems Engineering"><option value="Urban Planning">
+            </datalist>
+            <datalist id="dl-cip">
+              <option value="11.0101 — Computer and Information Sciences, General"><option value="11.0102 — Artificial Intelligence"><option value="11.0103 — Information Technology"><option value="11.0104 — Informatics"><option value="11.0199 — Computer and Information Sciences, Other"><option value="11.0201 — Computer Programming, Specific Applications"><option value="11.0401 — Information Science/Studies"><option value="11.0501 — Computer Systems Analysis/Analyst"><option value="11.0701 — Computer Science"><option value="11.0801 — Web Page, Digital/Multimedia and Information Resources Design"><option value="11.0901 — Computer Systems Networking and Telecommunications"><option value="11.1001 — Network and System Administration/Administrator"><option value="11.1003 — Computer and Information Systems Security/Auditing/Information Assurance"><option value="11.1004 — Cybersecurity Defense Strategy/Policy"><option value="14.0101 — Engineering, General"><option value="14.0201 — Aerospace, Aeronautical and Astronautical/Space Engineering"><option value="14.0301 — Agricultural Engineering"><option value="14.0401 — Architectural Engineering"><option value="14.0501 — Bioengineering and Biomedical Engineering"><option value="14.0701 — Chemical Engineering"><option value="14.0801 — Civil Engineering, General"><option value="14.0901 — Computer Engineering, General"><option value="14.1001 — Electrical and Electronics Engineering"><option value="14.1201 — Engineering Physics/Applied Physics"><option value="14.1301 — Engineering Science"><option value="14.1401 — Environmental/Environmental Health Engineering"><option value="14.1801 — Materials Engineering"><option value="14.1901 — Mechanical Engineering"><option value="14.2001 — Metallurgical Engineering"><option value="14.2301 — Nuclear Engineering"><option value="14.2501 — Petroleum Engineering"><option value="14.2701 — Systems Engineering"><option value="14.3501 — Industrial Engineering"><option value="14.3701 — Operations Research"><option value="14.3801 — Surveying Engineering"><option value="26.0101 — Biology/Biological Sciences, General"><option value="26.0202 — Biochemistry"><option value="26.0502 — Microbiology, General"><option value="26.0806 — Human/Medical Genetics"><option value="26.1001 — Pharmacology"><option value="26.1102 — Bioinformatics"><option value="26.1301 — Ecology"><option value="26.1501 — Neuroscience"><option value="27.0101 — Mathematics, General"><option value="27.0301 — Applied Mathematics, General"><option value="27.0501 — Statistics, General"><option value="27.0601 — Applied Statistics"><option value="30.0801 — Mathematics and Computer Science"><option value="40.0101 — Physical Sciences, General"><option value="40.0501 — Chemistry, General"><option value="40.0601 — Geology/Earth Science, General"><option value="40.0801 — Physics, General"><option value="42.0101 — Psychology, General"><option value="44.0401 — Public Administration"><option value="45.0101 — Social Sciences, General"><option value="45.0601 — Economics, General"><option value="45.1001 — Political Science and Government, General"><option value="51.0701 — Health Information/Medical Records Administration"><option value="52.0101 — Business/Commerce, General"><option value="52.0201 — Business Administration and Management, General"><option value="52.1201 — Management Information Systems, General"><option value="52.1301 — Management Science, General"><option value="52.1399 — Management Science and Quantitative Methods, Other">
+            </datalist>
+            <datalist id="dl-timezones">
+              <option value="Eastern Time (ET) — UTC-5/UTC-4"><option value="Central Time (CT) — UTC-6/UTC-5"><option value="Mountain Time (MT) — UTC-7/UTC-6"><option value="Pacific Time (PT) — UTC-8/UTC-7"><option value="Alaska Time (AKT) — UTC-9/UTC-8"><option value="Hawaii-Aleutian Time (HAT) — UTC-10"><option value="Atlantic Time (AT) — UTC-4/UTC-3"><option value="India Standard Time (IST) — UTC+5:30"><option value="China Standard Time (CST) — UTC+8"><option value="Korea Standard Time (KST) — UTC+9"><option value="Japan Standard Time (JST) — UTC+9"><option value="Bangladesh Standard Time (BST) — UTC+6"><option value="Pakistan Standard Time (PKT) — UTC+5"><option value="Nepal Time (NPT) — UTC+5:45"><option value="Sri Lanka Time (SLT) — UTC+5:30"><option value="Gulf Standard Time (GST) — UTC+4"><option value="Arabia Standard Time (AST) — UTC+3"><option value="East Africa Time (EAT) — UTC+3"><option value="Central European Time (CET) — UTC+1/UTC+2"><option value="Greenwich Mean Time (GMT) — UTC+0"><option value="West Africa Time (WAT) — UTC+1">
+            </datalist>
+
             </div>
         </div>
     </main><!-- /main -->
 
     <script>
-        const locationRadios = document.querySelectorAll('input[name="location_preference"]');
-        const onsiteSection = document.getElementById('onsite-section');
+    /* ===== OPT Application: progressive enhancement ===== */
+    (function () {
+      'use strict';
 
-        function updateOnsiteSection() {
-            const selected = document.querySelector('input[name="location_preference"]:checked');
-            const show = selected && selected.dataset.toggle === 'onsite';
-            if (onsiteSection) {
-                onsiteSection.classList.toggle('visible', Boolean(show));
-            }
+      /* --- Utility --- */
+      function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+      function $$(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+
+      /* --- DOM refs --- */
+      var form       = $('#opt-application');
+      var status     = $('#opt-submit-status');
+      var onsiteSection = $('#onsite-section');
+      var SITE_KEY   = '6LcHIYcUAAAAAPnqH0iBwnDeFma0mWAMJKJHAoEO';
+
+      if (!form) return;
+
+      /* =====================================================
+         ONSITE SECTION TOGGLE
+      ===================================================== */
+      function updateOnsiteSection() {
+        var sel = $('input[name="location_preference"]:checked', form);
+        var show = sel && sel.dataset.toggle === 'onsite';
+        if (onsiteSection) {
+          onsiteSection.classList.toggle('visible', Boolean(show));
+          /* disable required fields inside hidden section */
+          $$('input, select, textarea', onsiteSection).forEach(function (el) {
+            if (!show && el.dataset.origRequired) el.removeAttribute('required');
+          });
         }
+      }
+      $$('input[name="location_preference"]', form).forEach(function (r) {
+        r.addEventListener('change', updateOnsiteSection);
+      });
+      updateOnsiteSection();
 
-        locationRadios.forEach((radio) => {
-            radio.addEventListener('change', updateOnsiteSection);
+      /* =====================================================
+         DRAFT AUTOSAVE
+      ===================================================== */
+      var DRAFT_KEY   = 'usiva_opt_draft_v1';
+      var SKIP_NAMES  = new Set(['_gotcha', 'token', 'recaptcha_response', 'test', 'owner', 'website', 'budget', 'campaign', 'pageName', 'formType']);
+      var saveTimer;
+
+      function saveDraft() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(function () {
+          try {
+            var data = {};
+            var fd = new FormData(form);
+            fd.forEach(function (v, k) { if (!SKIP_NAMES.has(k)) { if (data[k]) { data[k] = [].concat(data[k], v); } else { data[k] = v; } } });
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+          } catch (e) { /* storage full or private mode */ }
+        }, 600);
+      }
+
+      function restoreDraft() {
+        var raw;
+        try { raw = localStorage.getItem(DRAFT_KEY); } catch (e) { return; }
+        if (!raw) return;
+        try {
+          var data = JSON.parse(raw);
+          Object.keys(data).forEach(function (k) {
+            var vals = [].concat(data[k]);
+            var els = $$('[name="' + CSS.escape(k) + '"]', form);
+            if (!els.length) return;
+            if (els[0].type === 'checkbox' || els[0].type === 'radio') {
+              els.forEach(function (el) { el.checked = vals.indexOf(el.value) !== -1; });
+            } else {
+              if (els[0].tagName === 'SELECT' || els[0].tagName === 'TEXTAREA' || els[0].tagName === 'INPUT') {
+                els[0].value = vals[0] || '';
+              }
+            }
+          });
+          updateOnsiteSection();
+          updateProgress();
+          showDraftNotice();
+        } catch (e) { /* malformed JSON */ }
+      }
+
+      function clearDraft() {
+        try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+      }
+
+      function showDraftNotice() {
+        var notice = $('#opt-draft-notice');
+        if (notice) notice.hidden = false;
+      }
+
+      var clearBtn = $('#opt-clear-draft');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function () {
+          clearDraft();
+          var notice = $('#opt-draft-notice');
+          if (notice) notice.hidden = true;
         });
-        updateOnsiteSection();
+      }
 
-        const optForm = document.getElementById('opt-application');
-        const submitStatus = document.getElementById('opt-submit-status');
-        const recaptchaSiteKey = '6LcHIYcUAAAAAPnqH0iBwnDeFma0mWAMJKJHAoEO';
+      form.addEventListener('input', saveDraft);
+      form.addEventListener('change', saveDraft);
 
-        function setSubmitStatus(message, state) {
-            if (!submitStatus) {
-                return;
-            }
-            submitStatus.textContent = message;
-            submitStatus.classList.remove('is-success', 'is-error');
-            if (state) {
-                submitStatus.classList.add(state);
-            }
+      /* =====================================================
+         PROGRESS BAR
+      ===================================================== */
+      var progressBar  = $('#opt-progress-fill');
+      var progressText = $('#opt-progress-text');
+      var REQUIRED_FIELDS = [];
+
+      function collectRequiredFields() {
+        REQUIRED_FIELDS = $$('[required]', form);
+      }
+
+      function updateProgress() {
+        collectRequiredFields();
+        var total = REQUIRED_FIELDS.length;
+        if (!total) return;
+        var filled = REQUIRED_FIELDS.filter(function (el) {
+          if (el.type === 'radio' || el.type === 'checkbox') {
+            return $$('[name="' + CSS.escape(el.name) + '"]:checked', form).length > 0;
+          }
+          return el.value.trim() !== '';
+        }).length;
+        var pct = Math.round((filled / total) * 100);
+        if (progressBar) { progressBar.style.width = pct + '%'; progressBar.setAttribute('aria-valuenow', pct); }
+        if (progressText) { progressText.textContent = pct + '% complete (' + filled + ' of ' + total + ' required fields)'; }
+      }
+
+      form.addEventListener('input', updateProgress);
+      form.addEventListener('change', updateProgress);
+
+      /* =====================================================
+         VALIDATION
+      ===================================================== */
+      function getFieldError(el) {
+        /* native validity first */
+        if (!el.validity.valid) {
+          if (el.validity.valueMissing)  return 'This field is required.';
+          if (el.validity.typeMismatch)  return 'Please enter a valid ' + (el.type === 'email' ? 'email address' : el.type === 'url' ? 'URL (starting with https://)' : 'value') + '.';
+          if (el.validity.rangeUnderflow) return 'Value must be at least ' + el.min + '.';
+          if (el.validity.rangeOverflow)  return 'Value must be at most ' + el.max + '.';
+          return el.validationMessage || 'Invalid value.';
+        }
+        /* custom rules */
+        if (el.name === 'phone' && el.value.trim()) {
+          if (!/^\+?[\d\s\-().]{7,20}$/.test(el.value.trim())) return 'Please enter a valid phone number.';
+        }
+        if (el.name === 'cip_code' && el.value.trim()) {
+          if (!/^\d{2}\.\d{4}/.test(el.value.trim())) return 'CIP codes look like 11.0101. Check your I-20.';
+        }
+        if ((el.name === 'graduation_date' || el.name === 'ead_start_date' || el.name === 'ead_end_date') && el.value) {
+          var d = new Date(el.value);
+          var yr = d.getFullYear();
+          if (yr < 1980 || yr > 2040) return 'Please check the year — it looks unusual.';
+        }
+        return null;
+      }
+
+      function showError(el, msg) {
+        clearError(el);
+        el.setAttribute('aria-invalid', 'true');
+        el.classList.add('opt-invalid');
+        el.classList.remove('opt-valid');
+        var id = 'err-' + el.id;
+        var span = document.createElement('span');
+        span.id = id;
+        span.className = 'opt-field-error';
+        span.setAttribute('aria-live', 'polite');
+        span.textContent = msg;
+        el.parentNode.insertBefore(span, el.nextSibling);
+        var existing = el.getAttribute('aria-describedby') || '';
+        if (existing.indexOf(id) === -1) el.setAttribute('aria-describedby', (existing + ' ' + id).trim());
+      }
+
+      function clearError(el) {
+        el.setAttribute('aria-invalid', 'false');
+        el.classList.remove('opt-invalid');
+        var id = 'err-' + el.id;
+        var old = document.getElementById(id);
+        if (old) old.remove();
+        var desc = (el.getAttribute('aria-describedby') || '').replace(id, '').trim();
+        if (desc) el.setAttribute('aria-describedby', desc); else el.removeAttribute('aria-describedby');
+      }
+
+      function markValid(el) {
+        clearError(el);
+        el.setAttribute('aria-invalid', 'false');
+        el.classList.add('opt-valid');
+        el.classList.remove('opt-invalid');
+      }
+
+      function validateField(el) {
+        if (el.name === '_gotcha' || SKIP_NAMES.has(el.name)) return true;
+        /* hidden conditional section — skip */
+        if (onsiteSection && !onsiteSection.classList.contains('visible') && onsiteSection.contains(el)) return true;
+        var err = getFieldError(el);
+        if (err) { showError(el, err); return false; }
+        if (el.value.trim() || el.checked) markValid(el);
+        else clearError(el);
+        return true;
+      }
+
+      /* blur validation */
+      $$('input, select, textarea', form).forEach(function (el) {
+        if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+        el.addEventListener('blur', function () { validateField(el); });
+        el.addEventListener('change', function () { validateField(el); });
+      });
+
+      /* =====================================================
+         reCAPTCHA
+      ===================================================== */
+      function getRecaptchaToken() {
+        return new Promise(function (resolve, reject) {
+          if (!window.grecaptcha || typeof window.grecaptcha.execute !== 'function') {
+            return reject(new Error('reCAPTCHA failed to load. Please refresh the page and try again.'));
+          }
+          window.grecaptcha.ready(function () {
+            window.grecaptcha.execute(SITE_KEY, { action: 'USIVA_OPT_Application' }).then(resolve, reject);
+          });
+        });
+      }
+
+      /* =====================================================
+         SUBMIT UX
+      ===================================================== */
+      function setStatus(msg, cls) {
+        if (!status) return;
+        status.textContent = msg;
+        status.className = 'opt-submit-status' + (cls ? ' ' + cls : '');
+      }
+
+      function setSubmitting(on) {
+        var btn = $('button[type="submit"]', form);
+        if (!btn) return;
+        btn.disabled = on;
+        btn.innerHTML = on
+          ? '<span class="opt-spinner" aria-hidden="true"></span> Submitting…'
+          : 'Submit Application';
+      }
+
+      var successPanel = $('#opt-success-panel');
+
+      /* =====================================================
+         FORM SUBMIT
+      ===================================================== */
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        /* validate all */
+        var allValid = true;
+        var firstInvalid = null;
+        $$('input, select, textarea', form).forEach(function (el) {
+          if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+          if (onsiteSection && !onsiteSection.classList.contains('visible') && onsiteSection.contains(el)) return;
+          if (!validateField(el) && !firstInvalid) firstInvalid = el;
+          if (!el.validity.valid && getFieldError(el)) allValid = false;
+        });
+
+        if (!allValid || firstInvalid) {
+          if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalid.focus();
+          }
+          setStatus('Please correct the highlighted fields before submitting.', 'is-error');
+          return;
         }
 
-        function setSubmitting(isSubmitting) {
-            const submitButton = optForm ? optForm.querySelector('button[type="submit"]') : null;
-            if (submitButton) {
-                submitButton.disabled = isSubmitting;
-                submitButton.textContent = isSubmitting ? 'Submitting...' : 'Submit Application';
-            }
+        /* honeypot */
+        if ($('input[name="_gotcha"]', form).value) {
+          form.reset(); updateOnsiteSection(); setStatus('Application submitted.', 'is-success'); return;
         }
 
-        async function getRecaptchaToken() {
-            if (!window.grecaptcha || typeof window.grecaptcha.execute !== 'function') {
-                throw new Error('reCAPTCHA is unavailable.');
+        setSubmitting(true);
+        setStatus('Submitting your application…', '');
+
+        var controller = new AbortController();
+        var timeout = setTimeout(function () { controller.abort(); }, 20000);
+
+        getRecaptchaToken().then(function (token) {
+          $('input[name="token"]', form).value = token;
+          $('input[name="recaptcha_response"]', form).value = token;
+
+          var body = new URLSearchParams(new FormData(form));
+          return fetch(form.action, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+            body: body,
+            signal: controller.signal
+          });
+        }).then(function (response) {
+          return response.json().catch(function () { return {}; }).then(function (data) {
+            if (!response.ok || data.success === false) {
+              throw new Error(data.message || 'The intake gateway could not accept the application. Please try again in a moment.');
             }
+            return data;
+          });
+        }).then(function () {
+          clearTimeout(timeout);
+          clearDraft();
+          form.reset();
+          updateOnsiteSection();
+          updateProgress();
+          setStatus('', '');
+          if (successPanel) {
+            successPanel.hidden = false;
+            successPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            successPanel.focus();
+          } else {
+            setStatus('Application submitted successfully. USIVA will review it and follow up through the case process within 3–5 business days.', 'is-success');
+          }
+        }).catch(function (err) {
+          clearTimeout(timeout);
+          var msg = err && err.name === 'AbortError'
+            ? 'The request timed out. Please check your connection and try again.'
+            : (err && err.message) || 'The application could not be submitted. Please try again.';
+          setStatus(msg, 'is-error');
+        }).finally(function () {
+          setSubmitting(false);
+        });
+      });
 
-            return new Promise((resolve, reject) => {
-                window.grecaptcha.ready(() => {
-                    window.grecaptcha.execute(recaptchaSiteKey, { action: 'USIVA_OPT_Application' })
-                        .then(resolve)
-                        .catch(reject);
-                });
-            });
-        }
+      /* =====================================================
+         RESTORE DRAFT ON LOAD
+      ===================================================== */
+      restoreDraft();
+      updateProgress();
 
-        if (optForm) {
-            optForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
+      /* =====================================================
+         PRELOADER HIDE
+      ===================================================== */
+      setTimeout(function () {
+        var loader = document.querySelector('[data-loader="circle-side"]');
+        var preloader = document.getElementById('preloader');
+        if (loader) loader.style.display = 'none';
+        if (preloader) preloader.style.display = 'none';
+      }, 1200);
 
-                if (!optForm.checkValidity()) {
-                    optForm.reportValidity();
-                    return;
-                }
-
-                if (optForm.querySelector('input[name="_gotcha"]').value) {
-                    optForm.reset();
-                    updateOnsiteSection();
-                    setSubmitStatus('Application submitted.', 'is-success');
-                    return;
-                }
-
-                setSubmitting(true);
-                setSubmitStatus('Submitting application...', '');
-
-                try {
-                    const token = await getRecaptchaToken();
-                    optForm.querySelector('input[name="token"]').value = token;
-                    optForm.querySelector('input[name="recaptcha_response"]').value = token;
-
-                    const body = new URLSearchParams(new FormData(optForm));
-                    const response = await fetch(optForm.action, {
-                        method: 'POST',
-                        mode: 'cors',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        },
-                        body
-                    });
-                    const data = await response.json().catch(() => ({}));
-
-                    if (!response.ok || data.success === false) {
-                        throw new Error(data.message || 'The intake gateway could not accept the application.');
-                    }
-
-                    optForm.reset();
-                    updateOnsiteSection();
-                    setSubmitStatus('Application submitted. USIVA will review it and follow up through the case process.', 'is-success');
-                } catch (error) {
-                    setSubmitStatus(error.message || 'The application could not be submitted. Please try again.', 'is-error');
-                } finally {
-                    setSubmitting(false);
-                }
-            });
-        }
-
-        window.setTimeout(function () {
-            const loader = document.querySelector('[data-loader="circle-side"]');
-            const preloader = document.getElementById('preloader');
-            if (loader) {
-                loader.style.display = 'none';
-            }
-            if (preloader) {
-                preloader.style.display = 'none';
-            }
-        }, 1200);
+    }());
     </script>
 
     <footer>
