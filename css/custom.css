@@ -271,6 +271,11 @@
 	display: block;
 }
 
+.opt-form .opt-honeypot {
+	left: -9999px;
+	position: absolute;
+}
+
 .opt-form .actions {
 	display: flex;
 	flex-wrap: wrap;
@@ -278,10 +283,33 @@
 	margin-top: 8px;
 }
 
+.opt-form .actions button[disabled] {
+	cursor: wait;
+	opacity: 0.72;
+}
+
 .opt-form .btn_1.opt-secondary {
 	background: #fff;
 	border: 2px solid #0054a6;
 	color: #0054a6;
+}
+
+.opt-form .opt-submit-status {
+	color: #555;
+	font-size: 15px;
+	line-height: 1.45;
+	margin: 14px 0 0;
+	min-height: 22px;
+}
+
+.opt-form .opt-submit-status.is-success {
+	color: #1f6b35;
+	font-weight: 500;
+}
+
+.opt-form .opt-submit-status.is-error {
+	color: #a43122;
+	font-weight: 500;
 }
 
 @media (max-width: 767px) {
