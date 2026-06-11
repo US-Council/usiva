@@ -50,6 +50,30 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="css/custom.css" rel="stylesheet">
+    <!-- FocusTrack integration styles -->
+    <link href="css/focustrack.css" rel="stylesheet">
+
+    <!-- FocusTrack feature-flag config — ALL behaviour gates on enabled:false until WP-O cutover -->
+    <script>
+    window.FOCUSTRACK = {
+      enabled: false,                        /* master switch — flipped at WP-O cutover */
+      apiBase: "https://api.focustrack.org",
+      tenant: "focustrack.ciamlogin.com",
+      tenantId: "TBD",                       /* filled at WP-O cutover */
+      spaClientId: "TBD",                    /* filled at WP-O cutover */
+      apiScope: "api://focustrack-api/access",
+      clientId: "usiva",
+      caseTypeId: "f1-opt"
+    };
+    /* ?focustrack=mock enables in-page mock mode for local dev/testing */
+    (function () {
+      var qs = new URLSearchParams(window.location.search);
+      if (qs.get('focustrack') === 'mock') {
+        window.FOCUSTRACK.enabled = true;
+        window.FOCUSTRACK._mockMode = true;
+      }
+    }());
+    </script>
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfBPhgtAAAAAOxWLMZ-tQgSGOBJPN-f_zwTswqq"></script>
 
@@ -212,6 +236,12 @@
 
             <div class="opt-application">
 
+    <!-- FocusTrack autosave chip -->
+    <div id="ft-autosave-chip" class="ft-autosave-chip" role="status" aria-live="polite" aria-label="Draft save status" hidden>
+      <span id="ft-chip-icon" class="ft-chip-icon" aria-hidden="true"></span>
+      <span id="ft-chip-text" class="ft-chip-text">Draft saved locally</span>
+      <button type="button" id="ft-signin-btn" class="ft-signin-btn" hidden aria-label="Sign in to save your draft to the cloud">Save to cloud &mdash; sign in</button>
+    </div>
 
     <!-- Progress bar / wizard position indicator -->
     <div class="opt-progress-wrap" aria-label="Application progress">
@@ -1423,6 +1453,111 @@
               <label for="missing_documents">Which required documents are missing, expired, inconsistent, or hard to obtain?</label>
               <textarea id="missing_documents" name="missing_documents"></textarea>
             </div>
+
+            <!-- FocusTrack upload UI — shown only when enabled; existing URL fields remain as fallback when disabled -->
+            <div class="wide" id="ft-upload-panel" hidden>
+              <h3>Upload Documents Securely</h3>
+              <p class="field-help">Upload files directly to your secure case folder. Max 25 MB per file. All uploads are virus-scanned before processing.</p>
+
+              <!-- Document checklist -->
+              <div id="ft-doc-checklist" class="ft-doc-checklist" aria-label="Required documents checklist">
+                <div class="ft-doc-checklist-title" aria-live="polite">Document checklist</div>
+                <ul class="ft-checklist-list" id="ft-checklist-items">
+                  <li class="ft-checklist-item" data-doctype="resume-cv">
+                    <span class="ft-checklist-status ft-status-required" aria-label="Required">Required</span>
+                    <span class="ft-checklist-label">Resume or CV</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="transcript">
+                    <span class="ft-checklist-status ft-status-required" aria-label="Required">Required</span>
+                    <span class="ft-checklist-label">Transcript</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="i-20">
+                    <span class="ft-checklist-status ft-status-required" aria-label="Required">Required</span>
+                    <span class="ft-checklist-label">Form I-20</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="passport-id-page">
+                    <span class="ft-checklist-status ft-status-required" aria-label="Required">Required</span>
+                    <span class="ft-checklist-label">Passport (ID page)</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="ead-card">
+                    <span class="ft-checklist-status ft-status-optional" aria-label="Optional">Optional</span>
+                    <span class="ft-checklist-label">EAD Card (if available)</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="offer-letter">
+                    <span class="ft-checklist-status ft-status-optional" aria-label="Optional">Optional</span>
+                    <span class="ft-checklist-label">Offer Letter</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="portfolio">
+                    <span class="ft-checklist-status ft-status-optional" aria-label="Optional">Optional</span>
+                    <span class="ft-checklist-label">Portfolio / Work Samples</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="publications">
+                    <span class="ft-checklist-status ft-status-optional" aria-label="Optional">Optional</span>
+                    <span class="ft-checklist-label">Publications</span>
+                  </li>
+                  <li class="ft-checklist-item" data-doctype="recommendation-letter">
+                    <span class="ft-checklist-status ft-status-optional" aria-label="Optional">Optional</span>
+                    <span class="ft-checklist-label">Recommendation Letters</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Upload drop zone -->
+              <div class="ft-upload-zone" id="ft-upload-zone" role="region" aria-label="File upload area">
+                <label class="ft-upload-label" for="ft-file-input">
+                  <span class="ft-upload-icon" aria-hidden="true">&#8679;</span>
+                  <span class="ft-upload-text">Drag and drop files here, or <strong>browse</strong></span>
+                  <span class="ft-upload-hint">PDF, DOCX, JPG, PNG &mdash; max 25 MB</span>
+                </label>
+                <input type="file" id="ft-file-input" class="ft-file-input" multiple
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                  aria-label="Select files to upload">
+              </div>
+
+              <!-- Document type selector -->
+              <div class="ft-doctype-row" id="ft-doctype-row" hidden>
+                <label for="ft-doctype-select">Document type for selected file:</label>
+                <select id="ft-doctype-select" class="ft-doctype-select">
+                  <option value="">Select document type</option>
+                  <option value="resume-cv">Resume or CV</option>
+                  <option value="transcript">Transcript</option>
+                  <option value="i-20">Form I-20</option>
+                  <option value="ead-card">EAD Card</option>
+                  <option value="passport-id-page">Passport (ID page)</option>
+                  <option value="portfolio">Portfolio / Work Samples</option>
+                  <option value="publications">Publications</option>
+                  <option value="recommendation-letter">Recommendation Letter</option>
+                  <option value="offer-letter">Offer Letter</option>
+                </select>
+                <button type="button" id="ft-upload-confirm-btn" class="btn_1 ft-upload-confirm-btn" disabled>Upload</button>
+                <button type="button" id="ft-upload-cancel-btn" class="ft-upload-cancel-btn" aria-label="Cancel file selection">Cancel</button>
+              </div>
+
+              <!-- Upload queue / progress list -->
+              <ul id="ft-upload-list" class="ft-upload-list" aria-label="Uploaded files" aria-live="polite"></ul>
+
+              <!-- Fast Start prompt (shown after resume-cv upload) -->
+              <div id="ft-fast-start-panel" class="ft-fast-start-panel" hidden role="region" aria-label="Fast Start prefill offer">
+                <p class="ft-fast-start-heading">Fast Start: prefill from your r&eacute;sum&eacute;?</p>
+                <p class="ft-fast-start-desc">USIVA can extract information from your uploaded r&eacute;sum&eacute; and pre-populate matching form fields. You will review and confirm each field before it is applied.</p>
+                <div class="ft-fast-start-btns">
+                  <button type="button" id="ft-fast-start-accept" class="btn_1">Yes, prefill matching fields</button>
+                  <button type="button" id="ft-fast-start-decline" class="btn_1 opt-secondary">No thanks</button>
+                </div>
+              </div>
+
+              <!-- Fast Start confirmation panel -->
+              <div id="ft-prefill-confirm-panel" class="ft-prefill-confirm-panel" hidden role="region" aria-labelledby="ft-prefill-confirm-title" aria-live="polite">
+                <h4 id="ft-prefill-confirm-title">Review r&eacute;sum&eacute; prefill suggestions</h4>
+                <p class="field-help">Confirm each field before it is applied. Amber highlights mean lower confidence. Fields you have already filled in are protected.</p>
+                <ul id="ft-prefill-list" class="ft-prefill-list"></ul>
+                <div class="ft-prefill-actions">
+                  <button type="button" id="ft-prefill-apply-all" class="btn_1">Apply all confirmed</button>
+                  <button type="button" id="ft-prefill-clear" class="btn_1 opt-secondary">Clear prefilled data</button>
+                </div>
+              </div>
+            </div>
+            <!-- /FocusTrack upload UI -->
           </div>
         </fieldset>
       </section>
@@ -1558,14 +1693,17 @@
     <!-- Success panel (hidden until form submits successfully) -->
     <div id="opt-success-panel" class="opt-success-panel" hidden tabindex="-1" aria-live="polite">
       <h2>Application Received</h2>
+      <!-- FocusTrack case number — shown when enabled and API returns caseNumber -->
+      <p id="ft-case-number-display" class="ft-case-number-display" hidden>Your case number: <strong id="ft-case-number"></strong></p>
       <p>Thank you for submitting your F-1 OPT application. Here is what happens next:</p>
       <ol>
-        <li>Watch for a confirmation email from <a href="mailto:info@usiva.org">info@usiva.org</a> — typically within 24–48 hours.</li>
+        <li>Watch for a confirmation email from <a href="mailto:info@usiva.org">info@usiva.org</a> &mdash; typically within 24&ndash;48 hours.</li>
         <li>A USIVA case manager will contact you to review your documents and answer questions about your OPT timeline.</li>
         <li>Schedule a DSO check-in to verify your I-20, SEVIS status, and OPT or STEM OPT eligibility.</li>
         <li>If applying for STEM OPT, begin I-983 Training Plan preparation and coordinate with your prospective employer for signing and E-Verify confirmation.</li>
         <li>Gather your I-20, Employment Authorization Document (EAD) if available, passport, I-94, and any academic documents for the secure case folder.</li>
       </ol>
+      <p id="ft-portal-link-para" hidden>You can track your application status in the <a href="portal.html">applicant portal</a>.</p>
     </div>
 
             <datalist id="dl-countries">
@@ -2279,6 +2417,906 @@
         if (loader) loader.style.display = 'none';
         if (preloader) preloader.style.display = 'none';
       }, 1200);
+
+    }());
+    </script>
+
+    <!-- FocusTrack integration — all behaviour gated on window.FOCUSTRACK.enabled -->
+    <script>
+    (function () {
+      'use strict';
+
+      var FT = window.FOCUSTRACK || {};
+      if (!FT.enabled) {
+        /* disabled: show chip in localStorage-only mode, no MSAL load */
+        initChipLocalOnly();
+        return;
+      }
+
+      /* ============================================================
+         MOCK BACKEND — activated by ?focustrack=mock
+         Implements all 8 contract shapes in-page so tests work
+         without a live API.
+      ============================================================ */
+      var MOCK = FT._mockMode ? (function () {
+        var _draft = null;
+        var _revision = 0;
+        var _contact = null;
+        var _application = null;
+        var _uploads = {};
+        var _parseResult = null;
+
+        function delay(ms, val) {
+          return new Promise(function (res) { setTimeout(function () { res(val); }, ms || 60); });
+        }
+
+        return {
+          postContact: function () {
+            var isNew = !_contact;
+            _contact = _contact || { contactId: 'mock-contact-001' };
+            return delay(80, { contactId: _contact.contactId, isNew: isNew });
+          },
+          getDraft: function () {
+            if (!_draft) return delay(60, null);
+            return delay(60, { draftId: 'mock-draft-001', payload: _draft, revision: _revision,
+              lastSavedOn: new Date().toISOString(), status: 'active',
+              clientId: FT.clientId, caseTypeId: FT.caseTypeId });
+          },
+          putDraft: function (payload, clientRevision) {
+            if (clientRevision !== null && clientRevision !== undefined && clientRevision < _revision) {
+              return delay(60, { conflict: true, serverRevision: _revision });
+            }
+            _draft = payload;
+            _revision++;
+            return delay(80, { revision: _revision, savedOn: new Date().toISOString() });
+          },
+          postUploads: function (docType, fileName, mimeType, sizeBytes) {
+            var id = 'mock-blob-' + Date.now();
+            _uploads[id] = { docType: docType, fileName: fileName, status: 'clean' };
+            return delay(120, {
+              uploadUrl: 'mock://focustrackcases/' + id,
+              blobPath: 'quarantine/usiva/mock-contact-001/' + docType + '/' + id + '-' + fileName,
+              expiresAt: new Date(Date.now() + 900000).toISOString(),
+              _mockId: id
+            });
+          },
+          putBlob: function (uploadUrl, file, onProgress) {
+            /* simulate XHR progress */
+            var steps = 5;
+            var i = 0;
+            return new Promise(function (res) {
+              var iv = setInterval(function () {
+                i++;
+                if (onProgress) onProgress(Math.round((i / steps) * 100));
+                if (i >= steps) { clearInterval(iv); res({ ok: true }); }
+              }, 100);
+            });
+          },
+          postApplication: function (draftRevision, documentManifest, recaptchaToken) {
+            _application = { caseId: 'mock-case-001', caseNumber: 'USIVA-OPT-2026-0001',
+              submittedAt: new Date().toISOString() };
+            return delay(200, _application);
+          },
+          getApplication: function () {
+            return delay(80, {
+              caseId: 'mock-case-001',
+              stage: 'Docs Verified',
+              missingDocs: ['transcript', 'i-20'],
+              lastUpdated: new Date().toISOString(),
+              activitySummary: [65, 72, 80, 68, 75, 82, 79]
+            });
+          },
+          postParse: function (blobPath) {
+            _parseResult = {
+              fields: {
+                name: 'Jane Doe', email: 'jane@example.com', phone: '+1 555 123 4567',
+                school: 'MIT', degree: "Master's", major: 'Computer Science',
+                gradDate: '2025-05-15',
+                skills: ['Python', 'Machine Learning', 'SQL'],
+                publications: [], links: ['https://github.com/janedoe'],
+                cipSuggestions: ['11.0701 — Computer Science']
+              },
+              confidence: {
+                name: 0.95, email: 0.97, phone: 0.91, school: 0.88,
+                degree: 0.92, major: 0.85, gradDate: 0.76,
+                skills: 0.82
+              }
+            };
+            return delay(500, _parseResult);
+          }
+        };
+      }()) : null;
+
+      /* ============================================================
+         MSAL — dynamically imported ONLY when enabled
+      ============================================================ */
+      var msalInstance = null;
+      var accessToken  = null;
+      var signedInAccount = null;
+
+      function loadMsal() {
+        return new Promise(function (resolve, reject) {
+          if (window.msal) { return resolve(window.msal); }
+          var s = document.createElement('script');
+          s.src = 'https://alcdn.msauth.net/browser/3.27.0/js/msal-browser.min.js';
+          s.defer = true;
+          s.onload  = function () { resolve(window.msal); };
+          s.onerror = function () { reject(new Error('MSAL failed to load')); };
+          document.head.appendChild(s);
+        });
+      }
+
+      function initMsal() {
+        if (msalInstance) return Promise.resolve(msalInstance);
+        if (FT._mockMode) {
+          /* in mock mode, do NOT auto-sign-in on initMsal — only signIn() does that */
+          return Promise.resolve(null);
+        }
+        return loadMsal().then(function (msal) {
+          msalInstance = new msal.PublicClientApplication({
+            auth: {
+              clientId: FT.spaClientId,
+              authority: 'https://' + FT.tenant + '/' + FT.tenantId,
+              redirectUri: window.location.origin + window.location.pathname
+            },
+            cache: { cacheLocation: 'sessionStorage' }
+          });
+          return msalInstance.initialize().then(function () {
+            return msalInstance.handleRedirectPromise();
+          }).then(function (response) {
+            if (response) {
+              signedInAccount = response.account;
+              accessToken = response.accessToken;
+            } else {
+              var accounts = msalInstance.getAllAccounts();
+              if (accounts.length) signedInAccount = accounts[0];
+            }
+            return msalInstance;
+          });
+        });
+      }
+
+      function getToken() {
+        if (FT._mockMode) return Promise.resolve('mock-bearer-token');
+        if (!msalInstance || !signedInAccount) return Promise.reject(new Error('not signed in'));
+        return msalInstance.acquireTokenSilent({
+          scopes: [FT.apiScope],
+          account: signedInAccount
+        }).then(function (r) {
+          accessToken = r.accessToken;
+          return r.accessToken;
+        }).catch(function () {
+          return msalInstance.acquireTokenPopup({ scopes: [FT.apiScope] }).then(function (r) {
+            accessToken = r.accessToken;
+            return r.accessToken;
+          });
+        });
+      }
+
+      function signIn() {
+        if (FT._mockMode) {
+          /* mock sign-in: set account only when user explicitly clicks sign-in */
+          signedInAccount = { name: 'Test User', username: 'testuser@focustrack.ciamlogin.com' };
+          return new Promise(function (res) { setTimeout(res, 80); }); /* slight delay for realism */
+        }
+        return initMsal().then(function () {
+          if (signedInAccount) return Promise.resolve();
+          return msalInstance.loginPopup({ scopes: [FT.apiScope] }).then(function (r) {
+            signedInAccount = r.account;
+            accessToken = r.accessToken;
+          });
+        });
+      }
+
+      /* ============================================================
+         API helpers
+      ============================================================ */
+      function apiCall(method, path, body, token) {
+        if (FT._mockMode) return null; /* caller handles mock path */
+        var url = FT.apiBase + path;
+        var opts = {
+          method: method,
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
+        };
+        if (body) opts.body = JSON.stringify(body);
+        return fetch(url, opts).then(function (r) {
+          if (!r.ok) throw new Error('API error ' + r.status);
+          return r.json();
+        });
+      }
+
+      function callPostContact(token) {
+        if (FT._mockMode) return MOCK.postContact();
+        return apiCall('POST', '/me/contact', {}, token);
+      }
+
+      function callGetDraft(token) {
+        if (FT._mockMode) return MOCK.getDraft();
+        return apiCall('GET', '/me/draft', null, token).catch(function (e) {
+          if (e.message && e.message.indexOf('404') !== -1) return null;
+          throw e;
+        });
+      }
+
+      function callPutDraft(payload, revision, token) {
+        var body = { payload: payload, revision: revision,
+          clientTimestamp: new Date().toISOString(),
+          clientId: FT.clientId, caseTypeId: FT.caseTypeId };
+        if (FT._mockMode) return MOCK.putDraft(payload, revision);
+        return apiCall('PUT', '/me/draft', body, token);
+      }
+
+      function callPostUploads(docType, fileName, mimeType, sizeBytes, token) {
+        var body = { docType: docType, fileName: fileName, mimeType: mimeType,
+          sizeBytes: sizeBytes, clientId: FT.clientId, caseTypeId: FT.caseTypeId };
+        if (FT._mockMode) return MOCK.postUploads(docType, fileName, mimeType, sizeBytes);
+        return apiCall('POST', '/uploads', body, token);
+      }
+
+      function callPutBlob(uploadUrl, file, onProgress) {
+        if (FT._mockMode) return MOCK.putBlob(uploadUrl, file, onProgress);
+        return new Promise(function (resolve, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('PUT', uploadUrl);
+          xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+          xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+          xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100));
+          };
+          xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) resolve({ ok: true });
+            else reject(new Error('Blob upload failed: ' + xhr.status));
+          };
+          xhr.onerror = function () { reject(new Error('Upload network error')); };
+          xhr.send(file);
+        });
+      }
+
+      function callPostApplication(draftRevision, documentManifest, recaptchaToken, token) {
+        var body = { draftRevision: draftRevision, documentManifest: documentManifest,
+          clientId: FT.clientId, caseTypeId: FT.caseTypeId,
+          recaptcha_response: recaptchaToken };
+        if (FT._mockMode) return MOCK.postApplication(draftRevision, documentManifest, recaptchaToken);
+        return apiCall('POST', '/me/application', body, token);
+      }
+
+      function callPostParse(blobPath, token) {
+        var body = { blobPath: blobPath, clientId: FT.clientId, caseTypeId: FT.caseTypeId };
+        if (FT._mockMode) return MOCK.postParse(blobPath);
+        return apiCall('POST', '/evidence/parse', body, token);
+      }
+
+      /* ============================================================
+         AUTOSAVE CHIP
+      ============================================================ */
+      var chip     = document.getElementById('ft-autosave-chip');
+      var chipIcon = document.getElementById('ft-chip-icon');
+      var chipText = document.getElementById('ft-chip-text');
+      var signInBtn = document.getElementById('ft-signin-btn');
+
+      function showChip() {
+        if (chip) chip.hidden = false;
+      }
+
+      function setChipState(state, msg) {
+        if (!chip) return;
+        chip.hidden = false;
+        chip.className = 'ft-autosave-chip ft-chip-' + state;
+        var icons = { saving: '&#8635;', saved: '&#10003;', offline: '&#9998;', error: '&#9888;' };
+        if (chipIcon) chipIcon.innerHTML = icons[state] || '';
+        if (chipText)  chipText.textContent = msg || '';
+      }
+
+      function timeAgo(ts) {
+        var diff = Math.round((Date.now() - ts) / 1000);
+        if (diff < 10) return 'just now';
+        if (diff < 60) return diff + 's ago';
+        if (diff < 3600) return Math.round(diff / 60) + 'm ago';
+        return Math.round(diff / 3600) + 'h ago';
+      }
+
+      /* ============================================================
+         CLOUD DRAFT SYNC
+      ============================================================ */
+      var cloudRevision   = null;  /* revision from last successful GET/PUT /me/draft */
+      var cloudSyncTimer  = null;
+      var idleTimer       = null;
+      var IDLE_SYNC_MS    = 10000; /* 10 s idle before cloud push */
+
+      function getDraftPayload() {
+        /* read the current localStorage draft payload */
+        var DRAFT_KEY = 'usiva_opt_draft_v2';
+        try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch (e) { return null; }
+      }
+
+      function syncDraftToCloud() {
+        if (!signedInAccount) return;
+        var payload = getDraftPayload();
+        if (!payload) return;
+        getToken().then(function (token) {
+          return callPutDraft(payload, cloudRevision, token);
+        }).then(function (res) {
+          if (res && res.conflict) {
+            /* server is newer — prompt user */
+            promptDraftConflict(res.serverRevision);
+          } else if (res && res.revision !== undefined) {
+            cloudRevision = res.revision;
+            setChipState('saved', 'Saved ✓ just now');
+          }
+        }).catch(function () {
+          setChipState('offline', 'Offline — saved locally');
+        });
+      }
+
+      function scheduleIdleSync() {
+        clearTimeout(idleTimer);
+        if (!signedInAccount) return;
+        idleTimer = setTimeout(syncDraftToCloud, IDLE_SYNC_MS);
+      }
+
+      function promptDraftConflict(serverRevision) {
+        /* show a native confirm — keep it simple */
+        var useServer = window.confirm(
+          'A newer version of your draft was saved to the cloud from another device.\n\n' +
+          'Click OK to load the cloud draft (your local changes will be replaced).\n' +
+          'Click Cancel to keep your current draft and overwrite the cloud version.');
+        if (useServer) {
+          getToken().then(function (token) {
+            return callGetDraft(token);
+          }).then(function (serverDraft) {
+            if (serverDraft && serverDraft.payload) {
+              adoptCloudDraft(serverDraft.payload, serverDraft.revision);
+            }
+          });
+        } else {
+          /* force push local draft with server revision so next PUT wins */
+          cloudRevision = serverRevision;
+          syncDraftToCloud();
+        }
+      }
+
+      function adoptCloudDraft(payload, revision) {
+        var DRAFT_KEY = 'usiva_opt_draft_v2';
+        try { localStorage.setItem(DRAFT_KEY, JSON.stringify(payload)); } catch (e) {}
+        cloudRevision = revision;
+        /* trigger a form restore — fire the existing restoreDraft path */
+        if (window._ftRestoreDraft) window._ftRestoreDraft(payload);
+        setChipState('saved', 'Cloud draft loaded');
+      }
+
+      /* ============================================================
+         SIGN-IN FLOW
+      ============================================================ */
+      function onSignIn() {
+        var localDraft = getDraftPayload();
+        setChipState('saving', 'Signing in…');
+        initMsal().then(signIn).then(function () {
+          setChipState('saving', 'Setting up…');
+          return getToken();
+        }).then(function (token) {
+          /* POST /me/contact — provision contact record */
+          return callPostContact(token).then(function () {
+            /* GET /me/draft — check for existing cloud draft */
+            return callGetDraft(token).then(function (serverDraft) {
+              if (serverDraft && serverDraft.payload && localDraft) {
+                /* both exist — server newest-revision-wins merge prompt */
+                promptDraftConflict(serverDraft.revision);
+              } else if (serverDraft && serverDraft.payload) {
+                adoptCloudDraft(serverDraft.payload, serverDraft.revision);
+              } else {
+                /* no cloud draft — push local draft up */
+                return callPutDraft(localDraft, null, token).then(function (res) {
+                  if (res) cloudRevision = res.revision;
+                });
+              }
+            });
+          });
+        }).then(function () {
+          if (signInBtn) signInBtn.hidden = true;
+          setChipState('saved', 'Signed in — Saved ✓');
+          /* start idle sync interval */
+          var form = document.getElementById('opt-application');
+          if (form) {
+            form.addEventListener('input',  scheduleIdleSync);
+            form.addEventListener('change', scheduleIdleSync);
+          }
+        }).catch(function (err) {
+          setChipState('error', 'Sign-in failed');
+          console.error('FocusTrack sign-in error:', err);
+        });
+      }
+
+      if (signInBtn) {
+        signInBtn.addEventListener('click', onSignIn);
+      }
+
+      /* ============================================================
+         AUTOSAVE CHIP INIT (localStorage-only mode)
+      ============================================================ */
+      function initChipLocalOnly() {
+        var chip2 = document.getElementById('ft-autosave-chip');
+        var chipText2 = document.getElementById('ft-chip-text');
+        var chipIcon2 = document.getElementById('ft-chip-icon');
+        var signInBtn2 = document.getElementById('ft-signin-btn');
+        if (!chip2) return;
+        chip2.hidden = false;
+        chip2.className = 'ft-autosave-chip ft-chip-offline';
+        if (chipIcon2) chipIcon2.innerHTML = '&#9998;';
+        if (chipText2)  chipText2.textContent = 'Draft saved locally';
+        /* don't show sign-in button when FocusTrack is entirely disabled */
+
+        /* hook into form autosave events to update chip text */
+        var form3 = document.getElementById('opt-application');
+        if (!form3) return;
+        var lastSaveTs = null;
+        function onLocalSave() {
+          if (chip2) {
+            chip2.className = 'ft-autosave-chip ft-chip-saving';
+            if (chipIcon2) chipIcon2.innerHTML = '&#8635;';
+            if (chipText2)  chipText2.textContent = 'Saving…';
+          }
+          /* the underlying saveDraft() debounces at 600ms; poll briefly */
+          clearTimeout(window._ftLocalChipTimer);
+          window._ftLocalChipTimer = setTimeout(function () {
+            lastSaveTs = Date.now();
+            if (chip2) {
+              chip2.className = 'ft-autosave-chip ft-chip-saved';
+              if (chipIcon2) chipIcon2.innerHTML = '&#10003;';
+              if (chipText2)  chipText2.textContent = 'Saved locally just now';
+            }
+            /* update to relative time after 30s */
+            clearTimeout(window._ftLocalRelativeTimer);
+            window._ftLocalRelativeTimer = setTimeout(function () {
+              if (chipText2 && lastSaveTs) {
+                chipText2.textContent = 'Saved locally ' + timeAgo(lastSaveTs);
+              }
+            }, 30000);
+          }, 900);
+        }
+        form3.addEventListener('input',  onLocalSave);
+        form3.addEventListener('change', onLocalSave);
+
+        /* offline detection */
+        window.addEventListener('offline', function () {
+          if (chip2) {
+            chip2.className = 'ft-autosave-chip ft-chip-offline';
+            if (chipIcon2) chipIcon2.innerHTML = '&#9998;';
+            if (chipText2)  chipText2.textContent = 'Offline — saved locally';
+          }
+        });
+      }
+
+      /* ============================================================
+         SECTION-CHANGE CLOUD SYNC HOOK (when signed in)
+      ============================================================ */
+      var btnNext2 = document.getElementById('opt-btn-next');
+      var btnBack2 = document.getElementById('opt-btn-back');
+      function onSectionChange() {
+        setChipState('saving', 'Saving…');
+        syncDraftToCloud();
+      }
+      if (btnNext2) btnNext2.addEventListener('click', function () { if (signedInAccount) onSectionChange(); });
+      if (btnBack2) btnBack2.addEventListener('click', function () { if (signedInAccount) onSectionChange(); });
+
+      /* ============================================================
+         UPLOAD SYSTEM (Section 16)
+      ============================================================ */
+      var uploadPanel = document.getElementById('ft-upload-panel');
+      var fileInput   = document.getElementById('ft-file-input');
+      var uploadZone  = document.getElementById('ft-upload-zone');
+      var doctypeRow  = document.getElementById('ft-doctype-row');
+      var doctypeSelect = document.getElementById('ft-doctype-select');
+      var uploadConfirmBtn = document.getElementById('ft-upload-confirm-btn');
+      var uploadCancelBtn  = document.getElementById('ft-upload-cancel-btn');
+      var uploadList  = document.getElementById('ft-upload-list');
+      var fastStartPanel   = document.getElementById('ft-fast-start-panel');
+      var prefillConfirmPanel = document.getElementById('ft-prefill-confirm-panel');
+
+      var pendingFiles = [];        /* files staged for upload */
+      var uploadedDocs = [];        /* { docType, fileName, blobPath, listItem } */
+      var prefillOriginValues = {}; /* tracks which fields were prefilled */
+
+      if (uploadPanel) uploadPanel.hidden = false;
+
+      /* drag-and-drop */
+      if (uploadZone && fileInput) {
+        uploadZone.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          uploadZone.classList.add('ft-drag-over');
+        });
+        uploadZone.addEventListener('dragleave', function () {
+          uploadZone.classList.remove('ft-drag-over');
+        });
+        uploadZone.addEventListener('drop', function (e) {
+          e.preventDefault();
+          uploadZone.classList.remove('ft-drag-over');
+          stageFiles(Array.from(e.dataTransfer.files));
+        });
+        fileInput.addEventListener('change', function () {
+          stageFiles(Array.from(fileInput.files));
+          fileInput.value = '';
+        });
+      }
+
+      function stageFiles(files) {
+        if (!files.length) return;
+        var valid = files.filter(function (f) {
+          if (f.size > 25 * 1024 * 1024) {
+            alert(f.name + ' exceeds the 25 MB limit and was not added.');
+            return false;
+          }
+          return true;
+        });
+        if (!valid.length) return;
+        pendingFiles = valid;
+        if (doctypeRow) doctypeRow.hidden = false;
+        if (uploadConfirmBtn) uploadConfirmBtn.disabled = true;
+        if (doctypeSelect) {
+          doctypeSelect.value = '';
+          doctypeSelect.focus();
+        }
+        /* try to auto-detect type from first file name */
+        var name = valid[0].name.toLowerCase();
+        if (/resume|cv/.test(name)) setDoctypeValue('resume-cv');
+        else if (/transcript/.test(name)) setDoctypeValue('transcript');
+        else if (/i-?20/.test(name)) setDoctypeValue('i-20');
+        else if (/passport/.test(name)) setDoctypeValue('passport-id-page');
+      }
+
+      function setDoctypeValue(val) {
+        if (doctypeSelect) {
+          doctypeSelect.value = val;
+          if (uploadConfirmBtn) uploadConfirmBtn.disabled = false;
+        }
+      }
+
+      if (doctypeSelect) {
+        doctypeSelect.addEventListener('change', function () {
+          if (uploadConfirmBtn) uploadConfirmBtn.disabled = !doctypeSelect.value;
+        });
+      }
+
+      if (uploadCancelBtn) {
+        uploadCancelBtn.addEventListener('click', function () {
+          pendingFiles = [];
+          if (doctypeRow) doctypeRow.hidden = true;
+        });
+      }
+
+      if (uploadConfirmBtn) {
+        uploadConfirmBtn.addEventListener('click', function () {
+          var docType = doctypeSelect ? doctypeSelect.value : '';
+          if (!docType || !pendingFiles.length) return;
+          var filesToUpload = pendingFiles.slice();
+          pendingFiles = [];
+          if (doctypeRow) doctypeRow.hidden = true;
+          filesToUpload.forEach(function (file) { uploadFile(file, docType); });
+        });
+      }
+
+      function uploadFile(file, docType) {
+        /* add list item with progress bar */
+        var li = document.createElement('li');
+        li.className = 'ft-upload-item ft-upload-uploading';
+        li.setAttribute('role', 'listitem');
+        li.innerHTML =
+          '<span class="ft-upload-filename" title="' + escHtml(file.name) + '">' + escHtml(file.name) + '</span>' +
+          '<span class="ft-upload-doctype">' + escHtml(docType) + '</span>' +
+          '<div class="ft-upload-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Upload progress for ' + escHtml(file.name) + '">' +
+            '<div class="ft-upload-progress-fill" style="width:0%"></div>' +
+          '</div>' +
+          '<span class="ft-upload-status" aria-live="polite">Uploading…</span>';
+        if (uploadList) uploadList.appendChild(li);
+
+        var progressFill   = li.querySelector('.ft-upload-progress-fill');
+        var progressWrap   = li.querySelector('[role="progressbar"]');
+        var statusSpan     = li.querySelector('.ft-upload-status');
+
+        function setProgress(pct) {
+          if (progressFill) progressFill.style.width = pct + '%';
+          if (progressWrap) progressWrap.setAttribute('aria-valuenow', pct);
+        }
+
+        function setUploadStatus(state, msg) {
+          li.className = 'ft-upload-item ft-upload-' + state;
+          if (statusSpan) statusSpan.textContent = msg;
+        }
+
+        getToken().then(function (token) {
+          return callPostUploads(docType, file.name, file.type || 'application/octet-stream', file.size, token)
+            .then(function (slotRes) {
+              return callPutBlob(slotRes.uploadUrl, file, setProgress)
+                .then(function () {
+                  return slotRes;
+                });
+            });
+        }).then(function (slotRes) {
+          setProgress(100);
+          setUploadStatus('clean', 'Uploaded — scanning…');
+          updateChecklistItem(docType, 'uploaded');
+
+          /* add remove button */
+          var removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'ft-upload-remove-btn';
+          removeBtn.setAttribute('aria-label', 'Remove ' + file.name);
+          removeBtn.textContent = '×';
+          removeBtn.addEventListener('click', function () {
+            li.remove();
+            uploadedDocs = uploadedDocs.filter(function (d) { return d.blobPath !== slotRes.blobPath; });
+            updateChecklistItem(docType, 'required');
+          });
+          li.appendChild(removeBtn);
+
+          var doc = { docType: docType, fileName: file.name, blobPath: slotRes.blobPath, listItem: li };
+          uploadedDocs.push(doc);
+
+          /* simulate scan completion after 2s (mock mode) or poll /me/application */
+          if (FT._mockMode) {
+            setTimeout(function () {
+              setUploadStatus('verified', 'Scanned ✓');
+              updateChecklistItem(docType, 'scanned');
+            }, 2000);
+          }
+
+          /* Fast Start: offer prefill if resume-cv was just uploaded */
+          if (docType === 'resume-cv' && fastStartPanel) {
+            fastStartPanel.hidden = false;
+            fastStartPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            fastStartPanel.querySelector('button').focus();
+            /* store blobPath for parse call */
+            fastStartPanel.dataset.blobPath = slotRes.blobPath;
+          }
+
+        }).catch(function (err) {
+          setUploadStatus('error', 'Upload failed: ' + (err && err.message ? err.message : 'try again'));
+          console.error('FocusTrack upload error:', err);
+        });
+      }
+
+      function updateChecklistItem(docType, state) {
+        var item = document.querySelector('[data-doctype="' + docType + '"]');
+        if (!item) return;
+        var statusEl = item.querySelector('.ft-checklist-status');
+        if (!statusEl) return;
+        var labels = { required: 'Required', uploaded: 'Uploaded', scanned: 'Scanned ✓', verified: 'Verified ✔' };
+        var classes = { required: 'ft-status-required', uploaded: 'ft-status-uploaded', scanned: 'ft-status-scanned', verified: 'ft-status-verified' };
+        statusEl.className = 'ft-checklist-status ' + (classes[state] || '');
+        statusEl.textContent = labels[state] || state;
+        statusEl.setAttribute('aria-label', labels[state] || state);
+      }
+
+      function escHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      /* ============================================================
+         FAST START (F4)
+      ============================================================ */
+      var fastStartAccept  = document.getElementById('ft-fast-start-accept');
+      var fastStartDecline = document.getElementById('ft-fast-start-decline');
+      var prefillList      = document.getElementById('ft-prefill-list');
+      var prefillApplyAll  = document.getElementById('ft-prefill-apply-all');
+      var prefillClear     = document.getElementById('ft-prefill-clear');
+
+      /* field map: API field name → form field id */
+      var PREFILL_FIELD_MAP = {
+        name:       null,           /* split to first_name / last_name below */
+        email:      'email',
+        phone:      'phone',
+        school:     'school_name',
+        degree:     'degree_level',
+        major:      'major',
+        gradDate:   'graduation_date'
+      };
+
+      if (fastStartAccept) {
+        fastStartAccept.addEventListener('click', function () {
+          if (fastStartPanel) fastStartPanel.hidden = true;
+          var blobPath = fastStartPanel ? fastStartPanel.dataset.blobPath : '';
+          setChipState('saving', 'Parsing résumé…');
+          getToken().then(function (token) {
+            return callPostParse(blobPath, token);
+          }).then(function (result) {
+            showPrefillConfirm(result);
+          }).catch(function (err) {
+            setChipState('error', 'Parse failed');
+            alert('Could not extract fields from your résumé. Please fill the form manually.');
+          });
+        });
+      }
+
+      if (fastStartDecline) {
+        fastStartDecline.addEventListener('click', function () {
+          if (fastStartPanel) fastStartPanel.hidden = true;
+        });
+      }
+
+      function showPrefillConfirm(result) {
+        if (!prefillConfirmPanel || !prefillList) return;
+        prefillList.innerHTML = '';
+        var fields = result.fields || {};
+        var confidence = result.confidence || {};
+        var items = [];
+
+        /* handle name split */
+        if (fields.name) {
+          var parts = String(fields.name).trim().split(/\s+/);
+          var firstName = parts[0] || '';
+          var lastName  = parts.slice(1).join(' ') || '';
+          if (firstName) items.push({ fieldId: 'first_name', label: 'First Name', value: firstName, conf: confidence.name || 0 });
+          if (lastName)  items.push({ fieldId: 'last_name',  label: 'Last Name',  value: lastName,  conf: confidence.name || 0 });
+        }
+
+        Object.keys(PREFILL_FIELD_MAP).forEach(function (apiKey) {
+          if (apiKey === 'name') return;
+          var fieldId = PREFILL_FIELD_MAP[apiKey];
+          if (!fieldId || !fields[apiKey]) return;
+          items.push({ fieldId: fieldId, label: document.querySelector('label[for="' + fieldId + '"]') ? document.querySelector('label[for="' + fieldId + '"]').textContent.trim() : fieldId, value: fields[apiKey], conf: confidence[apiKey] || 0 });
+        });
+
+        items.forEach(function (item) {
+          var existingEl = document.getElementById(item.fieldId);
+          var alreadyFilled = existingEl && existingEl.value && existingEl.value.trim();
+          if (alreadyFilled) return; /* never overwrite user-typed data */
+
+          var li = document.createElement('li');
+          li.className = 'ft-prefill-item' + (item.conf < 0.8 ? ' ft-prefill-low-confidence' : '');
+          li.dataset.fieldId = item.fieldId;
+          li.dataset.value = item.value;
+
+          var confPct = Math.round(item.conf * 100);
+          var confLabel = item.conf < 0.8 ? ' (low confidence: ' + confPct + '%)' : ' (' + confPct + '%)';
+
+          li.innerHTML =
+            '<label class="ft-prefill-label">' +
+              '<input type="checkbox" class="ft-prefill-cb" checked aria-label="Apply ' + escHtml(item.label) + '">' +
+              '<span class="ft-prefill-field-name">' + escHtml(item.label) + '</span>' +
+              '<span class="ft-prefill-value">' + escHtml(item.value) + '</span>' +
+              '<span class="ft-prefill-conf">' + escHtml(confLabel) + '</span>' +
+            '</label>';
+          prefillList.appendChild(li);
+        });
+
+        if (prefillList.children.length === 0) {
+          prefillList.innerHTML = '<li class="ft-prefill-none">No matching fields could be extracted. Please fill the form manually.</li>';
+        }
+
+        prefillConfirmPanel.hidden = false;
+        prefillConfirmPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      if (prefillApplyAll) {
+        prefillApplyAll.addEventListener('click', function () {
+          var items = prefillList ? Array.from(prefillList.querySelectorAll('.ft-prefill-item')) : [];
+          items.forEach(function (li) {
+            var cb = li.querySelector('.ft-prefill-cb');
+            if (!cb || !cb.checked) return;
+            var fieldId = li.dataset.fieldId;
+            var value   = li.dataset.value;
+            var el = document.getElementById(fieldId);
+            if (!el || (el.value && el.value.trim())) return; /* still protect filled fields */
+            el.value = value;
+            el.classList.add('ft-prefilled');
+            prefillOriginValues[fieldId] = value;
+            /* trigger save */
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+          if (prefillConfirmPanel) prefillConfirmPanel.hidden = true;
+          setChipState('saved', 'Fields prefilled from résumé — review before submitting');
+        });
+      }
+
+      if (prefillClear) {
+        prefillClear.addEventListener('click', function () {
+          Object.keys(prefillOriginValues).forEach(function (fieldId) {
+            var el = document.getElementById(fieldId);
+            if (el) {
+              el.value = '';
+              el.classList.remove('ft-prefilled');
+              el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+          });
+          prefillOriginValues = {};
+          if (prefillConfirmPanel) prefillConfirmPanel.hidden = true;
+          setChipState('saved', 'Prefilled data cleared');
+        });
+      }
+
+      /* ============================================================
+         SUBMIT OVERRIDE — intercept form submit when enabled
+      ============================================================ */
+      var form2 = document.getElementById('opt-application');
+      if (form2) {
+        form2.addEventListener('ft-submit-override', function (e) {
+          var recaptchaToken = e.detail && e.detail.recaptchaToken;
+          var draftPayload = getDraftPayload();
+          var documentManifest = uploadedDocs.map(function (d) {
+            return { docType: d.docType, fileName: d.fileName, blobPath: d.blobPath };
+          });
+
+          getToken().then(function (token) {
+            return callPostApplication(cloudRevision, documentManifest, recaptchaToken, token);
+          }).then(function (res) {
+            /* show case number in success panel */
+            var caseNumEl = document.getElementById('ft-case-number');
+            var caseNumPara = document.getElementById('ft-case-number-display');
+            var portalPara  = document.getElementById('ft-portal-link-para');
+            if (caseNumEl && res && res.caseNumber) {
+              caseNumEl.textContent = res.caseNumber;
+              if (caseNumPara) caseNumPara.hidden = false;
+            }
+            if (portalPara) portalPara.hidden = false;
+          }).catch(function (err) {
+            /* fall through to error in status */
+            console.error('FocusTrack submit error:', err);
+          });
+        });
+      }
+
+      /* ============================================================
+         INIT — chip, sign-in button, cloud draft load on page load
+      ============================================================ */
+      showChip();
+      setChipState('offline', 'Draft saved locally');
+      if (signInBtn) signInBtn.hidden = false;
+
+      /* Hook form input events to show saving/saved state for local saves
+         (mirrors initChipLocalOnly behaviour before cloud sign-in occurs) */
+      (function () {
+        var form4 = document.getElementById('opt-application');
+        if (!form4) return;
+        var localChipTimer = null;
+        function onLocalInput() {
+          setChipState('saving', 'Saving…');
+          clearTimeout(localChipTimer);
+          localChipTimer = setTimeout(function () {
+            /* Only update chip if we haven't since become signed in with
+               cloud sync showing its own state */
+            if (!signedInAccount) {
+              setChipState('saved', 'Saved locally just now');
+            }
+          }, 900);
+        }
+        form4.addEventListener('input',  onLocalInput);
+        form4.addEventListener('change', onLocalInput);
+      }());
+
+      /* on page load, if already signed in from previous session, load cloud draft */
+      initMsal().then(function () {
+        if (!signedInAccount) return;
+        if (signInBtn) signInBtn.hidden = true;
+        setChipState('saving', 'Loading cloud draft…');
+        return getToken().then(function (token) {
+          return callGetDraft(token);
+        }).then(function (serverDraft) {
+          if (!serverDraft) {
+            setChipState('saved', 'Signed in — no cloud draft');
+            return;
+          }
+          cloudRevision = serverDraft.revision;
+          var localDraft = getDraftPayload();
+          if (localDraft && JSON.stringify(localDraft) !== JSON.stringify(serverDraft.payload)) {
+            promptDraftConflict(serverDraft.revision);
+          } else {
+            adoptCloudDraft(serverDraft.payload, serverDraft.revision);
+          }
+        });
+      }).catch(function () {
+        /* sign-in state unavailable — silently fall back to local only */
+        setChipState('offline', 'Draft saved locally');
+      });
+
+      /* expose restoreDraft hook for cloud draft adoption */
+      window._ftRestoreDraft = function (payload) {
+        var DRAFT_KEY = 'usiva_opt_draft_v2';
+        try { localStorage.setItem(DRAFT_KEY, JSON.stringify(payload)); } catch (e) {}
+        /* trigger existing restoreDraft via storage event is fragile;
+           call the global if exposed by the wizard script */
+        if (typeof window._optRestoreDraft === 'function') window._optRestoreDraft(payload);
+      };
 
     }());
     </script>

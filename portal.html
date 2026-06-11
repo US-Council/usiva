@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>My Application — USIVA Applicant Portal</title>
+  <meta name="description" content="Track your F-1 OPT application status, upload documents, and manage your profile in the USIVA applicant portal.">
+  <meta property="og:title" content="My Application — USIVA Applicant Portal">
+  <meta property="og:description" content="Track your F-1 OPT application status in the USIVA applicant portal.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://usiva.org/portal.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://usiva.org/portal.html">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-icon-180x180.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- FocusTrack feature-flag config -->
+  <script>
+  window.FOCUSTRACK = {
+    enabled: false,
+    apiBase: "https://api.focustrack.org",
+    tenant: "focustrack.ciamlogin.com",
+    tenantId: "TBD",
+    spaClientId: "TBD",
+    apiScope: "api://focustrack-api/access",
+    clientId: "usiva",
+    caseTypeId: "f1-opt"
+  };
+  (function () {
+    var qs = new URLSearchParams(window.location.search);
+    if (qs.get('focustrack') === 'mock') {
+      window.FOCUSTRACK.enabled = true;
+      window.FOCUSTRACK._mockMode = true;
+    }
+  }());
+  </script>
+
+  <!-- Base USIVA CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/icon_fonts/css/all_icons_min.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+  <link href="css/focustrack.css" rel="stylesheet">
+
+  <style>
+    /* Portal-specific overrides — minimal; most styles in focustrack.css */
+    body { background: #f5f7fa; }
+    .ft-portal-page { min-height: 100vh; }
+    .ft-portal-top-bar {
+      background: #fff;
+      border-bottom: 1px solid #d2d8df;
+      padding: .75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .ft-portal-top-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      text-decoration: none;
+    }
+    .ft-portal-top-bar-brand img { height: 32px; width: auto; }
+    .ft-portal-top-bar-brand span {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0054a6;
+      letter-spacing: .04em;
+    }
+  </style>
+
+  <script type="speculationrules">
+  {"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}
+  </script>
+</head>
+<body class="ft-portal-page">
+
+<a href="#ft-main" class="skip-link">Skip to main content</a>
+
+<!-- Idle timeout dialog -->
+<dialog id="ft-idle-dialog" aria-labelledby="ft-idle-title" aria-describedby="ft-idle-desc">
+  <h2 class="ft-idle-title" id="ft-idle-title">Are you still there?</h2>
+  <p class="ft-idle-desc" id="ft-idle-desc">Your session will time out due to inactivity.</p>
+  <p class="ft-idle-countdown" id="ft-idle-countdown" aria-live="assertive" aria-atomic="true">2:00</p>
+  <div class="ft-idle-actions">
+    <button type="button" class="ft-idle-stay-btn" id="ft-idle-stay">Stay signed in</button>
+    <button type="button" class="ft-idle-signout-btn" id="ft-idle-signout">Sign out</button>
+  </div>
+</dialog>
+
+<!-- Top bar -->
+<div class="ft-portal-top-bar" role="banner">
+  <a href="index.html" class="ft-portal-top-bar-brand" aria-label="USIVA home">
+    <img src="img/usiva_dark.svg" alt="USIVA" height="32" width="120" loading="lazy" decoding="async">
+    <span>Applicant Portal</span>
+  </a>
+  <div id="ft-portal-user-area" class="ft-portal-user" aria-live="polite">
+    <!-- populated by JS after sign-in -->
+  </div>
+</div>
+
+<main id="ft-main">
+  <div class="ft-portal-wrap">
+
+    <!-- Signed-out state (shown when not authenticated) -->
+    <div id="ft-signin-wall" class="ft-signin-wall" aria-labelledby="ft-signin-wall-title">
+      <div class="ft-empty-icon" aria-hidden="true">&#128274;</div>
+      <h1 class="ft-signin-wall-title" id="ft-signin-wall-title">Sign in to your applicant portal</h1>
+      <p class="ft-signin-wall-desc">Track your application status, upload documents, and manage your profile.</p>
+      <button type="button" class="ft-signin-wall-btn" id="ft-portal-signin-btn">Sign in with USIVA</button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="ft-portal-loading" class="ft-loading" hidden aria-live="polite" aria-label="Loading your portal">
+      <div class="ft-spinner" aria-hidden="true"></div>
+      Loading your portal&hellip;
+    </div>
+
+    <!-- Authenticated portal content -->
+    <div id="ft-portal-content" hidden>
+
+      <!-- Tab navigation -->
+      <div role="tablist" aria-label="Portal sections" class="ft-portal-tabs">
+        <button role="tab" class="ft-tab-btn" id="tab-application" aria-selected="true" aria-controls="panel-application">
+          My Application
+        </button>
+        <button role="tab" class="ft-tab-btn" id="tab-documents" aria-selected="false" aria-controls="panel-documents">
+          Documents
+        </button>
+        <button role="tab" class="ft-tab-btn" id="tab-profile" aria-selected="false" aria-controls="panel-profile">
+          Profile
+        </button>
+      </div>
+
+      <!-- Tab: My Application -->
+      <div role="tabpanel" id="panel-application" aria-labelledby="tab-application" aria-hidden="false" class="ft-tab-panel" aria-hidden="false">
+
+        <!-- Empty state (no active case) -->
+        <div id="ft-no-case" class="ft-empty-state" hidden>
+          <div class="ft-empty-icon" aria-hidden="true">&#128196;</div>
+          <h2 class="ft-empty-title">No application on file yet</h2>
+          <p class="ft-empty-desc">Start your F-1 OPT application to create a case record in our system.</p>
+          <a href="apply-opt.html" class="ft-signin-wall-btn">Start your application</a>
+        </div>
+
+        <!-- Active case view -->
+        <div id="ft-case-view" hidden>
+
+          <h2 id="ft-case-number-heading" style="font-size:1rem;color:#586677;margin-bottom:1.25rem;"></h2>
+
+          <!-- Activity summary sparkline -->
+          <div class="ft-sparkline-wrap" id="ft-sparkline-wrap" hidden>
+            <div class="ft-sparkline-label" id="ft-sparkline-label">Focus activity &mdash; last 7 days</div>
+            <div class="ft-sparkline" id="ft-sparkline" role="img" aria-label="Focus activity bar chart for the last 7 days"></div>
+          </div>
+
+          <!-- Stage timeline -->
+          <h3 style="font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#586677;margin-bottom:.75rem;">Application Stage</h3>
+          <div class="ft-timeline" id="ft-timeline" aria-label="Application stage timeline">
+            <!-- populated by JS -->
+          </div>
+
+          <!-- Missing docs alert -->
+          <div id="ft-missing-docs-alert" class="ft-missing-docs" hidden aria-live="polite">
+            <div class="ft-missing-docs-title">Action required: documents needed</div>
+            <ul class="ft-missing-docs-list" id="ft-missing-docs-list"></ul>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Tab: Documents -->
+      <div role="tabpanel" id="panel-documents" aria-labelledby="tab-documents" aria-hidden="true" class="ft-tab-panel">
+
+        <h2 style="font-size:1rem;font-weight:700;margin-bottom:1rem;color:#0054a6;">Your Documents</h2>
+
+        <!-- Upload zone (reuses WP-F components rendered inline) -->
+        <div id="ft-portal-upload-zone-wrap">
+          <div class="ft-doc-checklist" aria-label="Required documents checklist">
+            <div class="ft-doc-checklist-title">Document checklist</div>
+            <ul class="ft-checklist-list" id="ft-portal-checklist-items">
+              <li class="ft-checklist-item" data-doctype="resume-cv">
+                <span class="ft-checklist-status ft-status-required">Required</span>
+                <span class="ft-checklist-label">Resume or CV</span>
+              </li>
+              <li class="ft-checklist-item" data-doctype="transcript">
+                <span class="ft-checklist-status ft-status-required">Required</span>
+                <span class="ft-checklist-label">Transcript</span>
+              </li>
+              <li class="ft-checklist-item" data-doctype="i-20">
+                <span class="ft-checklist-status ft-status-required">Required</span>
+                <span class="ft-checklist-label">Form I-20</span>
+              </li>
+              <li class="ft-checklist-item" data-doctype="passport-id-page">
+                <span class="ft-checklist-status ft-status-required">Required</span>
+                <span class="ft-checklist-label">Passport (ID page)</span>
+              </li>
+              <li class="ft-checklist-item" data-doctype="ead-card">
+                <span class="ft-checklist-status ft-status-optional">Optional</span>
+                <span class="ft-checklist-label">EAD Card</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="ft-upload-zone" id="ft-portal-upload-zone" role="region" aria-label="File upload area">
+            <label class="ft-upload-label" for="ft-portal-file-input">
+              <span class="ft-upload-icon" aria-hidden="true">&#8679;</span>
+              <span class="ft-upload-text">Drag and drop files here, or <strong>browse</strong></span>
+              <span class="ft-upload-hint">PDF, DOCX, JPG, PNG &mdash; max 25 MB</span>
+            </label>
+            <input type="file" id="ft-portal-file-input" class="ft-file-input" multiple
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              aria-label="Select files to upload">
+          </div>
+
+          <div class="ft-doctype-row" id="ft-portal-doctype-row" hidden>
+            <label for="ft-portal-doctype-select">Document type:</label>
+            <select id="ft-portal-doctype-select" class="ft-doctype-select">
+              <option value="">Select document type</option>
+              <option value="resume-cv">Resume or CV</option>
+              <option value="transcript">Transcript</option>
+              <option value="i-20">Form I-20</option>
+              <option value="ead-card">EAD Card</option>
+              <option value="passport-id-page">Passport (ID page)</option>
+              <option value="portfolio">Portfolio / Work Samples</option>
+              <option value="publications">Publications</option>
+              <option value="recommendation-letter">Recommendation Letter</option>
+              <option value="offer-letter">Offer Letter</option>
+            </select>
+            <button type="button" id="ft-portal-upload-confirm" class="btn_1 ft-upload-confirm-btn" disabled>Upload</button>
+            <button type="button" id="ft-portal-upload-cancel" class="ft-upload-cancel-btn">Cancel</button>
+          </div>
+
+          <ul id="ft-portal-upload-list" class="ft-upload-list" aria-label="Uploaded files" aria-live="polite"></ul>
+        </div>
+
+        <!-- Existing documents table -->
+        <h3 style="font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#586677;margin:1.25rem 0 .65rem;">Uploaded documents</h3>
+        <div style="overflow-x:auto;">
+          <table class="ft-doc-list-table" id="ft-doc-table">
+            <thead>
+              <tr>
+                <th scope="col">Document type</th>
+                <th scope="col">Filename</th>
+                <th scope="col">Status</th>
+                <th scope="col">Uploaded</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ft-doc-table-body">
+              <!-- populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- Tab: Profile -->
+      <div role="tabpanel" id="panel-profile" aria-labelledby="tab-profile" aria-hidden="true" class="ft-tab-panel">
+
+        <h2 style="font-size:1rem;font-weight:700;margin-bottom:1rem;color:#0054a6;">Your Profile</h2>
+
+        <div class="ft-profile-card" id="ft-profile-card">
+          <!-- populated by JS -->
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /ft-portal-content -->
+
+  </div>
+</main>
+
+<footer style="border-top:1px solid #d2d8df;padding:1.25rem 1.5rem;text-align:center;font-size:.8rem;color:#586677;background:#fff;">
+  &copy; USIVA 2022&ndash;2026 &mdash; All rights reserved &mdash; <a href="index.html" style="color:#0054a6;">usiva.org</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var FT = window.FOCUSTRACK || {};
+
+  /* ============================================================
+     MOCK BACKEND (same shapes as apply-opt.html mock)
+  ============================================================ */
+  var MOCK = FT._mockMode ? (function () {
+    var _application = {
+      caseId: 'mock-case-001',
+      stage: 'Docs Verified',
+      missingDocs: ['transcript', 'i-20'],
+      lastUpdated: new Date().toISOString(),
+      activitySummary: [65, 72, 80, 68, 75, 82, 79]
+    };
+    var _docs = [
+      { docType: 'resume-cv', fileName: 'resume-jane.pdf', blobPath: 'quarantine/usiva/c001/resume-cv/001.pdf', scanStatus: 'clean', verified: false, uploadedOn: new Date().toISOString() }
+    ];
+
+    function delay(ms, val) {
+      return new Promise(function (res) { setTimeout(function () { res(val); }, ms || 60); });
+    }
+
+    return {
+      getApplication: function () { return delay(80, _application); },
+      getDocs: function () { return delay(80, _docs); },
+      postUploads: function (docType, fileName, mimeType, sizeBytes) {
+        var id = 'mock-blob-' + Date.now();
+        return delay(120, {
+          uploadUrl: 'mock://' + id,
+          blobPath: 'quarantine/usiva/mock/c001/' + docType + '/' + id + '-' + fileName,
+          expiresAt: new Date(Date.now() + 900000).toISOString(),
+          _mockId: id
+        });
+      },
+      putBlob: function (url, file, onProgress) {
+        var steps = 5, i = 0;
+        return new Promise(function (res) {
+          var iv = setInterval(function () {
+            i++; if (onProgress) onProgress(Math.round((i / steps) * 100));
+            if (i >= steps) { clearInterval(iv); res({ ok: true }); }
+          }, 100);
+        });
+      }
+    };
+  }()) : null;
+
+  /* ============================================================
+     MSAL (portal always requires sign-in)
+  ============================================================ */
+  var msalInstance = null;
+  var signedInAccount = null;
+
+  function loadMsal() {
+    return new Promise(function (resolve, reject) {
+      if (window.msal) return resolve(window.msal);
+      var s = document.createElement('script');
+      s.src = 'https://alcdn.msauth.net/browser/3.27.0/js/msal-browser.min.js';
+      s.defer = true;
+      s.onload  = function () { resolve(window.msal); };
+      s.onerror = function () { reject(new Error('MSAL load failed')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function initMsal() {
+    if (FT._mockMode) {
+      /* do NOT auto-sign-in; signedInAccount is only set when user clicks sign-in */
+      return Promise.resolve(null);
+    }
+    if (msalInstance) return Promise.resolve(msalInstance);
+    return loadMsal().then(function (msal) {
+      msalInstance = new msal.PublicClientApplication({
+        auth: {
+          clientId: FT.spaClientId,
+          authority: 'https://' + FT.tenant + '/' + FT.tenantId,
+          redirectUri: window.location.origin + '/portal.html'
+        },
+        cache: { cacheLocation: 'sessionStorage' }
+      });
+      return msalInstance.initialize().then(function () {
+        return msalInstance.handleRedirectPromise();
+      }).then(function (response) {
+        if (response) signedInAccount = response.account;
+        else {
+          var accounts = msalInstance.getAllAccounts();
+          if (accounts.length) signedInAccount = accounts[0];
+        }
+        return msalInstance;
+      });
+    });
+  }
+
+  function getToken() {
+    if (FT._mockMode) return Promise.resolve('mock-bearer-token');
+    if (!msalInstance || !signedInAccount) return Promise.reject(new Error('not signed in'));
+    return msalInstance.acquireTokenSilent({ scopes: [FT.apiScope], account: signedInAccount })
+      .then(function (r) { return r.accessToken; })
+      .catch(function () {
+        return msalInstance.acquireTokenPopup({ scopes: [FT.apiScope] }).then(function (r) { return r.accessToken; });
+      });
+  }
+
+  function signIn() {
+    if (FT._mockMode) {
+      signedInAccount = { name: 'Test User', username: 'testuser@focustrack.ciamlogin.com' };
+      return new Promise(function (res) { setTimeout(res, 80); });
+    }
+    if (!msalInstance) return Promise.reject(new Error('MSAL not initialised'));
+    return msalInstance.loginPopup({ scopes: [FT.apiScope] }).then(function (response) {
+      signedInAccount = response.account;
+      return response;
+    });
+  }
+
+  function signOut() {
+    if (FT._mockMode) { location.reload(); return; }
+    if (msalInstance) msalInstance.logoutPopup({ account: signedInAccount });
+  }
+
+  /* ============================================================
+     API helpers
+  ============================================================ */
+  function apiGet(path, token) {
+    if (FT._mockMode) return null;
+    return fetch(FT.apiBase + path, { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (r) {
+        if (r.status === 404) return null;
+        if (!r.ok) throw new Error('API error ' + r.status);
+        return r.json();
+      });
+  }
+
+  function callGetApplication(token) {
+    if (FT._mockMode) return MOCK.getApplication();
+    return apiGet('/me/application', token);
+  }
+
+  function callPostUploads(docType, fileName, mimeType, sizeBytes, token) {
+    var body = { docType: docType, fileName: fileName, mimeType: mimeType,
+      sizeBytes: sizeBytes, clientId: FT.clientId, caseTypeId: FT.caseTypeId };
+    if (FT._mockMode) return MOCK.postUploads(docType, fileName, mimeType, sizeBytes);
+    return fetch(FT.apiBase + '/uploads', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) { if (!r.ok) throw new Error('API error'); return r.json(); });
+  }
+
+  function callPutBlob(uploadUrl, file, onProgress) {
+    if (FT._mockMode) return MOCK.putBlob(uploadUrl, file, onProgress);
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('PUT', uploadUrl);
+      xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+      xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+      xhr.upload.onprogress = function (e) {
+        if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) resolve({ ok: true });
+        else reject(new Error('Blob upload failed: ' + xhr.status));
+      };
+      xhr.onerror = function () { reject(new Error('Upload network error')); };
+      xhr.send(file);
+    });
+  }
+
+  /* ============================================================
+     DOM refs
+  ============================================================ */
+  var signinWall    = document.getElementById('ft-signin-wall');
+  var signinBtn     = document.getElementById('ft-portal-signin-btn');
+  var loadingEl     = document.getElementById('ft-portal-loading');
+  var contentEl     = document.getElementById('ft-portal-content');
+  var userArea      = document.getElementById('ft-portal-user-area');
+  var noCaseEl      = document.getElementById('ft-no-case');
+  var caseViewEl    = document.getElementById('ft-case-view');
+  var timelineEl    = document.getElementById('ft-timeline');
+  var missingAlert  = document.getElementById('ft-missing-docs-alert');
+  var missingList   = document.getElementById('ft-missing-docs-list');
+  var sparklineEl   = document.getElementById('ft-sparkline');
+  var sparklineWrap = document.getElementById('ft-sparkline-wrap');
+  var docTableBody  = document.getElementById('ft-doc-table-body');
+  var profileCard   = document.getElementById('ft-profile-card');
+  var idleDialog    = document.getElementById('ft-idle-dialog');
+  var idleStayBtn   = document.getElementById('ft-idle-stay');
+  var idleSignoutBtn = document.getElementById('ft-idle-signout');
+  var idleCountdown = document.getElementById('ft-idle-countdown');
+  var caseNumberHeading = document.getElementById('ft-case-number-heading');
+
+  /* Tab buttons / panels */
+  var tabBtns   = Array.from(document.querySelectorAll('[role="tab"]'));
+  var tabPanels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+  /* ============================================================
+     TABS
+  ============================================================ */
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabBtns.forEach(function (b) {
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(function (p) {
+        p.setAttribute('aria-hidden', 'true');
+        p.style.display = 'none';
+      });
+      btn.setAttribute('aria-selected', 'true');
+      var panelId = btn.getAttribute('aria-controls');
+      var panel   = document.getElementById(panelId);
+      if (panel) { panel.setAttribute('aria-hidden', 'false'); panel.style.display = 'block'; }
+    });
+    /* keyboard navigation */
+    btn.addEventListener('keydown', function (e) {
+      var idx = tabBtns.indexOf(btn);
+      if (e.key === 'ArrowRight') { tabBtns[(idx + 1) % tabBtns.length].click(); tabBtns[(idx + 1) % tabBtns.length].focus(); }
+      if (e.key === 'ArrowLeft')  { tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length].click(); tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length].focus(); }
+    });
+  });
+
+  /* init panel display */
+  tabPanels.forEach(function (p, i) { p.style.display = i === 0 ? 'block' : 'none'; });
+
+  /* ============================================================
+     TIMELINE RENDER
+  ============================================================ */
+  var STAGES = ['New', 'Docs Verified', 'DSO Review', 'I-983 Plan', 'Placed', 'Closed'];
+
+  function renderTimeline(currentStage) {
+    if (!timelineEl) return;
+    timelineEl.innerHTML = '';
+    var currentIdx = STAGES.indexOf(currentStage);
+    STAGES.forEach(function (stage, i) {
+      var div = document.createElement('div');
+      div.className = 'ft-stage';
+      if (i < currentIdx) div.classList.add('is-complete');
+      if (i === currentIdx) div.classList.add('is-current');
+      var name = document.createElement('div');
+      name.className = 'ft-stage-name';
+      name.textContent = stage;
+      var desc = document.createElement('div');
+      desc.className = 'ft-stage-desc';
+      var descs = {
+        'New': 'Application submitted — case created',
+        'Docs Verified': 'Required documents reviewed and accepted',
+        'DSO Review': 'Designated School Official review in progress',
+        'I-983 Plan': 'Training plan being drafted and reviewed',
+        'Placed': 'Employment or training placement confirmed',
+        'Closed': 'Case closed or program completed'
+      };
+      desc.textContent = descs[stage] || '';
+      div.appendChild(name);
+      div.appendChild(desc);
+      timelineEl.appendChild(div);
+    });
+  }
+
+  /* ============================================================
+     SPARKLINE RENDER
+  ============================================================ */
+  function renderSparkline(data) {
+    if (!sparklineEl || !data || !data.length) return;
+    var max = Math.max.apply(null, data);
+    sparklineEl.innerHTML = '';
+    data.forEach(function (val, i) {
+      var bar = document.createElement('div');
+      bar.className = 'ft-spark-bar';
+      var pct = max > 0 ? Math.round((val / max) * 100) : 0;
+      bar.style.height = pct + '%';
+      var dayLabels = ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'];
+      bar.setAttribute('aria-label', (dayLabels[i] || 'Day ' + (i + 1)) + ': focus score ' + val);
+      bar.setAttribute('title', (dayLabels[i] || 'Day ' + (i + 1)) + ': ' + val);
+      sparklineEl.appendChild(bar);
+    });
+    if (sparklineWrap) sparklineWrap.hidden = false;
+  }
+
+  /* ============================================================
+     LOAD PORTAL DATA
+  ============================================================ */
+  function loadPortalData(token) {
+    return callGetApplication(token).then(function (app) {
+      if (!app) {
+        /* no case on file */
+        if (noCaseEl) noCaseEl.hidden = false;
+        if (caseViewEl) caseViewEl.hidden = true;
+        return;
+      }
+
+      if (caseViewEl) caseViewEl.hidden = false;
+      if (noCaseEl) noCaseEl.hidden = true;
+
+      if (caseNumberHeading) {
+        caseNumberHeading.textContent = 'Case ' + (app.caseId || '') +
+          ' · Last updated: ' + new Date(app.lastUpdated).toLocaleDateString();
+      }
+
+      renderTimeline(app.stage);
+
+      if (app.activitySummary && app.activitySummary.length) {
+        renderSparkline(app.activitySummary);
+      }
+
+      if (app.missingDocs && app.missingDocs.length) {
+        if (missingList) {
+          missingList.innerHTML = '';
+          app.missingDocs.forEach(function (doc) {
+            var li = document.createElement('li');
+            li.textContent = doc;
+            missingList.appendChild(li);
+          });
+        }
+        if (missingAlert) missingAlert.hidden = false;
+      }
+    });
+  }
+
+  /* ============================================================
+     UPLOAD (documents tab, reuses same pattern as apply-opt.html)
+  ============================================================ */
+  var portalFileInput  = document.getElementById('ft-portal-file-input');
+  var portalUploadZone = document.getElementById('ft-portal-upload-zone');
+  var portalDoctypeRow = document.getElementById('ft-portal-doctype-row');
+  var portalDoctypeSel = document.getElementById('ft-portal-doctype-select');
+  var portalConfirmBtn = document.getElementById('ft-portal-upload-confirm');
+  var portalCancelBtn  = document.getElementById('ft-portal-upload-cancel');
+  var portalUploadList = document.getElementById('ft-portal-upload-list');
+  var pendingPortalFiles = [];
+
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function stagePortalFiles(files) {
+    var valid = files.filter(function (f) {
+      if (f.size > 25 * 1024 * 1024) { alert(f.name + ' exceeds 25 MB'); return false; }
+      return true;
+    });
+    if (!valid.length) return;
+    pendingPortalFiles = valid;
+    if (portalDoctypeRow) portalDoctypeRow.hidden = false;
+    if (portalConfirmBtn) portalConfirmBtn.disabled = true;
+    if (portalDoctypeSel) { portalDoctypeSel.value = ''; portalDoctypeSel.focus(); }
+  }
+
+  if (portalUploadZone && portalFileInput) {
+    portalUploadZone.addEventListener('dragover', function (e) { e.preventDefault(); portalUploadZone.classList.add('ft-drag-over'); });
+    portalUploadZone.addEventListener('dragleave', function () { portalUploadZone.classList.remove('ft-drag-over'); });
+    portalUploadZone.addEventListener('drop', function (e) { e.preventDefault(); portalUploadZone.classList.remove('ft-drag-over'); stagePortalFiles(Array.from(e.dataTransfer.files)); });
+    portalFileInput.addEventListener('change', function () { stagePortalFiles(Array.from(portalFileInput.files)); portalFileInput.value = ''; });
+  }
+  if (portalDoctypeSel) { portalDoctypeSel.addEventListener('change', function () { if (portalConfirmBtn) portalConfirmBtn.disabled = !portalDoctypeSel.value; }); }
+  if (portalCancelBtn)  { portalCancelBtn.addEventListener('click', function () { pendingPortalFiles = []; if (portalDoctypeRow) portalDoctypeRow.hidden = true; }); }
+  if (portalConfirmBtn) {
+    portalConfirmBtn.addEventListener('click', function () {
+      var docType = portalDoctypeSel ? portalDoctypeSel.value : '';
+      if (!docType || !pendingPortalFiles.length) return;
+      var files = pendingPortalFiles.slice();
+      pendingPortalFiles = [];
+      if (portalDoctypeRow) portalDoctypeRow.hidden = true;
+      files.forEach(function (file) { uploadPortalFile(file, docType); });
+    });
+  }
+
+  function uploadPortalFile(file, docType) {
+    var li = document.createElement('li');
+    li.className = 'ft-upload-item ft-upload-uploading';
+    li.setAttribute('role', 'listitem');
+    li.innerHTML =
+      '<span class="ft-upload-filename">' + escHtml(file.name) + '</span>' +
+      '<span class="ft-upload-doctype">' + escHtml(docType) + '</span>' +
+      '<div class="ft-upload-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Upload progress">' +
+        '<div class="ft-upload-progress-fill" style="width:0%"></div>' +
+      '</div>' +
+      '<span class="ft-upload-status" aria-live="polite">Uploading…</span>';
+    if (portalUploadList) portalUploadList.appendChild(li);
+
+    var fill   = li.querySelector('.ft-upload-progress-fill');
+    var wrap   = li.querySelector('[role="progressbar"]');
+    var status = li.querySelector('.ft-upload-status');
+
+    function setProgress(pct) { if (fill) fill.style.width = pct + '%'; if (wrap) wrap.setAttribute('aria-valuenow', pct); }
+    function setStatus(state, msg) { li.className = 'ft-upload-item ft-upload-' + state; if (status) status.textContent = msg; }
+
+    getToken().then(function (token) {
+      return callPostUploads(docType, file.name, file.type || 'application/octet-stream', file.size, token)
+        .then(function (slot) { return callPutBlob(slot.uploadUrl, file, setProgress).then(function () { return slot; }); });
+    }).then(function () {
+      setProgress(100);
+      setStatus('clean', 'Uploaded — scanning…');
+      if (FT._mockMode) { setTimeout(function () { setStatus('verified', 'Scanned ✓'); }, 2000); }
+      /* update checklist */
+      var item = document.querySelector('#ft-portal-checklist-items [data-doctype="' + docType + '"]');
+      if (item) {
+        var s = item.querySelector('.ft-checklist-status');
+        if (s) { s.className = 'ft-checklist-status ft-status-uploaded'; s.textContent = 'Uploaded'; }
+      }
+    }).catch(function (err) {
+      setStatus('error', 'Upload failed: ' + (err && err.message ? err.message : 'try again'));
+    });
+  }
+
+  /* ============================================================
+     IDLE TIMEOUT — native <dialog>, 20 min warning, 2 min countdown
+  ============================================================ */
+  var IDLE_WARN_MS  = 20 * 60 * 1000;  /* 20 min → show dialog */
+  var IDLE_GRACE_MS =  2 * 60 * 1000;  /* 2 min countdown before forced sign-out */
+  var idleTimer, countdownTimer, countdownRemaining;
+
+  function resetIdle() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(showIdleDialog, IDLE_WARN_MS);
+  }
+
+  function showIdleDialog() {
+    if (!idleDialog) return;
+    countdownRemaining = IDLE_GRACE_MS / 1000;
+    updateIdleCountdown();
+    idleDialog.showModal();
+    if (idleStayBtn) idleStayBtn.focus();
+    countdownTimer = setInterval(function () {
+      countdownRemaining--;
+      updateIdleCountdown();
+      if (countdownRemaining <= 0) {
+        clearInterval(countdownTimer);
+        idleDialog.close();
+        signOut();
+      }
+    }, 1000);
+  }
+
+  function updateIdleCountdown() {
+    if (!idleCountdown) return;
+    var mins = Math.floor(countdownRemaining / 60);
+    var secs = countdownRemaining % 60;
+    idleCountdown.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }
+
+  if (idleStayBtn) {
+    idleStayBtn.addEventListener('click', function () {
+      clearInterval(countdownTimer);
+      idleDialog.close();
+      resetIdle();
+    });
+  }
+  if (idleSignoutBtn) {
+    idleSignoutBtn.addEventListener('click', function () {
+      clearInterval(countdownTimer);
+      idleDialog.close();
+      signOut();
+    });
+  }
+
+  ['mousemove', 'keydown', 'touchstart', 'click', 'scroll'].forEach(function (ev) {
+    document.addEventListener(ev, resetIdle, { passive: true });
+  });
+
+  /* ============================================================
+     PROFILE TAB
+  ============================================================ */
+  function renderProfile() {
+    if (!profileCard || !signedInAccount) return;
+    profileCard.innerHTML =
+      '<p class="ft-profile-name">' + escHtml(signedInAccount.name || 'Signed in user') + '</p>' +
+      '<p class="ft-profile-email">' + escHtml(signedInAccount.username || '') + '</p>' +
+      '<button type="button" class="ft-signout-btn" id="ft-profile-signout-btn">Sign out</button>';
+    var btn = document.getElementById('ft-profile-signout-btn');
+    if (btn) btn.addEventListener('click', signOut);
+  }
+
+  /* ============================================================
+     INIT
+  ============================================================ */
+  function showPortal() {
+    if (signinWall) signinWall.hidden = true;
+    if (loadingEl)  loadingEl.hidden = false;
+    if (contentEl)  contentEl.hidden = true;
+
+    initMsal().then(function () {
+      if (!signedInAccount) {
+        /* need to sign in — abort chain by rejecting */
+        if (loadingEl) loadingEl.hidden = true;
+        if (signinWall) signinWall.hidden = false;
+        return Promise.reject(new Error('not-signed-in'));
+      }
+
+      /* render user area */
+      if (userArea) {
+        userArea.innerHTML =
+          '<span>' + escHtml(signedInAccount.name || signedInAccount.username || '') + '</span>' +
+          '<button type="button" class="ft-signout-btn" id="ft-top-signout">Sign out</button>';
+        var topSignout = document.getElementById('ft-top-signout');
+        if (topSignout) topSignout.addEventListener('click', signOut);
+      }
+
+      renderProfile();
+      resetIdle();
+
+      return getToken().then(function (token) {
+        return loadPortalData(token);
+      });
+    }).then(function () {
+      if (loadingEl) loadingEl.hidden = true;
+      if (contentEl) contentEl.hidden = false;
+    }).catch(function (err) {
+      if (err && err.message === 'not-signed-in') return; /* already handled above */
+      if (loadingEl) loadingEl.hidden = true;
+      if (signinWall) signinWall.hidden = false;
+      console.error('Portal init error:', err);
+    });
+  }
+
+  if (signinBtn) {
+    signinBtn.addEventListener('click', function () {
+      if (FT._mockMode || FT.enabled) {
+        /* Show loading state on the wall button */
+        signinBtn.disabled = true;
+        signinBtn.textContent = 'Signing in…';
+        initMsal().then(function () {
+          /* If already signed in (e.g. returning user), skip signIn() */
+          if (signedInAccount) return Promise.resolve();
+          return signIn();
+        }).then(function () {
+          showPortal();
+        }).catch(function (err) {
+          signinBtn.disabled = false;
+          signinBtn.textContent = 'Sign in to access your application';
+          console.error('Sign-in failed:', err);
+        });
+        return;
+      }
+      /* disabled: redirect to apply form */
+      window.location.href = 'apply-opt.html';
+    });
+  }
+
+  /* Auto-init if FocusTrack enabled */
+  if (FT.enabled) {
+    showPortal();
+  }
+
+}());
+</script>
+
+</body>
+</html>

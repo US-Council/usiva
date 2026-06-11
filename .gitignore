@@ -1,2 +1,7 @@
 # internal planning documents — never publish
 plan/
+
+# Playwright test output and dependencies
+node_modules/
+test-results/
+playwright-report/
