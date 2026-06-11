@@ -200,51 +200,16 @@
 
     <main id="main-content">
         <div class="container margin_60_35">
-            <h2 class="main_title"><em></em>F-1 OPT Application<span>For F-1 students exploring OPT, STEM OPT, I-983 training plans, and the Dream Quest pathway.</span></h2>
-            <div class="row opt-summary-row">
-                <div class="col-sm-3">
-                    <div class="opt-summary-card"><strong>Public intake</strong><span>USIVA case review</span></div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="opt-summary-card"><strong>Student path</strong><span>SPARK, Curiosity, Focus</span></div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="opt-summary-card"><strong>Work evidence</strong><span>GitOps and Focus Tracker</span></div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="opt-summary-card"><strong>Training plan</strong><span>I-983 readiness support</span></div>
-                </div>
-            </div>
+
             <div class="opt-application">
-<section class="note warning">
-      <p><strong>Privacy note:</strong> This application routes through the USIVA intake gateway into the secured review process. Sensitive immigration, education, employment, housing, payroll, and identity documents should still be provided only through the secure case process after review.</p>
-      <ul class="source-list" aria-label="Source inputs">
-        <li>USIVA application</li>
-        <li>Silk Homes caretaker form</li>
-        <li>Dream Quest</li>
-        <li>CAP</li>
-        <li>OPT student intake</li>
-        <li>I-983 training plan</li>
-        <li>TIMMSI</li>
-        <li>CASE</li>
-        <li>Ag and Homesteading Sciences</li>
-        <li>AI and Emergent Tech</li>
-        <li>Hospitality and Homesteading</li>
-      </ul>
-    </section>
 
-    <!-- Draft restore notice -->
-    <div id="opt-draft-notice" class="opt-draft-notice" hidden>
-      <span>Draft restored from a previous session.</span>
-      <button type="button" id="opt-clear-draft" class="opt-draft-clear">Clear draft</button>
-    </div>
 
-    <!-- Progress bar -->
-    <div class="opt-progress-wrap" aria-label="Application completion">
-      <div class="opt-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <div id="opt-progress-fill" class="opt-progress-fill"></div>
+    <!-- Progress bar / wizard position indicator -->
+    <div class="opt-progress-wrap" aria-label="Application progress">
+      <div class="opt-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="13" aria-valuenow="1">
+        <div id="opt-progress-fill" class="opt-progress-fill" style="width:0%"></div>
       </div>
-      <p id="opt-progress-text" class="opt-progress-text">0% complete</p>
+      <p id="opt-progress-text" class="opt-progress-text" aria-live="polite">Section 1 of 13</p>
     </div>
 
     <form id="opt-application" class="opt-form" action="https://door.taolearning.org/api/form" method="POST">
@@ -260,66 +225,66 @@
       <input type="hidden" name="formType" value="opt">
       <section class="section">
         <fieldset>
-          <legend>1. Applicant Identity</legend>
+          <legend tabindex="-1">1. Applicant Identity</legend>
           <div class="grid">
             <div>
-              <label for="legal_first_name">Legal first name</label>
+              <label for="legal_first_name">Legal First Name</label>
               <input id="legal_first_name" name="legal_first_name" autocomplete="given-name" required>
             </div>
             <div>
-              <label for="legal_middle_name">Legal middle name</label>
+              <label for="legal_middle_name">Legal Middle Name</label>
               <input id="legal_middle_name" name="legal_middle_name" autocomplete="additional-name">
             </div>
             <div>
-              <label for="legal_last_name">Legal last name</label>
+              <label for="legal_last_name">Legal Last Name</label>
               <input id="legal_last_name" name="legal_last_name" autocomplete="family-name" required>
             </div>
             <div>
-              <label for="preferred_first_name">Preferred first name</label>
+              <label for="preferred_first_name">Preferred First Name</label>
               <input id="preferred_first_name" name="preferred_first_name">
             </div>
             <div>
-              <label for="email">Email address</label>
+              <label for="email">Email Address</label>
               <input id="email" name="email" type="email" autocomplete="email" required>
             </div>
             <div>
-              <label for="phone">Phone number</label>
+              <label for="phone">Phone Number</label>
               <input id="phone" name="phone" type="tel" autocomplete="tel">
             </div>
             <div>
-              <label for="current_city">Current city</label>
+              <label for="current_city">Current City</label>
               <input id="current_city" name="current_city" autocomplete="address-level2">
             </div>
             <div>
-              <label for="current_state">Current state</label>
+              <label for="current_state">Current State</label>
               <input id="current_state" name="current_state" autocomplete="address-level1">
             </div>
             <div>
-              <label for="citizenship_country">Country of citizenship</label>
+              <label for="citizenship_country">Country of Citizenship</label>
               <input id="citizenship_country" name="citizenship_country" autocomplete="country-name" list="dl-countries">
             </div>
             <div>
-              <label for="country_of_birth">Country of birth</label>
+              <label for="country_of_birth">Country of Birth</label>
               <input id="country_of_birth" name="country_of_birth" list="dl-countries">
             </div>
             <div>
-              <label for="date_of_birth">Date of birth</label>
+              <label for="date_of_birth">Date of Birth</label>
               <input id="date_of_birth" name="date_of_birth" type="date" required autocomplete="bday" min="1940-01-01" max="2012-12-31">
             </div>
             <div class="wide">
-              <label for="current_street_address">Street address</label>
+              <label for="current_street_address">Street Address</label>
               <input id="current_street_address" name="current_street_address" autocomplete="street-address">
             </div>
             <div>
-              <label for="current_zip">ZIP / Postal code</label>
+              <label for="current_zip">ZIP / Postal Code</label>
               <input id="current_zip" name="current_zip" autocomplete="postal-code">
             </div>
             <div class="wide">
-              <span class="label">Emergency contact</span>
+              <span class="label">Emergency Contact</span>
               <span class="field-help">For on-site placements. Optional, but strongly recommended.</span>
               <div class="grid" style="padding:0;border:0;box-shadow:none;margin:0;">
                 <div>
-                  <label for="emergency_contact_name">Emergency contact name</label>
+                  <label for="emergency_contact_name">Emergency Contact Name</label>
                   <input id="emergency_contact_name" name="emergency_contact_name" autocomplete="off">
                 </div>
                 <div>
@@ -327,33 +292,33 @@
                   <input id="emergency_contact_relationship" name="emergency_contact_relationship" autocomplete="off" placeholder="e.g., Parent, Spouse, Sibling">
                 </div>
                 <div>
-                  <label for="emergency_contact_phone">Emergency contact phone</label>
+                  <label for="emergency_contact_phone">Emergency Contact Phone</label>
                   <input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" autocomplete="off">
                 </div>
               </div>
             </div>
             <div class="wide">
-              <label for="resume_url">Resume or CV link</label>
+              <label for="resume_url">Resume or CV Link</label>
               <input id="resume_url" name="resume_url" type="url" placeholder="https://...">
             </div>
             <div class="wide">
-              <label for="linkedin_url">LinkedIn profile link</label>
+              <label for="linkedin_url">LinkedIn Profile Link</label>
               <input id="linkedin_url" name="linkedin_url" type="url" placeholder="https://www.linkedin.com/in/...">
             </div>
             <div class="wide">
-              <label for="github_url">GitHub profile link</label>
+              <label for="github_url">GitHub Profile Link</label>
               <input id="github_url" name="github_url" type="url" placeholder="https://github.com/...">
             </div>
             <div class="wide">
-              <label for="gitlab_url">GitLab profile link</label>
+              <label for="gitlab_url">GitLab Profile Link</label>
               <input id="gitlab_url" name="gitlab_url" type="url" placeholder="https://gitlab.com/...">
             </div>
             <div class="wide">
-              <label for="portfolio_url">Portfolio or personal website link</label>
+              <label for="portfolio_url">Portfolio or Personal Website Link</label>
               <input id="portfolio_url" name="portfolio_url" type="url" placeholder="https://...">
             </div>
             <div class="wide">
-              <label for="scholar_or_orcid_url">Google Scholar, ORCID, or publication profile link</label>
+              <label for="scholar_or_orcid_url">Google Scholar, ORCID, or Publication Profile Link</label>
               <input id="scholar_or_orcid_url" name="scholar_or_orcid_url" type="url" placeholder="https://...">
             </div>
           </div>
@@ -362,18 +327,18 @@
 
       <section class="section">
         <fieldset>
-          <legend>2. School And Degree</legend>
+          <legend tabindex="-1">2. School and Degree</legend>
           <div class="grid">
             <div>
-              <label for="school_name">School attending or recently attended</label>
+              <label for="school_name">School Attending or Recently Attended</label>
               <input id="school_name" name="school_name" required list="dl-universities">
             </div>
             <div>
-              <label for="school_city_state">School city and state</label>
+              <label for="school_city_state">School City and State</label>
               <input id="school_city_state" name="school_city_state">
             </div>
             <div>
-              <label for="degree_level">Degree level</label>
+              <label for="degree_level">Degree Level</label>
               <select id="degree_level" name="degree_level" required>
                 <option value="">Select one</option>
                 <option>Bachelor's</option>
@@ -384,55 +349,59 @@
               </select>
             </div>
             <div>
-              <label for="degree_name">Degree name</label>
+              <label for="degree_name">Degree Name</label>
               <input id="degree_name" name="degree_name" placeholder="Example: M.S. Computer Science">
             </div>
             <div>
-              <label for="major_field">Major or field of study</label>
+              <label for="major_field">Major or Field of Study</label>
               <input id="major_field" name="major_field" list="dl-majors">
             </div>
             <div>
-              <label for="cip_code">CIP code
-                <a class="info-link" href="https://studyinthestates.dhs.gov/sevis-help-hub/student-records/classification-of-instructional-programs-cip" target="_blank" rel="noopener">Learn more</a>
+              <label for="cip_code">CIP Code
+                <button type="button" class="info-tooltip-btn" popovertarget="tip-cip-code" aria-label="Where to find your CIP code">&#9432;</button>
+                <a class="info-link" href="https://studyinthestates.dhs.gov/sevis-help-hub/student-records/classification-of-instructional-programs-cip" target="_blank" rel="noopener noreferrer" aria-label="Learn more about CIP codes on Study in the States (opens in new tab)">Learn more</a>
               </label>
-              <span class="field-help">Look on your Form I-20 in the Program of Study section near Major 1, Major Code, or CIP Code. The CIP code is not on your I-94.</span>
+              <div id="tip-cip-code" popover class="info-popover">Look on your Form I-20 in the Program of Study section near Major 1, Major Code, or CIP Code. The CIP code is not on your I-94.</div>
               <input id="cip_code" name="cip_code" placeholder="Example: 11.0101" required list="dl-cip">
             </div>
             <div>
-              <label for="graduation_date">Date of graduation or program completion</label>
+              <label for="graduation_date">Date of Graduation or Program Completion</label>
               <input id="graduation_date" name="graduation_date" type="date" required>
             </div>
             <div>
-              <label for="degree_awarded_date">Date degree was awarded, if different</label>
+              <label for="degree_awarded_date">Date Degree Was Awarded, if Different</label>
               <input id="degree_awarded_date" name="degree_awarded_date" type="date">
             </div>
             <div>
-              <label for="dso_name">DSO name
-                <a class="info-link" href="https://studyinthestates.dhs.gov/2014/04/students-what-dso" target="_blank" rel="noopener">What is a DSO?</a>
+              <label for="dso_name">DSO Name
+                <button type="button" class="info-tooltip-btn" popovertarget="tip-dso-name" aria-label="Where to find your DSO's name">&#9432;</button>
+                <a class="info-link" href="https://studyinthestates.dhs.gov/2014/04/students-what-dso" target="_blank" rel="noopener noreferrer" aria-label="Learn more about DSOs on Study in the States (opens in new tab)">Learn more</a>
               </label>
-              <span class="field-help">Your DSO is the international student advisor or school official who maintains your SEVIS record and signs your I-20.</span>
+              <div id="tip-dso-name" popover class="info-popover">Your Designated School Official (DSO) is listed on page 1 of your Form I-20 under School Information. They are the school staff member who manages your SEVIS record.</div>
               <input id="dso_name" name="dso_name">
             </div>
             <div>
-              <label for="dso_email">DSO email</label>
+              <label for="dso_email">DSO Email</label>
               <input id="dso_email" name="dso_email" type="email">
             </div>
             <div>
-              <label for="school_sevis_code">SEVIS school code, if known
-                <a class="info-link" href="https://studyinthestates.dhs.gov/students/prepare/students-and-the-form-i-20" target="_blank" rel="noopener">I-20 help</a>
+              <label for="school_sevis_code">SEVIS School Code, if Known
+                <button type="button" class="info-tooltip-btn" popovertarget="tip-sevis-school-code" aria-label="Where to find the SEVIS school code">&#9432;</button>
+                <a class="info-link" href="https://studyinthestates.dhs.gov/students/prepare/students-and-the-form-i-20" target="_blank" rel="noopener noreferrer" aria-label="Learn more about the Form I-20 on Study in the States (opens in new tab)">Learn more</a>
               </label>
-              <span class="field-help">Your SEVIS school code is printed on your Form I-20. Ask your DSO if you are unsure which code to use.</span>
+              <div id="tip-sevis-school-code" popover class="info-popover">Find this in the School Information section on page 1 of your Form I-20. It looks like ABC123F00123000.</div>
               <input id="school_sevis_code" name="school_sevis_code">
             </div>
             <div>
-              <label for="student_sevis_id">Student SEVIS ID, if known
-                <a class="info-link" href="https://studyinthestates.dhs.gov/students/prepare/students-and-the-form-i-20" target="_blank" rel="noopener">Where to find it</a>
+              <label for="student_sevis_id">Student SEVIS ID, if Known
+                <button type="button" class="info-tooltip-btn" popovertarget="tip-student-sevis-id" aria-label="Where to find your Student SEVIS ID">&#9432;</button>
+                <a class="info-link" href="https://studyinthestates.dhs.gov/students/prepare/students-and-the-form-i-20" target="_blank" rel="noopener noreferrer" aria-label="Learn more about SEVIS ID on Study in the States (opens in new tab)">Learn more</a>
               </label>
-              <span class="field-help">Your SEVIS ID is printed on your Form I-20 and usually starts with N. Do not guess; leave it blank if you need to check your I-20.</span>
+              <div id="tip-student-sevis-id" popover class="info-popover">Your SEVIS ID is printed at the top left of your Form I-20 and starts with the letter N followed by 10 digits.</div>
               <input id="student_sevis_id" name="student_sevis_id" placeholder="N00...">
             </div>
             <div>
-              <label for="student_sevis_id_status">SEVIS ID status</label>
+              <label for="student_sevis_id_status">SEVIS ID Status</label>
               <select id="student_sevis_id_status" name="student_sevis_id_status">
                 <option value="">Select one</option>
                 <option>Available for secure case folder</option>
@@ -451,8 +420,8 @@
 
       <section class="section">
         <fieldset>
-          <legend>3. OPT And Work Authorization</legend>
-          <div class="grid">
+          <legend tabindex="-1">3. OPT and Work Authorization</legend>
+          <div class="grid opt-grid-start">
             <div>
               <span class="label">Are you currently in the United States?</span>
               <div class="options">
@@ -462,7 +431,7 @@
               </div>
             </div>
             <div>
-              <label for="last_us_entry_date">Date of last U.S. entry (from I-94), if known</label>
+              <label for="last_us_entry_date">Date of Last U.S. Entry (from I-94), if Known</label>
               <input id="last_us_entry_date" name="last_us_entry_date" type="date">
             </div>
             <div>
@@ -485,24 +454,24 @@
               </div>
             </div>
             <div>
-              <label for="ead_start_date">EAD start date, if known</label>
+              <label for="ead_start_date">EAD Start Date, if Known</label>
               <input id="ead_start_date" name="ead_start_date" type="date">
             </div>
             <div>
-              <label for="ead_end_date">EAD end date, if known</label>
+              <label for="ead_end_date">EAD End Date, if Known</label>
               <input id="ead_end_date" name="ead_end_date" type="date">
             </div>
             <div>
-              <label for="requested_start_date">Requested employment or training start date</label>
+              <label for="requested_start_date">Requested Employment or Training Start Date</label>
               <input id="requested_start_date" name="requested_start_date" type="date">
             </div>
             <div>
-              <label for="hours_per_week">Expected hours per week</label>
+              <label for="hours_per_week">Expected Hours per Week</label>
               <span class="field-help">OPT requires at least 20 hours per week.</span>
               <input id="hours_per_week" name="hours_per_week" type="number" min="0" max="80">
             </div>
             <div>
-              <label for="unemployment_days_used">OPT unemployment days used, if known</label>
+              <label for="unemployment_days_used">OPT Unemployment Days Used, if Known</label>
               <input id="unemployment_days_used" name="unemployment_days_used" type="number" min="0">
             </div>
             <div class="wide">
@@ -517,7 +486,7 @@
               </div>
               <input type="hidden" id="prior_cpt_opt" name="prior_cpt_opt">
             </div>
-            <div>
+            <div class="wide">
               <span class="label">Have you ever been out of F-1 status or had a SEVIS record terminated?</span>
               <div class="options">
                 <label><input type="checkbox" name="prior_out_of_status" value="yes"> Yes, I have been out of status or had a SEVIS record terminated</label>
@@ -540,7 +509,7 @@
                 <label><input type="radio" name="future_sponsorship" value="not_sure"> Not sure</label>
               </div>
             </div>
-            <div>
+            <div class="wide">
               <span class="label">Do you have a prospective employer willing to sign the I-983 Training Plan? (STEM OPT)</span>
               <div class="options">
                 <label><input type="radio" name="i983_employer_willing" value="yes"> Yes, employer identified and willing to sign</label>
@@ -548,7 +517,7 @@
                 <label><input type="radio" name="i983_employer_willing" value="not_sure"> Not sure / Not applicable</label>
               </div>
             </div>
-            <div>
+            <div class="wide">
               <span class="label">Is the prospective employer enrolled in E-Verify? (required for STEM OPT)</span>
               <div class="options">
                 <label><input type="radio" name="employer_everify_enrolled" value="yes"> Yes</label>
@@ -557,7 +526,7 @@
               </div>
             </div>
             <div>
-              <label for="training_plan_status">I-983 Training Plan status (STEM OPT)</label>
+              <label for="training_plan_status">I-983 Training Plan Status (STEM OPT)</label>
               <select id="training_plan_status" name="training_plan_status">
                 <option value="">Select one</option>
                 <option>Already prepared and ready to share</option>
@@ -566,7 +535,7 @@
                 <option>Unknown</option>
               </select>
             </div>
-            <div>
+            <div class="wide">
               <span class="label">Do you plan to work for more than one employer?</span>
               <span class="field-help">Note: STEM OPT generally does not allow multiple concurrent employers.</span>
               <div class="options">
@@ -576,23 +545,23 @@
               </div>
             </div>
             <div>
-              <label for="prospective_employer_name">Prospective employer representative name (for I-983 signing)</label>
+              <label for="prospective_employer_name">Prospective Employer Representative Name (for I-983 Signing)</label>
               <input id="prospective_employer_name" name="prospective_employer_name" autocomplete="off">
             </div>
             <div>
-              <label for="prospective_employer_email">Prospective employer representative email</label>
+              <label for="prospective_employer_email">Prospective Employer Representative Email</label>
               <input id="prospective_employer_email" name="prospective_employer_email" type="email">
             </div>
             <div>
-              <label for="proposed_wage_or_compensation">Proposed wage, salary, or compensation</label>
+              <label for="proposed_wage_or_compensation">Proposed Wage, Salary, or Compensation</label>
               <input id="proposed_wage_or_compensation" name="proposed_wage_or_compensation" placeholder="e.g., $25/hour, $60k/year, unpaid internship, stipend">
             </div>
             <div class="wide">
-              <label for="i983_form">I-983 Training Plan — describe status or notes</label>
+              <label for="i983_form">I-983 Training Plan — Describe Status or Notes</label>
               <textarea id="i983_form" name="i983_form" placeholder="Describe the current status of your I-983 Training Plan, or any notes about employer identification and signing."></textarea>
             </div>
             <div class="wide">
-              <label for="authorization_notes">Authorization notes</label>
+              <label for="authorization_notes">Authorization Notes</label>
               <textarea id="authorization_notes" name="authorization_notes" placeholder="Mention pending EAD cases, school guidance, prior OPT/CPT use, or timing concerns."></textarea>
             </div>
           </div>
@@ -601,7 +570,7 @@
 
       <section class="section">
         <fieldset>
-          <legend>4. Work Location, Housing, And Community Fit</legend>
+          <legend tabindex="-1">4. Work Location, Housing, and Community Fit</legend>
           <div class="grid">
             <div>
               <span class="label">Do you want to live on-site or work remote?</span>
@@ -613,7 +582,7 @@
               </div>
             </div>
             <div>
-              <label for="preferred_site">Preferred on-site area, if any</label>
+              <label for="preferred_site">Preferred On-Site Area, if Any</label>
               <select id="preferred_site" name="preferred_site">
                 <option value="">Select one</option>
                 <option>Ravenswood, WV / Curiosity Research Corporation</option>
@@ -624,19 +593,19 @@
               </select>
             </div>
             <div>
-              <label for="relocation_date">Earliest relocation date</label>
+              <label for="relocation_date">Earliest Relocation Date</label>
               <input id="relocation_date" name="relocation_date" type="date">
             </div>
             <div>
-              <label for="remote_timezone">Remote work time zone</label>
+              <label for="remote_timezone">Remote Work Time Zone</label>
               <input id="remote_timezone" name="remote_timezone" placeholder="Example: Eastern Time" list="dl-timezones">
             </div>
             <div class="wide">
-              <label for="housing_needs">Housing needs, constraints, or accessibility considerations</label>
+              <label for="housing_needs">Housing Needs, Constraints, or Accessibility Considerations</label>
               <textarea id="housing_needs" name="housing_needs"></textarea>
             </div>
             <div>
-              <label for="has_reliable_transportation">Reliable transportation</label>
+              <label for="has_reliable_transportation">Reliable Transportation</label>
               <select id="has_reliable_transportation" name="has_reliable_transportation">
                 <option value="">Select one</option>
                 <option value="yes">Yes, I have reliable transportation</option>
@@ -645,7 +614,7 @@
               </select>
             </div>
             <div>
-              <label for="has_valid_drivers_license">Valid U.S. driver's license</label>
+              <label for="has_valid_drivers_license">Valid U.S. Driver's License</label>
               <select id="has_valid_drivers_license" name="has_valid_drivers_license">
                 <option value="">Select one</option>
                 <option value="yes">Yes, I have a valid U.S. driver's license</option>
@@ -659,7 +628,7 @@
 
       <section id="onsite-section" class="section conditional" aria-live="polite">
         <fieldset>
-          <legend>5. On-Site Homesteading And Hospitality Skills</legend>
+          <legend tabindex="-1">5. On-Site Homesteading and Hospitality Skills</legend>
           <p class="hint">Use this section only for applicants interested in on-site, hybrid, or community housing placement.</p>
 
           <h3>Skill Ratings</h3>
@@ -697,10 +666,10 @@
             </tbody>
           </table>
 
-          <h3>Certifications And Practical Constraints</h3>
+          <h3>Certifications and Practical Constraints</h3>
           <div class="grid">
             <div>
-              <span class="label">Certifications or licenses</span>
+              <span class="label">Certifications or Licenses</span>
               <div class="options">
                 <label><input type="checkbox" name="certifications" value="food_handler"> Food handler certification</label>
                 <label><input type="checkbox" name="certifications" value="general_contractor"> General contractor license</label>
@@ -712,7 +681,7 @@
               </div>
             </div>
             <div>
-              <span class="label">On-site requirements</span>
+              <span class="label">On-Site Requirements</span>
               <div class="options">
                 <label><input type="checkbox" name="onsite_requirements" value="non_smoker"> Non-smoker</label>
                 <label><input type="checkbox" name="onsite_requirements" value="lift_50"> Able to lift up to 50 pounds</label>
@@ -731,11 +700,11 @@
 
       <section class="section">
         <fieldset>
-          <legend>6. Dream Quest Fit</legend>
+          <legend tabindex="-1">6. Dream Quest Fit</legend>
           <p class="hint">If accepted, you will move through all stages of the Dream Quest pathway. This section helps us understand your interests and learning preferences — your selections here do not determine your placement.</p>
           <div class="grid">
             <div class="wide">
-              <span class="label">Which learning areas interest you?</span>
+              <span class="label">Which Learning Areas Interest You?</span>
               <div class="options inline">
                 <label><input type="checkbox" name="learning_areas" value="ai_emergent_tech"> AI and Emergent Tech <button type="button" class="info-tooltip-btn" popovertarget="tip-ai-emergent" aria-label="Learn more about AI and Emergent Tech">&#9432;</button></label>
                 <label><input type="checkbox" name="learning_areas" value="ag_homesteading"> Ag and Homesteading Sciences <button type="button" class="info-tooltip-btn" popovertarget="tip-ag-homesteading" aria-label="Learn more about Ag and Homesteading Sciences">&#9432;</button></label>
@@ -774,10 +743,10 @@
 
       <section class="section">
         <fieldset>
-          <legend>7. Technical, Research, And Professional Skills</legend>
+          <legend tabindex="-1">7. Technical, Research, and Professional Skills</legend>
           <div class="grid">
             <div>
-              <span class="label">Technical skills</span>
+              <span class="label">Technical Skills</span>
               <div class="options">
                 <label><input type="checkbox" name="technical_skills" value="coding"> Coding or scripting</label>
                 <label><input type="checkbox" name="technical_skills" value="data_analysis"> Data analysis</label>
@@ -790,7 +759,7 @@
               </div>
             </div>
             <div>
-              <span class="label">Professional skills</span>
+              <span class="label">Professional Skills</span>
               <div class="options">
                 <label><input type="checkbox" name="professional_skills" value="research_writing"> Research writing</label>
                 <label><input type="checkbox" name="professional_skills" value="proposal_writing"> Proposal or grant writing</label>
@@ -803,7 +772,7 @@
               </div>
             </div>
             <div class="wide">
-              <label for="best_work_samples">Links to work samples, papers, pull requests, projects, or portfolios</label>
+              <label for="best_work_samples">Links to Work Samples, Papers, Pull Requests, Projects, or Portfolios</label>
               <textarea id="best_work_samples" name="best_work_samples"></textarea>
             </div>
             <div class="wide">
@@ -816,10 +785,10 @@
 
       <section class="section">
         <fieldset>
-          <legend>8. Government, Industry, Grants, And Publications</legend>
+          <legend tabindex="-1">8. Government, Industry, Grants, and Publications</legend>
           <div class="grid">
             <div>
-              <span class="label">Government experience</span>
+              <span class="label">Government Experience</span>
               <div class="options">
                 <label><input type="checkbox" name="government_experience_type" value="federal"> U.S. federal government</label>
                 <label><input type="checkbox" name="government_experience_type" value="state"> U.S. state government</label>
@@ -830,7 +799,7 @@
               </div>
             </div>
             <div>
-              <span class="label">Industry experience</span>
+              <span class="label">Industry Experience</span>
               <div class="options">
                 <label><input type="checkbox" name="industry_experience" value="agriculture"> Agriculture or food systems</label>
                 <label><input type="checkbox" name="industry_experience" value="architecture_construction"> Architecture, construction, or built environment</label>
@@ -845,7 +814,7 @@
               </div>
             </div>
             <div class="wide">
-              <span class="label">Government agencies you have worked with, supported, applied to, researched, or delivered work for</span>
+              <span class="label">Government Agencies You Have Worked With, Supported, Applied to, Researched, or Delivered Work For</span>
               <div class="options inline">
                 <label><input type="checkbox" name="government_agencies" value="nsf"> National Science Foundation (NSF)</label>
                 <label><input type="checkbox" name="government_agencies" value="nih"> National Institutes of Health (NIH)</label>
@@ -892,7 +861,7 @@
               <label for="government_experience_details">Describe any government or agency-related experience.</label>
               <textarea id="government_experience_details" name="government_experience_details" placeholder="Include agency, project, role, dates, contract/grant number if known, and what you contributed."></textarea>
             </div>
-            <div>
+            <div class="wide">
               <span class="label">Have you ever served in one of these roles on a government-led or government-funded project?</span>
               <div class="options">
                 <label><input type="checkbox" name="government_project_roles" value="principal_investigator"> Principal Investigator (PI)</label>
@@ -903,23 +872,27 @@
               </div>
             </div>
             <div>
-              <label for="publication_count">Total number of publications</label>
+              <label for="publication_count">Total Number of Publications</label>
               <input id="publication_count" name="publication_count" type="number" min="0" placeholder="0">
             </div>
             <div class="wide">
-              <label for="government_project_role_details">Project-role details</label>
+              <label for="government_project_role_details">Project-Role Details</label>
               <textarea id="government_project_role_details" name="government_project_role_details" placeholder="List project title, sponsor, role, dates, proposal/award status, and any public link if available."></textarea>
             </div>
             <div>
-              <label for="grants_gov_interest">Grants.gov opportunity that piqued your interest
-                <a class="info-link" href="https://www.grants.gov/search-grants" target="_blank" rel="noopener">Search Grants.gov</a>
+              <label for="grants_gov_interest">Grants.gov Opportunity That Piqued Your Interest
+                <button type="button" class="info-tooltip-btn" popovertarget="tip-grants-gov" aria-label="What is Grants.gov?">&#9432;</button>
+                <a class="info-link" href="https://www.grants.gov/search-grants" target="_blank" rel="noopener noreferrer" aria-label="Learn more about Grants.gov (opens in new tab)">Learn more</a>
               </label>
+              <div id="tip-grants-gov" popover class="info-popover">Grants.gov lists every federal grant opportunity. Checking this means you want to help find and prepare federal grant applications.</div>
               <textarea id="grants_gov_interest" name="grants_gov_interest" placeholder="Paste opportunity link, opportunity number, title, agency, or search terms."></textarea>
             </div>
             <div>
-              <label for="sam_gov_interest">SAM.gov notice or opportunity that piqued your interest
-                <a class="info-link" href="https://sam.gov/content/opportunities" target="_blank" rel="noopener">Search SAM.gov</a>
+              <label for="sam_gov_interest">SAM.gov Notice or Opportunity That Piqued Your Interest
+                <button type="button" class="info-tooltip-btn" popovertarget="tip-sam-gov" aria-label="What is SAM.gov?">&#9432;</button>
+                <a class="info-link" href="https://sam.gov/content/opportunities" target="_blank" rel="noopener noreferrer" aria-label="Learn more about SAM.gov (opens in new tab)">Learn more</a>
               </label>
+              <div id="tip-sam-gov" popover class="info-popover">SAM.gov is where federal contract opportunities are posted and where entities register to do business with the U.S. government.</div>
               <textarea id="sam_gov_interest" name="sam_gov_interest" placeholder="Paste notice link, solicitation number, title, agency, or search terms."></textarea>
             </div>
             <div class="wide">
@@ -932,7 +905,7 @@
 
       <section class="section">
         <fieldset>
-          <legend>9. Focus Hive, GitOps, And Agile Readiness</legend>
+          <legend tabindex="-1">9. Focus Hive, GitOps, and Agile Readiness</legend>
           <div class="grid">
             <div>
               <span class="label">Can you participate in Focus Hive agile routines?</span>
@@ -948,7 +921,7 @@
               </div>
             </div>
             <div>
-              <span class="label">Assessment evidence you are comfortable with</span>
+              <span class="label">Assessment Evidence You Are Comfortable With</span>
               <div class="options">
                 <label><input type="checkbox" name="assessment_evidence" value="spark_score"> SPARK Score <button type="button" class="info-tooltip-btn" popovertarget="tip-spark" aria-label="Learn more about SPARK Score">&#9432;</button></label>
                 <label><input type="checkbox" name="assessment_evidence" value="curiosity_score"> Curiosity Score <button type="button" class="info-tooltip-btn" popovertarget="tip-curiosity" aria-label="Learn more about Curiosity Score">&#9432;</button></label>
@@ -966,7 +939,7 @@
               <textarea id="gitops_experience" name="gitops_experience"></textarea>
             </div>
             <div class="wide">
-              <label for="team_process_experience">Describe your experience with agile, scrum, Six Sigma, project management, research notebooks, or meeting participation.</label>
+              <label for="team_process_experience">Describe your experience with agile, Scrum, Six Sigma, project management, research notebooks, or meeting participation.</label>
               <textarea id="team_process_experience" name="team_process_experience"></textarea>
             </div>
           </div>
@@ -975,10 +948,10 @@
 
       <section class="section">
         <fieldset>
-          <legend>10. Documents And Evidence Status</legend>
+          <legend tabindex="-1">10. Documents and Evidence Status</legend>
           <div class="grid">
             <div>
-              <span class="label">Immigration and identity documents</span>
+              <span class="label">Immigration and Identity Documents</span>
               <div class="options">
                 <label><input type="checkbox" name="documents_status" value="passport"> Passport available</label>
                 <label><input type="checkbox" name="documents_status" value="f1_visa"> F-1 visa stamp available</label>
@@ -990,7 +963,7 @@
               </div>
             </div>
             <div>
-              <span class="label">Academic and career documents</span>
+              <span class="label">Academic and Career Documents</span>
               <div class="options">
                 <label><input type="checkbox" name="academic_documents" value="resume"> Resume or CV</label>
                 <label><input type="checkbox" name="academic_documents" value="diploma"> Diploma</label>
@@ -1001,18 +974,18 @@
               </div>
             </div>
             <div>
-              <span class="label">STEM OPT and Training Plan documents</span>
+              <span class="label">STEM OPT and Training Plan Documents</span>
               <div class="options">
                 <label><input type="checkbox" name="documents_status" value="i983_training_plan"> I-983 Training Plan (signed by student, employer, and DSO)</label>
                 <label><input type="checkbox" name="documents_status" value="everify_enrollment"> Employer E-Verify enrollment confirmation</label>
               </div>
             </div>
             <div>
-              <label for="passport_expiration_date">Passport expiration date</label>
+              <label for="passport_expiration_date">Passport Expiration Date</label>
               <input id="passport_expiration_date" name="passport_expiration_date" type="date">
             </div>
             <div>
-              <label for="f1_visa_expiration_date">F-1 visa stamp expiration date</label>
+              <label for="f1_visa_expiration_date">F-1 Visa Stamp Expiration Date</label>
               <input id="f1_visa_expiration_date" name="f1_visa_expiration_date" type="date">
             </div>
             <div class="wide">
@@ -1025,7 +998,7 @@
 
       <section class="section">
         <fieldset>
-          <legend>11. Compliance Review Flags</legend>
+          <legend tabindex="-1">11. Compliance Review Flags</legend>
           <div class="grid">
             <div>
               <span class="label">Do any of these need review?</span>
@@ -1043,7 +1016,7 @@
               </div>
             </div>
             <div>
-              <span class="label">Who should review before generation?</span>
+              <span class="label">Who Should Review Before Generation?</span>
               <div class="options">
                 <label><input type="checkbox" name="review_owners" value="dso"> DSO</label>
                 <label><input type="checkbox" name="review_owners" value="usiva"> USIVA case manager</label>
@@ -1063,7 +1036,7 @@
 
       <section class="section">
         <fieldset>
-          <legend>12. Applicant Statements</legend>
+          <legend tabindex="-1">12. Applicant Statements</legend>
           <div class="grid">
             <div class="wide">
               <label for="why_apply">Why do you want to join the OPT Dream Quest program?</label>
@@ -1078,7 +1051,7 @@
               <textarea id="long_term_goal" name="long_term_goal"></textarea>
             </div>
             <div>
-              <label for="preferred_contact_method">Preferred contact method</label>
+              <label for="preferred_contact_method">Preferred Contact Method</label>
               <select id="preferred_contact_method" name="preferred_contact_method">
                 <option value="">Select one</option>
                 <option>Email</option>
@@ -1089,7 +1062,7 @@
               </select>
             </div>
             <div>
-              <label for="best_contact_time">Best time to contact you</label>
+              <label for="best_contact_time">Best Time to Contact You</label>
               <input id="best_contact_time" name="best_contact_time">
             </div>
             <div class="wide">
@@ -1109,10 +1082,10 @@
       <section class="section section-internal-only">
         <p class="hint internal-only-hint">This section is for USIVA staff. Applicants may leave it blank.</p>
         <fieldset>
-          <legend><span class="internal-only-badge">Internal Use Only</span> 13. Internal Routing After Submission</legend>
+          <legend tabindex="-1"><span class="internal-only-badge">Internal Use Only</span> 13. Internal Routing After Submission</legend>
           <div class="grid">
             <div>
-              <label for="recommended_case_system">Recommended case system</label>
+              <label for="recommended_case_system">Recommended Case System</label>
               <select id="recommended_case_system" name="recommended_case_system">
                 <option>USIVA - F-1 OPT case intake</option>
                 <option>Curiosity Research Corporation - non-immigration learner intake</option>
@@ -1121,28 +1094,31 @@
               </select>
             </div>
             <div>
-              <label for="recommended_case_path">Recommended SharePoint case path</label>
+              <label for="recommended_case_path">Recommended SharePoint Case Path</label>
               <input id="recommended_case_path" name="recommended_case_path" value="USIVA / Shared Documents / General / Cases / [Applicant] / F-1 OPT">
             </div>
             <div>
-              <label for="program_tags">Program tags</label>
+              <label for="program_tags">Program Tags</label>
               <input id="program_tags" name="program_tags" value="OPT, Dream Quest, I-983, Focus Hive, GitOps">
             </div>
             <div>
-              <label for="source_form_name">Recommended form name</label>
+              <label for="source_form_name">Recommended Form Name</label>
               <input id="source_form_name" name="source_form_name" value="OPT Dream Quest Application">
             </div>
             <div class="wide">
-              <label for="routing_notes">Internal routing notes</label>
+              <label for="routing_notes">Internal Routing Notes</label>
               <textarea id="routing_notes" name="routing_notes">Primary public intake should live under USIVA because the first gate is F-1 OPT/STEM OPT status, EAD timing, school/DSO facts, CIP code, and I-983 readiness. Accepted applicants should then be ingested into the Quest/Dream Quest framework and, if employed, Tao Staff employment files. On-site candidates should additionally route their community-fit section to Silk Homes or the relevant hospitality/homesteading owner.</textarea>
             </div>
           </div>
         </fieldset>
       </section>
 
-      <div class="actions">
-        <button type="submit" class="btn_1">Submit Application</button>
-        <button type="button" class="btn_1" onclick="window.print()">Print</button>
+      <!-- Wizard navigation — shown/hidden by JS per step -->
+      <div class="opt-wizard-nav" id="opt-wizard-nav">
+        <button type="button" class="btn_1 opt-secondary" id="opt-btn-back">Back</button>
+        <button type="button" class="btn_1" id="opt-btn-next">Next</button>
+        <button type="submit" class="btn_1" id="opt-btn-submit" hidden>Submit Application</button>
+        <button type="button" class="btn_1 opt-secondary" onclick="window.print()">Print</button>
         <button type="reset" class="btn_1 opt-secondary">Clear</button>
       </div>
       <p id="opt-submit-status" class="opt-submit-status" role="status" aria-live="polite"></p>
@@ -1182,7 +1158,7 @@
     </main><!-- /main -->
 
     <script>
-    /* ===== OPT Application: progressive enhancement ===== */
+    /* ===== OPT Application: progressive enhancement + stepped wizard ===== */
     (function () {
       'use strict';
 
@@ -1191,10 +1167,10 @@
       function $$(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
 
       /* --- DOM refs --- */
-      var form       = $('#opt-application');
-      var status     = $('#opt-submit-status');
+      var form          = $('#opt-application');
+      var status        = $('#opt-submit-status');
       var onsiteSection = $('#onsite-section');
-      var SITE_KEY   = '6LfBPhgtAAAAAOxWLMZ-tQgSGOBJPN-f_zwTswqq';
+      var SITE_KEY      = '6LfBPhgtAAAAAOxWLMZ-tQgSGOBJPN-f_zwTswqq';
 
       if (!form) return;
 
@@ -1233,17 +1209,21 @@
           });
         }
         renumberSections();
+        /* recalculate total steps after conditional section toggled */
+        rebuildSteps();
+        /* if current step was the onsite section and it just got hidden, move back */
+        if (!show && currentStepIndex >= steps.length) {
+          currentStepIndex = steps.length - 1;
+        }
+        showStep(currentStepIndex);
       }
+
       $$('input[name="location_preference"]', form).forEach(function (r) {
         r.addEventListener('change', updateOnsiteSection);
       });
-      updateOnsiteSection();
 
       /* =====================================================
          PRIOR CPT/OPT CHECKBOX → HIDDEN FIELD SYNC
-         UI checkboxes have no name; JS joins checked values
-         into #prior_cpt_opt (name="prior_cpt_opt") to keep
-         the existing D365 field mapping intact.
       ===================================================== */
       var priorCptOptHidden = document.getElementById('prior_cpt_opt');
       var priorNoneCheckbox = document.getElementById('prior-type-none');
@@ -1261,7 +1241,6 @@
 
       priorCheckboxes.forEach(function (cb) {
         cb.addEventListener('change', function () {
-          /* "None" is mutually exclusive with the others */
           if (cb === priorNoneCheckbox && cb.checked) {
             priorCheckboxes.forEach(function (other) { if (other !== priorNoneCheckbox) other.checked = false; });
           } else if (cb.checked && priorNoneCheckbox) {
@@ -1273,19 +1252,142 @@
       syncPriorCptOpt();
 
       /* =====================================================
+         WIZARD: STEP MANAGEMENT
+         steps[] = visible (non-conditional OR active conditional) sections
+         currentStepIndex = 0-based index into steps[]
+      ===================================================== */
+      var steps = [];
+      var currentStepIndex = 0;
+
+      var btnBack   = $('#opt-btn-back');
+      var btnNext   = $('#opt-btn-next');
+      var btnSubmit = $('#opt-btn-submit');
+      var progressBar  = $('#opt-progress-fill');
+      var progressText = $('#opt-progress-text');
+      var progressWrap = progressBar && progressBar.closest('[role="progressbar"]');
+
+      function rebuildSteps() {
+        steps = $$('section.section', form).filter(function (sec) {
+          /* conditional section only counted when visible */
+          if (sec.classList.contains('conditional')) {
+            return sec.classList.contains('visible');
+          }
+          return true;
+        });
+      }
+
+      function isOnsiteHidden() {
+        return onsiteSection && !onsiteSection.classList.contains('visible');
+      }
+
+      function showStep(idx) {
+        rebuildSteps();
+        /* clamp */
+        if (idx < 0) idx = 0;
+        if (idx >= steps.length) idx = steps.length - 1;
+        currentStepIndex = idx;
+
+        var total = steps.length;
+
+        /* hide all sections; show only current */
+        $$('section.section', form).forEach(function (sec) {
+          var inSteps = steps.indexOf(sec) !== -1;
+          if (!inSteps) {
+            /* conditional section toggled off — keep its existing hidden state */
+            sec.classList.add('step-hidden');
+          } else if (steps.indexOf(sec) === idx) {
+            sec.classList.remove('step-hidden');
+          } else {
+            sec.classList.add('step-hidden');
+          }
+        });
+
+        /* progress bar — Section X of N */
+        var displayNum = idx + 1;
+        var pct = Math.round((displayNum / total) * 100);
+        if (progressBar) {
+          progressBar.style.width = pct + '%';
+          /* aria on the wrapping [role=progressbar] */
+          var pb = progressBar.closest('[role="progressbar"]');
+          if (pb) { pb.setAttribute('aria-valuenow', displayNum); pb.setAttribute('aria-valuemax', total); }
+        }
+        if (progressText) {
+          progressText.textContent = 'Section ' + displayNum + ' of ' + total;
+        }
+
+        /* back / next / submit visibility */
+        if (btnBack)   { btnBack.hidden   = (idx === 0); }
+        if (btnNext)   { btnNext.hidden   = (idx === total - 1); }
+        if (btnSubmit) { btnSubmit.hidden = (idx !== total - 1); }
+
+        /* focus the legend of the new step (a11y: tabindex="-1" set in HTML) */
+        var legend = $('fieldset > legend', steps[idx]);
+        if (legend) {
+          legend.focus({ preventScroll: true });
+        }
+
+        /* scroll to top of progress bar (respects prefers-reduced-motion via CSS) */
+        var wrap = $('.opt-progress-wrap');
+        if (wrap) {
+          var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          wrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+        }
+
+        /* persist step in draft */
+        saveDraft();
+      }
+
+      /* =====================================================
+         BACK / NEXT BUTTON HANDLERS
+      ===================================================== */
+      if (btnBack) {
+        btnBack.addEventListener('click', function () {
+          showStep(currentStepIndex - 1);
+        });
+      }
+
+      if (btnNext) {
+        btnNext.addEventListener('click', function () {
+          /* validate only the fields in the current step */
+          var currentSection = steps[currentStepIndex];
+          var allValid = true;
+          var firstInvalid = null;
+          $$('input, select, textarea', currentSection).forEach(function (el) {
+            if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+            /* skip hidden conditional section fields */
+            if (onsiteSection && !onsiteSection.classList.contains('visible') && onsiteSection.contains(el)) return;
+            if (!validateField(el) && !firstInvalid) firstInvalid = el;
+            if (!el.validity.valid && getFieldError(el)) allValid = false;
+          });
+          if (!allValid || firstInvalid) {
+            if (firstInvalid) {
+              firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              firstInvalid.focus();
+            }
+            return;
+          }
+          showStep(currentStepIndex + 1);
+        });
+      }
+
+      /* =====================================================
          DRAFT AUTOSAVE
       ===================================================== */
-      var DRAFT_KEY   = 'usiva_opt_draft_v1';
-      var SKIP_NAMES  = new Set(['_gotcha', 'token', 'recaptcha_response', 'test', 'owner', 'website', 'budget', 'campaign', 'pageName', 'formType']);
+      var DRAFT_KEY  = 'usiva_opt_draft_v1';
+      var SKIP_NAMES = new Set(['_gotcha', 'token', 'recaptcha_response', 'test', 'owner', 'website', 'budget', 'campaign', 'pageName', 'formType']);
       var saveTimer;
 
       function saveDraft() {
         clearTimeout(saveTimer);
         saveTimer = setTimeout(function () {
           try {
-            var data = {};
+            var data = { _wizardStep: currentStepIndex };
             var fd = new FormData(form);
-            fd.forEach(function (v, k) { if (!SKIP_NAMES.has(k)) { if (data[k]) { data[k] = [].concat(data[k], v); } else { data[k] = v; } } });
+            fd.forEach(function (v, k) {
+              if (!SKIP_NAMES.has(k)) {
+                if (data[k]) { data[k] = [].concat(data[k], v); } else { data[k] = v; }
+              }
+            });
             localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
           } catch (e) { /* storage full or private mode */ }
         }, 600);
@@ -1297,7 +1399,9 @@
         if (!raw) return;
         try {
           var data = JSON.parse(raw);
+          var savedStep = typeof data._wizardStep === 'number' ? data._wizardStep : 0;
           Object.keys(data).forEach(function (k) {
+            if (k === '_wizardStep') return;
             var vals = [].concat(data[k]);
             var els = $$('[name="' + CSS.escape(k) + '"]', form);
             if (!els.length) return;
@@ -1310,7 +1414,7 @@
             }
           });
           updateOnsiteSection();
-          updateProgress();
+          showStep(savedStep);
           showDraftNotice();
         } catch (e) { /* malformed JSON */ }
       }
@@ -1337,47 +1441,16 @@
       form.addEventListener('change', saveDraft);
 
       /* =====================================================
-         PROGRESS BAR
-      ===================================================== */
-      var progressBar  = $('#opt-progress-fill');
-      var progressText = $('#opt-progress-text');
-      var REQUIRED_FIELDS = [];
-
-      function collectRequiredFields() {
-        REQUIRED_FIELDS = $$('[required]', form);
-      }
-
-      function updateProgress() {
-        collectRequiredFields();
-        var total = REQUIRED_FIELDS.length;
-        if (!total) return;
-        var filled = REQUIRED_FIELDS.filter(function (el) {
-          if (el.type === 'radio' || el.type === 'checkbox') {
-            return $$('[name="' + CSS.escape(el.name) + '"]:checked', form).length > 0;
-          }
-          return el.value.trim() !== '';
-        }).length;
-        var pct = Math.round((filled / total) * 100);
-        if (progressBar) { progressBar.style.width = pct + '%'; progressBar.setAttribute('aria-valuenow', pct); }
-        if (progressText) { progressText.textContent = pct + '% complete (' + filled + ' of ' + total + ' required fields)'; }
-      }
-
-      form.addEventListener('input', updateProgress);
-      form.addEventListener('change', updateProgress);
-
-      /* =====================================================
          VALIDATION
       ===================================================== */
       function getFieldError(el) {
-        /* native validity first */
         if (!el.validity.valid) {
-          if (el.validity.valueMissing)  return 'This field is required.';
-          if (el.validity.typeMismatch)  return 'Please enter a valid ' + (el.type === 'email' ? 'email address' : el.type === 'url' ? 'URL (starting with https://)' : 'value') + '.';
+          if (el.validity.valueMissing)   return 'This field is required.';
+          if (el.validity.typeMismatch)   return 'Please enter a valid ' + (el.type === 'email' ? 'email address' : el.type === 'url' ? 'URL (starting with https://)' : 'value') + '.';
           if (el.validity.rangeUnderflow) return 'Value must be at least ' + el.min + '.';
           if (el.validity.rangeOverflow)  return 'Value must be at most ' + el.max + '.';
           return el.validationMessage || 'Invalid value.';
         }
-        /* custom rules */
         if ((el.name === 'phone' || el.name === 'emergency_contact_phone') && el.value.trim()) {
           if (!/^\+?[\d\s\-().]{7,20}$/.test(el.value.trim())) return 'Please enter a valid phone number.';
         }
@@ -1439,7 +1512,7 @@
       /* blur validation */
       $$('input, select, textarea', form).forEach(function (el) {
         if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
-        el.addEventListener('blur', function () { validateField(el); });
+        el.addEventListener('blur',   function () { validateField(el); });
         el.addEventListener('change', function () { validateField(el); });
       });
 
@@ -1467,7 +1540,8 @@
       }
 
       function setSubmitting(on) {
-        var btn = $('button[type="submit"]', form);
+        /* target the real submit button (could be btnSubmit or any [type=submit]) */
+        var btn = btnSubmit || $('button[type="submit"]', form);
         if (!btn) return;
         btn.disabled = on;
         btn.innerHTML = on
@@ -1478,22 +1552,34 @@
       var successPanel = $('#opt-success-panel');
 
       /* =====================================================
-         FORM SUBMIT
+         FORM SUBMIT — full-form validation across all steps
       ===================================================== */
       form.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        /* validate all */
         var allValid = true;
         var firstInvalid = null;
+        var firstInvalidStepIdx = -1;
+
         $$('input, select, textarea', form).forEach(function (el) {
           if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+          /* skip fields in the hidden conditional section */
           if (onsiteSection && !onsiteSection.classList.contains('visible') && onsiteSection.contains(el)) return;
-          if (!validateField(el) && !firstInvalid) firstInvalid = el;
+          if (!validateField(el) && !firstInvalid) {
+            firstInvalid = el;
+            /* find which wizard step contains this field */
+            rebuildSteps();
+            for (var i = 0; i < steps.length; i++) {
+              if (steps[i].contains(el)) { firstInvalidStepIdx = i; break; }
+            }
+          }
           if (!el.validity.valid && getFieldError(el)) allValid = false;
         });
 
         if (!allValid || firstInvalid) {
+          if (firstInvalidStepIdx >= 0 && firstInvalidStepIdx !== currentStepIndex) {
+            showStep(firstInvalidStepIdx);
+          }
           if (firstInvalid) {
             firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
             firstInvalid.focus();
@@ -1537,7 +1623,7 @@
           clearDraft();
           form.reset();
           updateOnsiteSection();
-          updateProgress();
+          showStep(0);
           setStatus('', '');
           if (successPanel) {
             successPanel.hidden = false;
@@ -1558,10 +1644,15 @@
       });
 
       /* =====================================================
-         RESTORE DRAFT ON LOAD
+         INIT: build steps, restore draft, show step 1
       ===================================================== */
-      restoreDraft();
-      updateProgress();
+      updateOnsiteSection();  /* sets up onsite visibility + renumbers */
+      rebuildSteps();
+      restoreDraft();         /* may call showStep(savedIdx) internally */
+      /* if draft restore did not call showStep (no draft), show step 0 */
+      if (!$$('section.section.step-hidden', form).length && steps.length > 1) {
+        showStep(0);
+      }
 
       /* =====================================================
          PRELOADER HIDE
