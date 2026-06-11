@@ -287,3 +287,48 @@ Single source of truth for all applicant field names in apply-opt.html and the U
 **Total unchanged applicant fields: ~141**
 **Funnel-contract fields (immutable): 10**
 **Draft localStorage key: usiva_opt_draft_v1 → usiva_opt_draft_v2**
+
+---
+
+## D365 `lead.description` Column — Size Configuration
+
+### History and fix (2026-06-11)
+
+The `lead.description` field in Dynamics 365 (Tao Learning org — `dream.crm.dynamics.com`) had a default `MaxLength` of **2000 characters**. A fully-completed v1 application renders approximately **8689 characters** of labeled text in the description field (worst-case estimate with realistic max-length field values). This would have caused every real submission to fail at the D365 connector step.
+
+**Both layers of protection have been applied:**
+
+#### Layer 1 — Column limit raised in Dataverse (authoritative fix)
+```
+Entity:    lead
+Attribute: description
+MaxLength: 2000 → 100000
+API:       PUT https://dream.api.crm.dynamics.com/api/data/v9.2/EntityDefinitions(LogicalName='lead')/Attributes(LogicalName='description')
+Publish:   POST https://dream.api.crm.dynamics.com/api/data/v9.2/PublishXml
+Verified:  GET re-fetch confirms MaxLength: 100000
+```
+
+#### Layer 2 — Defensive substring guard in the Logic App (belt-and-suspenders)
+The `Create_a_D365_Lead` action's `description` field now reads `@{variables('desc_full')}`.
+
+The `Set_Desc_Full` action (runs after `Initialize_Desc_B`) computes:
+```
+@{substring(concat(variables('desc_a'), variables('desc_b')), 0, min(length(concat(variables('desc_a'), variables('desc_b'))), 99000))}
+```
+Cap is **99000 chars** — 1000 chars below the raised column limit. If the column limit is ever accidentally reset, submissions are truncated rather than failed.
+
+### Worst-case estimate
+
+| Component | Worst-case chars |
+|-----------|-----------------|
+| desc_a (Identity + Portfolio + Education sections) | ~3478 |
+| desc_b (Work Auth + Community + Industry + Skills + Gov + PM + Security + Docs + Compliance + Statements) | ~5211 |
+| **Total** | **~8689** |
+| Column limit (new) | 100,000 |
+| Guard cap | 99,000 |
+| Headroom | ~90,311 |
+
+### Logic App action sequence (after fix)
+```
+Response → Test_Condition → Initialize_Desc_A → Initialize_Desc_Full → Initialize_Desc_B → Set_Desc_Full → Create_a_D365_Lead → Notify_USIVA_Teams
+```
