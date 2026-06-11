@@ -237,20 +237,20 @@
           <legend tabindex="-1">1. Identity</legend>
           <div class="grid">
             <div>
-              <label for="legal_first_name">Legal First Name</label>
-              <input id="legal_first_name" name="legal_first_name" autocomplete="given-name" required>
+              <label for="first_name">Legal First Name</label>
+              <input id="first_name" name="first_name" autocomplete="given-name" required>
             </div>
             <div>
-              <label for="legal_middle_name">Legal Middle Name</label>
-              <input id="legal_middle_name" name="legal_middle_name" autocomplete="additional-name">
+              <label for="middle_name">Legal Middle Name</label>
+              <input id="middle_name" name="middle_name" autocomplete="additional-name">
             </div>
             <div>
-              <label for="legal_last_name">Legal Last Name</label>
-              <input id="legal_last_name" name="legal_last_name" autocomplete="family-name" required>
+              <label for="last_name">Legal Last Name</label>
+              <input id="last_name" name="last_name" autocomplete="family-name" required>
             </div>
             <div>
-              <label for="preferred_first_name">Preferred First Name</label>
-              <input id="preferred_first_name" name="preferred_first_name">
+              <label for="preferred_name">Preferred First Name</label>
+              <input id="preferred_name" name="preferred_name">
             </div>
             <div>
               <label for="email">Email Address</label>
@@ -261,32 +261,32 @@
               <input id="phone" name="phone" type="tel" autocomplete="tel">
             </div>
             <div>
-              <label for="current_city">Current City</label>
-              <input id="current_city" name="current_city" autocomplete="address-level2">
+              <label for="city">Current City</label>
+              <input id="city" name="city" autocomplete="address-level2">
             </div>
             <div>
-              <label for="current_state">Current State</label>
-              <input id="current_state" name="current_state" autocomplete="address-level1">
+              <label for="state">Current State</label>
+              <input id="state" name="state" autocomplete="address-level1">
             </div>
             <div>
               <label for="citizenship_country">Country of Citizenship</label>
               <input id="citizenship_country" name="citizenship_country" autocomplete="country-name" list="dl-countries">
             </div>
             <div>
-              <label for="country_of_birth">Country of Birth</label>
-              <input id="country_of_birth" name="country_of_birth" list="dl-countries">
+              <label for="birth_country">Country of Birth</label>
+              <input id="birth_country" name="birth_country" list="dl-countries">
             </div>
             <div>
-              <label for="date_of_birth">Date of Birth</label>
-              <input id="date_of_birth" name="date_of_birth" type="date" required autocomplete="bday" min="1940-01-01" max="2012-12-31">
+              <label for="birth_date">Date of Birth</label>
+              <input id="birth_date" name="birth_date" type="date" required autocomplete="bday" min="1940-01-01" max="2012-12-31">
             </div>
             <div class="wide">
-              <label for="current_street_address">Street Address</label>
-              <input id="current_street_address" name="current_street_address" autocomplete="street-address">
+              <label for="street_address">Street Address</label>
+              <input id="street_address" name="street_address" autocomplete="street-address">
             </div>
             <div>
-              <label for="current_zip">ZIP / Postal Code</label>
-              <input id="current_zip" name="current_zip" autocomplete="postal-code">
+              <label for="postal_code">ZIP / Postal Code</label>
+              <input id="postal_code" name="postal_code" autocomplete="postal-code">
             </div>
             <div class="wide">
               <h3>Emergency Contact</h3>
@@ -336,12 +336,12 @@
               <input id="portfolio_url" name="portfolio_url" type="url" placeholder="https://...">
             </div>
             <div class="wide">
-              <label for="scholar_or_orcid_url">Google Scholar, ORCID, or Publication Profile Link</label>
-              <input id="scholar_or_orcid_url" name="scholar_or_orcid_url" type="url" placeholder="https://...">
+              <label for="scholar_url">Google Scholar, ORCID, or Publication Profile Link</label>
+              <input id="scholar_url" name="scholar_url" type="url" placeholder="https://...">
             </div>
             <div class="wide">
-              <label for="best_work_samples">Links to Work Samples, Papers, Pull Requests, Projects, or Portfolios</label>
-              <textarea id="best_work_samples" name="best_work_samples"></textarea>
+              <label for="work_samples">Links to Work Samples, Papers, Pull Requests, Projects, or Portfolios</label>
+              <textarea id="work_samples" name="work_samples"></textarea>
             </div>
           </div>
         </fieldset>
@@ -356,8 +356,8 @@
               <input id="school_name" name="school_name" required list="dl-universities">
             </div>
             <div>
-              <label for="school_city_state">School City and State</label>
-              <input id="school_city_state" name="school_city_state">
+              <label for="school_location">School City and State</label>
+              <input id="school_location" name="school_location">
             </div>
             <div>
               <label for="degree_level">Degree Level</label>
@@ -375,8 +375,8 @@
               <input id="degree_name" name="degree_name" placeholder="Example: M.S. Computer Science">
             </div>
             <div>
-              <label for="major_field">Major or Field of Study</label>
-              <input id="major_field" name="major_field" list="dl-majors">
+              <label for="major">Major or Field of Study</label>
+              <input id="major" name="major" list="dl-majors">
             </div>
             <div>
               <label for="cip_code">CIP Code
@@ -407,24 +407,24 @@
               <input id="dso_email" name="dso_email" type="email">
             </div>
             <div>
-              <label for="school_sevis_code">SEVIS School Code, if Known
+              <label for="sevis_school_code">SEVIS School Code, if Known
                 <button type="button" class="info-tooltip-btn" popovertarget="tip-sevis-school-code" aria-label="Where to find the SEVIS school code">&#9432;</button>
                 <a class="info-link" href="https://studyinthestates.dhs.gov/students/prepare/students-and-the-form-i-20" target="_blank" rel="noopener noreferrer" aria-label="Learn more about the Form I-20 on Study in the States (opens in new tab)">Learn more</a>
               </label>
               <div id="tip-sevis-school-code" popover class="info-popover">Find this in the School Information section on page 1 of your Form I-20. It looks like ABC123F00123000.</div>
-              <input id="school_sevis_code" name="school_sevis_code">
+              <input id="sevis_school_code" name="sevis_school_code">
             </div>
             <div>
-              <label for="student_sevis_id">Student SEVIS ID, if Known
+              <label for="sevis_id">Student SEVIS ID, if Known
                 <button type="button" class="info-tooltip-btn" popovertarget="tip-student-sevis-id" aria-label="Where to find your Student SEVIS ID">&#9432;</button>
                 <a class="info-link" href="https://studyinthestates.dhs.gov/students/prepare/students-and-the-form-i-20" target="_blank" rel="noopener noreferrer" aria-label="Learn more about SEVIS ID on Study in the States (opens in new tab)">Learn more</a>
               </label>
               <div id="tip-student-sevis-id" popover class="info-popover">Your SEVIS ID is printed at the top left of your Form I-20 and starts with the letter N followed by 10 digits.</div>
-              <input id="student_sevis_id" name="student_sevis_id" placeholder="N00...">
+              <input id="sevis_id" name="sevis_id" placeholder="N00...">
             </div>
             <div>
-              <label for="student_sevis_id_status">SEVIS ID Status</label>
-              <select id="student_sevis_id_status" name="student_sevis_id_status">
+              <label for="sevis_id_status">SEVIS ID Status</label>
+              <select id="sevis_id_status" name="sevis_id_status">
                 <option value="">Select one</option>
                 <option>Available for secure case folder</option>
                 <option>Applicant can provide later</option>
@@ -453,8 +453,8 @@
               </div>
             </div>
             <div>
-              <label for="last_us_entry_date">Date of Last U.S. Entry (from I-94), if Known</label>
-              <input id="last_us_entry_date" name="last_us_entry_date" type="date">
+              <label for="last_entry_date">Date of Last U.S. Entry (from I-94), if Known</label>
+              <input id="last_entry_date" name="last_entry_date" type="date">
             </div>
             <div>
               <span class="label">Which OPT stage are you in?</span>
@@ -506,7 +506,7 @@
                 <label><input type="checkbox" data-prior-type="STEM OPT"> STEM OPT</label>
                 <label><input type="checkbox" data-prior-type="None" id="prior-type-none"> None of the above</label>
               </div>
-              <input type="hidden" id="prior_cpt_opt" name="prior_cpt_opt">
+              <input type="hidden" id="prior_authorizations" name="prior_authorizations">
             </div>
             <div class="wide">
               <span class="label">Have you ever been out of F-1 status or had a SEVIS record terminated?</span>
@@ -575,12 +575,12 @@
               <input id="prospective_employer_email" name="prospective_employer_email" type="email">
             </div>
             <div>
-              <label for="proposed_wage_or_compensation">Proposed Wage, Salary, or Compensation</label>
-              <input id="proposed_wage_or_compensation" name="proposed_wage_or_compensation" placeholder="e.g., $25/hour, $60k/year, unpaid internship, stipend">
+              <label for="proposed_compensation">Proposed Wage, Salary, or Compensation</label>
+              <input id="proposed_compensation" name="proposed_compensation" placeholder="e.g., $25/hour, $60k/year, unpaid internship, stipend">
             </div>
             <div class="wide">
-              <label for="i983_form">I-983 Training Plan — Describe Status or Notes</label>
-              <textarea id="i983_form" name="i983_form" placeholder="Describe the current status of your I-983 Training Plan, or any notes about employer identification and signing."></textarea>
+              <label for="i983_notes">I-983 Training Plan — Describe Status or Notes</label>
+              <textarea id="i983_notes" name="i983_notes" placeholder="Describe the current status of your I-983 Training Plan, or any notes about employer identification and signing."></textarea>
             </div>
             <div class="wide">
               <label for="authorization_notes">Authorization Notes</label>
@@ -627,8 +627,8 @@
               <textarea id="housing_needs" name="housing_needs"></textarea>
             </div>
             <div>
-              <label for="has_reliable_transportation">Reliable Transportation</label>
-              <select id="has_reliable_transportation" name="has_reliable_transportation">
+              <label for="reliable_transportation">Reliable Transportation</label>
+              <select id="reliable_transportation" name="reliable_transportation">
                 <option value="">Select one</option>
                 <option value="yes">Yes, I have reliable transportation</option>
                 <option value="no">No</option>
@@ -636,8 +636,8 @@
               </select>
             </div>
             <div>
-              <label for="has_valid_drivers_license">Valid U.S. Driver's License</label>
-              <select id="has_valid_drivers_license" name="has_valid_drivers_license">
+              <label for="drivers_license">Valid U.S. Driver's License</label>
+              <select id="drivers_license" name="drivers_license">
                 <option value="">Select one</option>
                 <option value="yes">Yes, I have a valid U.S. driver's license</option>
                 <option value="no">No</option>
@@ -1117,20 +1117,20 @@
               <h3>Grants</h3>
               <div class="grid" style="padding:0;border:0;box-shadow:none;margin:0;">
                 <div>
-                  <label for="grants_gov_interest">Grants.gov Opportunity That Piqued Your Interest
+                  <label for="grants_gov_opportunity">Grants.gov Opportunity That Piqued Your Interest
                     <button type="button" class="info-tooltip-btn" popovertarget="tip-grants-gov" aria-label="What is Grants.gov?">&#9432;</button>
                     <a class="info-link" href="https://www.grants.gov/search-grants" target="_blank" rel="noopener noreferrer" aria-label="Learn more about Grants.gov (opens in new tab)">Learn more</a>
                   </label>
                   <div id="tip-grants-gov" popover class="info-popover">Grants.gov lists every federal grant opportunity. Checking this means you want to help find and prepare federal grant applications.</div>
-                  <textarea id="grants_gov_interest" name="grants_gov_interest" placeholder="Paste opportunity link, opportunity number, title, agency, or search terms."></textarea>
+                  <textarea id="grants_gov_opportunity" name="grants_gov_opportunity" placeholder="Paste opportunity link, opportunity number, title, agency, or search terms."></textarea>
                 </div>
                 <div>
-                  <label for="sam_gov_interest">SAM.gov Notice or Opportunity That Piqued Your Interest
+                  <label for="sam_gov_opportunity">SAM.gov Notice or Opportunity That Piqued Your Interest
                     <button type="button" class="info-tooltip-btn" popovertarget="tip-sam-gov" aria-label="What is SAM.gov?">&#9432;</button>
                     <a class="info-link" href="https://sam.gov/content/opportunities" target="_blank" rel="noopener noreferrer" aria-label="Learn more about SAM.gov (opens in new tab)">Learn more</a>
                   </label>
                   <div id="tip-sam-gov" popover class="info-popover">SAM.gov is where federal contract opportunities are posted and where entities register to do business with the U.S. government.</div>
-                  <textarea id="sam_gov_interest" name="sam_gov_interest" placeholder="Paste notice link, solicitation number, title, agency, or search terms."></textarea>
+                  <textarea id="sam_gov_opportunity" name="sam_gov_opportunity" placeholder="Paste notice link, solicitation number, title, agency, or search terms."></textarea>
                 </div>
                 <div class="wide">
                   <label for="grant_interest_reason">Why do these grants, notices, or agencies interest you?</label>
@@ -1656,7 +1656,7 @@
       /* =====================================================
          PRIOR CPT/OPT CHECKBOX → HIDDEN FIELD SYNC
       ===================================================== */
-      var priorCptOptHidden = document.getElementById('prior_cpt_opt');
+      var priorCptOptHidden = document.getElementById('prior_authorizations');
       var priorNoneCheckbox = document.getElementById('prior-type-none');
       var priorCheckboxes   = $$('#prior-cpt-opt-checkboxes input[type="checkbox"]');
 
@@ -1969,7 +1969,8 @@
       /* =====================================================
          DRAFT AUTOSAVE
       ===================================================== */
-      var DRAFT_KEY  = 'usiva_opt_draft_v1';
+      var DRAFT_KEY     = 'usiva_opt_draft_v2';
+      var DRAFT_KEY_OLD = 'usiva_opt_draft_v1'; /* stale key — cleared on restore */
       var SKIP_NAMES = new Set(['_gotcha', 'token', 'recaptcha_response', 'test', 'owner', 'website', 'budget', 'campaign', 'pageName', 'formType']);
       var saveTimer;
 
@@ -2003,6 +2004,8 @@
       }
 
       function restoreDraft() {
+        /* purge stale v1 draft — field names changed, restoring it would corrupt the form */
+        try { localStorage.removeItem(DRAFT_KEY_OLD); } catch (e) {}
         var raw;
         try { raw = localStorage.getItem(DRAFT_KEY); } catch (e) { return; }
         if (!raw) return;
