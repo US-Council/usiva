@@ -302,6 +302,36 @@
               <label for="country_of_birth">Country of birth</label>
               <input id="country_of_birth" name="country_of_birth" list="dl-countries">
             </div>
+            <div>
+              <label for="date_of_birth">Date of birth</label>
+              <input id="date_of_birth" name="date_of_birth" type="date" required autocomplete="bday" min="1940-01-01" max="2012-12-31">
+            </div>
+            <div class="wide">
+              <label for="current_street_address">Street address</label>
+              <input id="current_street_address" name="current_street_address" autocomplete="street-address">
+            </div>
+            <div>
+              <label for="current_zip">ZIP / Postal code</label>
+              <input id="current_zip" name="current_zip" autocomplete="postal-code">
+            </div>
+            <div class="wide">
+              <span class="label">Emergency contact</span>
+              <span class="field-help">For on-site placements. Optional, but strongly recommended.</span>
+              <div class="grid" style="padding:0;border:0;box-shadow:none;margin:0;">
+                <div>
+                  <label for="emergency_contact_name">Emergency contact name</label>
+                  <input id="emergency_contact_name" name="emergency_contact_name" autocomplete="off">
+                </div>
+                <div>
+                  <label for="emergency_contact_relationship">Relationship</label>
+                  <input id="emergency_contact_relationship" name="emergency_contact_relationship" autocomplete="off" placeholder="e.g., Parent, Spouse, Sibling">
+                </div>
+                <div>
+                  <label for="emergency_contact_phone">Emergency contact phone</label>
+                  <input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" autocomplete="off">
+                </div>
+              </div>
+            </div>
             <div class="wide">
               <label for="resume_url">Resume or CV link</label>
               <input id="resume_url" name="resume_url" type="url" placeholder="https://...">
@@ -412,7 +442,8 @@
             </div>
             <div class="wide">
               <label for="degree_relationship">How should your OPT work relate to your degree?</label>
-              <textarea id="degree_relationship" name="degree_relationship" placeholder="Describe the academic connection between your degree, CIP code, and the work or training you want to do."></textarea>
+              <span class="field-help">For STEM OPT, you must explain in detail how each job duty relates to your major field of study. This is required for I-983 approval.</span>
+              <textarea id="degree_relationship" name="degree_relationship" placeholder="Describe the academic connection between your degree, CIP code, and the work or training you want to do. If applying for STEM OPT, explain how specific job duties align with your major field of study."></textarea>
             </div>
           </div>
         </fieldset>
@@ -423,6 +454,18 @@
           <legend>3. OPT And Work Authorization</legend>
           <div class="grid">
             <div>
+              <span class="label">Are you currently in the United States?</span>
+              <div class="options">
+                <label><input type="radio" name="currently_in_us" value="yes"> Yes, I am currently in the U.S.</label>
+                <label><input type="radio" name="currently_in_us" value="no"> No, I am outside the U.S.</label>
+                <label><input type="radio" name="currently_in_us" value="not_sure"> Not sure</label>
+              </div>
+            </div>
+            <div>
+              <label for="last_us_entry_date">Date of last U.S. entry (from I-94), if known</label>
+              <input id="last_us_entry_date" name="last_us_entry_date" type="date">
+            </div>
+            <div>
               <span class="label">Which OPT stage are you in?</span>
               <div class="options">
                 <label><input type="radio" name="opt_stage" value="initial_opt"> Initial post-completion OPT</label>
@@ -432,7 +475,7 @@
               </div>
             </div>
             <div>
-              <span class="label">Do you already have your EAD?</span>
+              <span class="label">Do you already have your Employment Authorization Document (EAD)?</span>
               <div class="options">
                 <label><input type="radio" name="ead_status" value="approved"> Yes, approved and card received</label>
                 <label><input type="radio" name="ead_status" value="approved_card_pending"> Approved, card not yet received</label>
@@ -455,20 +498,30 @@
             </div>
             <div>
               <label for="hours_per_week">Expected hours per week</label>
+              <span class="field-help">OPT requires at least 20 hours per week.</span>
               <input id="hours_per_week" name="hours_per_week" type="number" min="0" max="80">
             </div>
             <div>
               <label for="unemployment_days_used">OPT unemployment days used, if known</label>
               <input id="unemployment_days_used" name="unemployment_days_used" type="number" min="0">
             </div>
+            <div class="wide">
+              <span class="label">Prior CPT, pre-completion OPT, post-completion OPT, or STEM OPT used? (check all that apply)</span>
+              <!-- UI checkboxes are unnamed; JS joins them into the hidden field below to preserve the D365 mapping -->
+              <div class="options" id="prior-cpt-opt-checkboxes">
+                <label><input type="checkbox" data-prior-type="CPT (Curricular Practical Training)"> CPT (Curricular Practical Training)</label>
+                <label><input type="checkbox" data-prior-type="Pre-completion OPT"> Pre-completion OPT</label>
+                <label><input type="checkbox" data-prior-type="Post-completion OPT"> Post-completion OPT</label>
+                <label><input type="checkbox" data-prior-type="STEM OPT"> STEM OPT</label>
+                <label><input type="checkbox" data-prior-type="None" id="prior-type-none"> None of the above</label>
+              </div>
+              <input type="hidden" id="prior_cpt_opt" name="prior_cpt_opt">
+            </div>
             <div>
-              <label for="prior_cpt_opt">Prior CPT, pre-completion OPT, post-completion OPT, or STEM OPT used?</label>
-              <select id="prior_cpt_opt" name="prior_cpt_opt">
-                <option value="">Select one</option>
-                <option>Yes</option>
-                <option>No</option>
-                <option>Unknown</option>
-              </select>
+              <span class="label">Have you ever been out of F-1 status or had a SEVIS record terminated?</span>
+              <div class="options">
+                <label><input type="checkbox" name="prior_out_of_status" value="yes"> Yes, I have been out of status or had a SEVIS record terminated</label>
+              </div>
             </div>
             <div>
               <span class="label">Will you qualify for STEM OPT?</span>
@@ -486,6 +539,57 @@
                 <label><input type="radio" name="future_sponsorship" value="no"> No</label>
                 <label><input type="radio" name="future_sponsorship" value="not_sure"> Not sure</label>
               </div>
+            </div>
+            <div>
+              <span class="label">Do you have a prospective employer willing to sign the I-983 Training Plan? (STEM OPT)</span>
+              <div class="options">
+                <label><input type="radio" name="i983_employer_willing" value="yes"> Yes, employer identified and willing to sign</label>
+                <label><input type="radio" name="i983_employer_willing" value="no"> No employer identified yet</label>
+                <label><input type="radio" name="i983_employer_willing" value="not_sure"> Not sure / Not applicable</label>
+              </div>
+            </div>
+            <div>
+              <span class="label">Is the prospective employer enrolled in E-Verify? (required for STEM OPT)</span>
+              <div class="options">
+                <label><input type="radio" name="employer_everify_enrolled" value="yes"> Yes</label>
+                <label><input type="radio" name="employer_everify_enrolled" value="no"> No</label>
+                <label><input type="radio" name="employer_everify_enrolled" value="not_sure"> Not sure / Not applicable</label>
+              </div>
+            </div>
+            <div>
+              <label for="training_plan_status">I-983 Training Plan status (STEM OPT)</label>
+              <select id="training_plan_status" name="training_plan_status">
+                <option value="">Select one</option>
+                <option>Already prepared and ready to share</option>
+                <option>Needs to be prepared</option>
+                <option>Not applicable (Initial OPT)</option>
+                <option>Unknown</option>
+              </select>
+            </div>
+            <div>
+              <span class="label">Do you plan to work for more than one employer?</span>
+              <span class="field-help">Note: STEM OPT generally does not allow multiple concurrent employers.</span>
+              <div class="options">
+                <label><input type="radio" name="multiple_employers_planned" value="yes"> Yes, more than one employer</label>
+                <label><input type="radio" name="multiple_employers_planned" value="no"> No, single employer</label>
+                <label><input type="radio" name="multiple_employers_planned" value="not_sure"> Not sure yet</label>
+              </div>
+            </div>
+            <div>
+              <label for="prospective_employer_name">Prospective employer representative name (for I-983 signing)</label>
+              <input id="prospective_employer_name" name="prospective_employer_name" autocomplete="off">
+            </div>
+            <div>
+              <label for="prospective_employer_email">Prospective employer representative email</label>
+              <input id="prospective_employer_email" name="prospective_employer_email" type="email">
+            </div>
+            <div>
+              <label for="proposed_wage_or_compensation">Proposed wage, salary, or compensation</label>
+              <input id="proposed_wage_or_compensation" name="proposed_wage_or_compensation" placeholder="e.g., $25/hour, $60k/year, unpaid internship, stipend">
+            </div>
+            <div class="wide">
+              <label for="i983_form">I-983 Training Plan — describe status or notes</label>
+              <textarea id="i983_form" name="i983_form" placeholder="Describe the current status of your I-983 Training Plan, or any notes about employer identification and signing."></textarea>
             </div>
             <div class="wide">
               <label for="authorization_notes">Authorization notes</label>
@@ -530,6 +634,24 @@
             <div class="wide">
               <label for="housing_needs">Housing needs, constraints, or accessibility considerations</label>
               <textarea id="housing_needs" name="housing_needs"></textarea>
+            </div>
+            <div>
+              <label for="has_reliable_transportation">Reliable transportation</label>
+              <select id="has_reliable_transportation" name="has_reliable_transportation">
+                <option value="">Select one</option>
+                <option value="yes">Yes, I have reliable transportation</option>
+                <option value="no">No</option>
+                <option value="not_sure">Not sure / Working on it</option>
+              </select>
+            </div>
+            <div>
+              <label for="has_valid_drivers_license">Valid U.S. driver's license</label>
+              <select id="has_valid_drivers_license" name="has_valid_drivers_license">
+                <option value="">Select one</option>
+                <option value="yes">Yes, I have a valid U.S. driver's license</option>
+                <option value="no">No</option>
+                <option value="international">International license only</option>
+              </select>
             </div>
           </div>
         </fieldset>
@@ -610,22 +732,29 @@
       <section class="section">
         <fieldset>
           <legend>6. Dream Quest Fit</legend>
-          <p class="hint">All accepted OPT Dream Quest students move through the full Dream Quest pathway. Use this section to understand interests, not to let applicants choose a stage.</p>
+          <p class="hint">If accepted, you will move through all stages of the Dream Quest pathway. This section helps us understand your interests and learning preferences — your selections here do not determine your placement.</p>
           <div class="grid">
             <div class="wide">
               <span class="label">Which learning areas interest you?</span>
               <div class="options inline">
-                <label><input type="checkbox" name="learning_areas" value="ai_emergent_tech"> AI and Emergent Tech</label>
-                <label><input type="checkbox" name="learning_areas" value="ag_homesteading"> Ag and Homesteading Sciences</label>
-                <label><input type="checkbox" name="learning_areas" value="hospitality_homesteading"> Hospitality and Homesteading</label>
-                <label><input type="checkbox" name="learning_areas" value="timmsi"> TIMMSI</label>
-                <label><input type="checkbox" name="learning_areas" value="case"> CASE</label>
-                <label><input type="checkbox" name="learning_areas" value="material_sciences"> Material sciences</label>
+                <label><input type="checkbox" name="learning_areas" value="ai_emergent_tech"> AI and Emergent Tech <button type="button" class="info-tooltip-btn" popovertarget="tip-ai-emergent" aria-label="Learn more about AI and Emergent Tech">&#9432;</button></label>
+                <label><input type="checkbox" name="learning_areas" value="ag_homesteading"> Ag and Homesteading Sciences <button type="button" class="info-tooltip-btn" popovertarget="tip-ag-homesteading" aria-label="Learn more about Ag and Homesteading Sciences">&#9432;</button></label>
+                <label><input type="checkbox" name="learning_areas" value="hospitality_homesteading"> Hospitality and Homesteading <button type="button" class="info-tooltip-btn" popovertarget="tip-hospitality" aria-label="Learn more about Hospitality and Homesteading">&#9432;</button></label>
+                <label><input type="checkbox" name="learning_areas" value="timmsi"> TIMMSI <button type="button" class="info-tooltip-btn" popovertarget="tip-timmsi" aria-label="Learn more about TIMMSI">&#9432;</button></label>
+                <label><input type="checkbox" name="learning_areas" value="case"> CASE <button type="button" class="info-tooltip-btn" popovertarget="tip-case" aria-label="Learn more about CASE">&#9432;</button></label>
+                <label><input type="checkbox" name="learning_areas" value="material_sciences"> Material Sciences <button type="button" class="info-tooltip-btn" popovertarget="tip-material-sciences" aria-label="Learn more about Material Sciences">&#9432;</button></label>
                 <label><input type="checkbox" name="learning_areas" value="software_development"> Software development</label>
                 <label><input type="checkbox" name="learning_areas" value="solution_architecture"> Solution architecture</label>
                 <label><input type="checkbox" name="learning_areas" value="research_development"> Research and development</label>
                 <label><input type="checkbox" name="learning_areas" value="grant_development"> Grant or proposal development</label>
               </div>
+              <!-- Popover tooltips for learning areas -->
+              <div id="tip-ai-emergent" popover class="info-popover">Artificial intelligence, machine learning, and emerging technology research and development.</div>
+              <div id="tip-ag-homesteading" popover class="info-popover">Agriculture, food systems, land management, and sustainable living.</div>
+              <div id="tip-hospitality" popover class="info-popover">Guest care, food service, property operations, and community living.</div>
+              <div id="tip-timmsi" popover class="info-popover">Technology, Innovation, and Multi-stakeholder Systems Integration.</div>
+              <div id="tip-case" popover class="info-popover">Community-Anchored Systems Engineering.</div>
+              <div id="tip-material-sciences" popover class="info-popover">Research and development of new materials, composites, and manufacturing methods.</div>
             </div>
             <div class="wide">
               <label for="spark_interest">What subjects, problems, tools, or industries currently spark your interest?</label>
@@ -656,8 +785,8 @@
                 <label><input type="checkbox" name="technical_skills" value="cloud"> Cloud platforms</label>
                 <label><input type="checkbox" name="technical_skills" value="devops"> DevOps or GitOps</label>
                 <label><input type="checkbox" name="technical_skills" value="cybersecurity"> Cybersecurity</label>
-                <label><input type="checkbox" name="technical_skills" value="bim"> BIM, CAD, or architecture tools</label>
-                <label><input type="checkbox" name="technical_skills" value="sdlc"> SDLC, QA, release, or product launch</label>
+                <label><input type="checkbox" name="technical_skills" value="bim"> BIM (Building Information Modeling), CAD (Computer-Aided Design), or architecture tools</label>
+                <label><input type="checkbox" name="technical_skills" value="sdlc"> Software Development Life Cycle (SDLC), QA, release, or product launch</label>
               </div>
             </div>
             <div>
@@ -808,7 +937,8 @@
             <div>
               <span class="label">Can you participate in Focus Hive agile routines?</span>
               <div class="options">
-                <label><input type="checkbox" name="focus_hive_readiness" value="daily_updates"> Daily Focus In / Focus Out updates</label>
+                <label><input type="checkbox" name="focus_hive_readiness" value="daily_updates"> Daily Focus In / Focus Out updates <button type="button" class="info-tooltip-btn" popovertarget="tip-focus-inout" aria-label="Learn more about Focus In / Focus Out updates">&#9432;</button></label>
+                <div id="tip-focus-inout" popover class="info-popover">A daily check-in and check-out brief where you share your focus for the day, any blockers, and what you achieved before ending work.</div>
                 <label><input type="checkbox" name="focus_hive_readiness" value="scrum"> Scrum or swarm-intelligence meetings</label>
                 <label><input type="checkbox" name="focus_hive_readiness" value="issues"> Issue creation and updates</label>
                 <label><input type="checkbox" name="focus_hive_readiness" value="prs"> Pull requests or reviewable artifacts</label>
@@ -820,12 +950,16 @@
             <div>
               <span class="label">Assessment evidence you are comfortable with</span>
               <div class="options">
-                <label><input type="checkbox" name="assessment_evidence" value="spark_score"> SPARK Score</label>
-                <label><input type="checkbox" name="assessment_evidence" value="curiosity_score"> Curiosity Score</label>
-                <label><input type="checkbox" name="assessment_evidence" value="focus_tracker"> Focus Tracker</label>
-                <label><input type="checkbox" name="assessment_evidence" value="git_impact_matrix"> Git Impact Matrix</label>
+                <label><input type="checkbox" name="assessment_evidence" value="spark_score"> SPARK Score <button type="button" class="info-tooltip-btn" popovertarget="tip-spark" aria-label="Learn more about SPARK Score">&#9432;</button></label>
+                <label><input type="checkbox" name="assessment_evidence" value="curiosity_score"> Curiosity Score <button type="button" class="info-tooltip-btn" popovertarget="tip-curiosity" aria-label="Learn more about Curiosity Score">&#9432;</button></label>
+                <label><input type="checkbox" name="assessment_evidence" value="focus_tracker"> Focus Tracker <button type="button" class="info-tooltip-btn" popovertarget="tip-focus-tracker" aria-label="Learn more about Focus Tracker">&#9432;</button></label>
+                <label><input type="checkbox" name="assessment_evidence" value="git_impact_matrix"> Git Impact Matrix <button type="button" class="info-tooltip-btn" popovertarget="tip-git-impact" aria-label="Learn more about Git Impact Matrix">&#9432;</button></label>
                 <label><input type="checkbox" name="assessment_evidence" value="portfolio"> Portfolio or capstone review</label>
               </div>
+              <div id="tip-spark" popover class="info-popover">Measures your curiosity and motivation level at the start of the program.</div>
+              <div id="tip-curiosity" popover class="info-popover">Tracks how deeply you explore topics and ask questions throughout the program.</div>
+              <div id="tip-focus-tracker" popover class="info-popover">Logs time on focused, deep work versus distractions to measure productive engagement.</div>
+              <div id="tip-git-impact" popover class="info-popover">Measures code contributions, reviews, and collaboration impact across Git projects.</div>
             </div>
             <div class="wide">
               <label for="gitops_experience">Describe your experience with GitHub, GitLab, issues, pull requests, commits, reviews, project boards, or release notes.</label>
@@ -865,6 +999,21 @@
                 <label><input type="checkbox" name="academic_documents" value="portfolio"> Portfolio or work samples</label>
                 <label><input type="checkbox" name="academic_documents" value="recommendations"> References or recommendations</label>
               </div>
+            </div>
+            <div>
+              <span class="label">STEM OPT and Training Plan documents</span>
+              <div class="options">
+                <label><input type="checkbox" name="documents_status" value="i983_training_plan"> I-983 Training Plan (signed by student, employer, and DSO)</label>
+                <label><input type="checkbox" name="documents_status" value="everify_enrollment"> Employer E-Verify enrollment confirmation</label>
+              </div>
+            </div>
+            <div>
+              <label for="passport_expiration_date">Passport expiration date</label>
+              <input id="passport_expiration_date" name="passport_expiration_date" type="date">
+            </div>
+            <div>
+              <label for="f1_visa_expiration_date">F-1 visa stamp expiration date</label>
+              <input id="f1_visa_expiration_date" name="f1_visa_expiration_date" type="date">
             </div>
             <div class="wide">
               <label for="missing_documents">Which required documents are missing, expired, inconsistent, or hard to obtain?</label>
@@ -949,16 +1098,18 @@
                 <label><input type="checkbox" name="acknowledgments" value="not_legal_advice"> I understand this application is not legal advice and does not guarantee immigration, employment, housing, or school-program approval.</label>
                 <label><input type="checkbox" name="acknowledgments" value="truthful"> I confirm the information I provide is accurate to the best of my knowledge.</label>
                 <label><input type="checkbox" name="acknowledgments" value="secure_docs"> I understand sensitive documents should be provided through a secure case process, not public email or a public repository.</label>
-                <label><input type="checkbox" name="acknowledgments" value="gitops_tracking"> I understand program participation may be tracked through Dream Quest, Focus Tracker, GitOps artifacts, meetings, reviews, and score summaries.</label>
+                <label><input type="checkbox" name="acknowledgments" value="gitops_tracking"> I understand program participation may be tracked through the Dream Quest learning platform, daily focus updates, Git collaboration history, team meetings, and progress reviews.</label>
+                <label><input type="checkbox" name="acknowledgments" value="material_change"> I understand that any material changes to my I-983 training plan must be reported to my DSO within 10 days (STEM OPT requirement).</label>
               </div>
             </div>
           </div>
         </fieldset>
       </section>
 
-      <section class="section">
+      <section class="section section-internal-only">
+        <p class="hint internal-only-hint">This section is for USIVA staff. Applicants may leave it blank.</p>
         <fieldset>
-          <legend>13. Internal Routing After Submission</legend>
+          <legend><span class="internal-only-badge">Internal Use Only</span> 13. Internal Routing After Submission</legend>
           <div class="grid">
             <div>
               <label for="recommended_case_system">Recommended case system</label>
@@ -1000,12 +1151,13 @@
     <!-- Success panel (hidden until form submits successfully) -->
     <div id="opt-success-panel" class="opt-success-panel" hidden tabindex="-1" aria-live="polite">
       <h2>Application Received</h2>
-      <p>Thank you for submitting your F-1 OPT application. USIVA will review it and follow up through the case process within 3-5 business days.</p>
-      <p>Next steps:</p>
+      <p>Thank you for submitting your F-1 OPT application. Here is what happens next:</p>
       <ol>
-        <li>Watch for a confirmation email from info@usiva.org.</li>
-        <li>A USIVA case manager will contact you to begin the secure case process.</li>
-        <li>Gather your I-20, EAD (if available), and other documents for the secure case folder.</li>
+        <li>Watch for a confirmation email from <a href="mailto:info@usiva.org">info@usiva.org</a> — typically within 24–48 hours.</li>
+        <li>A USIVA case manager will contact you to review your documents and answer questions about your OPT timeline.</li>
+        <li>Schedule a DSO check-in to verify your I-20, SEVIS status, and OPT or STEM OPT eligibility.</li>
+        <li>If applying for STEM OPT, begin I-983 Training Plan preparation and coordinate with your prospective employer for signing and E-Verify confirmation.</li>
+        <li>Gather your I-20, Employment Authorization Document (EAD) if available, passport, I-94, and any academic documents for the secure case folder.</li>
       </ol>
     </div>
 
@@ -1047,8 +1199,26 @@
       if (!form) return;
 
       /* =====================================================
-         ONSITE SECTION TOGGLE
+         ONSITE SECTION TOGGLE + SECTION RENUMBERING
       ===================================================== */
+      function renumberSections() {
+        var allSections = $$('section.section', form);
+        var count = 1;
+        allSections.forEach(function (sec) {
+          var legend = $('fieldset > legend', sec);
+          if (!legend) return;
+          /* skip hidden conditional sections */
+          if (sec.classList.contains('conditional') && !sec.classList.contains('visible')) return;
+          legend.childNodes.forEach(function (node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+              /* replace leading number like "5. " or "13. " */
+              node.textContent = node.textContent.replace(/^\d+\.\s*/, count + '. ');
+            }
+          });
+          count++;
+        });
+      }
+
       function updateOnsiteSection() {
         var sel = $('input[name="location_preference"]:checked', form);
         var show = sel && sel.dataset.toggle === 'onsite';
@@ -1059,11 +1229,45 @@
             if (!show && el.dataset.origRequired) el.removeAttribute('required');
           });
         }
+        renumberSections();
       }
       $$('input[name="location_preference"]', form).forEach(function (r) {
         r.addEventListener('change', updateOnsiteSection);
       });
       updateOnsiteSection();
+
+      /* =====================================================
+         PRIOR CPT/OPT CHECKBOX → HIDDEN FIELD SYNC
+         UI checkboxes have no name; JS joins checked values
+         into #prior_cpt_opt (name="prior_cpt_opt") to keep
+         the existing D365 field mapping intact.
+      ===================================================== */
+      var priorCptOptHidden = document.getElementById('prior_cpt_opt');
+      var priorNoneCheckbox = document.getElementById('prior-type-none');
+      var priorCheckboxes   = $$('#prior-cpt-opt-checkboxes input[type="checkbox"]');
+
+      function syncPriorCptOpt() {
+        if (!priorCptOptHidden) return;
+        var checked = priorCheckboxes.filter(function (cb) { return cb.checked && cb !== priorNoneCheckbox; });
+        if (priorNoneCheckbox && priorNoneCheckbox.checked) {
+          priorCptOptHidden.value = 'None';
+        } else {
+          priorCptOptHidden.value = checked.map(function (cb) { return cb.dataset.priorType; }).join(', ') || '';
+        }
+      }
+
+      priorCheckboxes.forEach(function (cb) {
+        cb.addEventListener('change', function () {
+          /* "None" is mutually exclusive with the others */
+          if (cb === priorNoneCheckbox && cb.checked) {
+            priorCheckboxes.forEach(function (other) { if (other !== priorNoneCheckbox) other.checked = false; });
+          } else if (cb.checked && priorNoneCheckbox) {
+            priorNoneCheckbox.checked = false;
+          }
+          syncPriorCptOpt();
+        });
+      });
+      syncPriorCptOpt();
 
       /* =====================================================
          DRAFT AUTOSAVE
@@ -1171,7 +1375,7 @@
           return el.validationMessage || 'Invalid value.';
         }
         /* custom rules */
-        if (el.name === 'phone' && el.value.trim()) {
+        if ((el.name === 'phone' || el.name === 'emergency_contact_phone') && el.value.trim()) {
           if (!/^\+?[\d\s\-().]{7,20}$/.test(el.value.trim())) return 'Please enter a valid phone number.';
         }
         if (el.name === 'cip_code' && el.value.trim()) {
