@@ -651,3 +651,9 @@ html { scroll-behavior: smooth; }
 .opt-form .section:not(.step-hidden) {
   content-visibility: visible;
 }
+
+/* Ensure [hidden] beats .btn_1 { display: inline-block } from style.css */
+.btn_1[hidden],
+.opt-wizard-nav .btn_1[hidden] {
+  display: none !important;
+}
