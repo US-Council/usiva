@@ -657,3 +657,142 @@ html { scroll-behavior: smooth; }
 .opt-wizard-nav .btn_1[hidden] {
   display: none !important;
 }
+
+/* ===== Form subsection h3 headings ===== */
+.opt-form h3 {
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 18px 0 10px;
+}
+.opt-form fieldset > .grid > .wide > h3:first-child,
+.opt-form h3:first-child {
+  margin-top: 4px;
+}
+
+/* ===== Rating chips (Section 6 On-Site skills) ===== */
+.rating-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f2f5;
+}
+.rating-row:last-of-type { border-bottom: none; }
+.rating-label {
+  color: #333;
+  flex: 1 1 180px;
+  font-size: 14px;
+  min-width: 0;
+}
+.rating-chips {
+  display: flex;
+  gap: 6px;
+}
+.rating-chip {
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 400;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.rating-chip span {
+  align-items: center;
+  background: #f0f5fa;
+  border: 2px solid #d2d8df;
+  border-radius: 6px;
+  color: #555;
+  display: flex;
+  font-size: 15px;
+  font-weight: 600;
+  height: 44px;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  width: 44px;
+}
+.rating-chip input.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.rating-chip input:checked + span {
+  background: #0054a6;
+  border-color: #0054a6;
+  color: #fff;
+}
+.rating-chip input:focus-visible + span {
+  outline: 3px solid #0054a6;
+  outline-offset: 2px;
+}
+.rating-chip span:hover {
+  background: #e0ecfa;
+  border-color: #0054a6;
+  color: #0054a6;
+}
+.rating-chip input:checked + span:hover {
+  background: #003d80;
+  border-color: #003d80;
+  color: #fff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rating-chip span { transition: none; }
+}
+@media (max-width: 480px) {
+  .rating-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* ===== Government agency row builder ===== */
+.gov-agency-row {
+  align-items: flex-start;
+  border: 1px solid #e3e7ed;
+  border-radius: 4px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 10px;
+}
+.gov-agency-row-fields {
+  display: grid;
+  flex: 1;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+.gov-agency-row-fields input {
+  background: #fff;
+  border: 1px solid #d2d8df;
+  border-radius: 3px;
+  color: #555;
+  font-size: 14px;
+  padding: 8px 10px;
+  width: 100%;
+}
+.gov-agency-row-fields input:focus {
+  border-color: #0054a6;
+  box-shadow: 0 0 0 3px rgba(0,84,166,0.12);
+  outline: 0;
+}
+.ga-remove-btn {
+  background: #fff;
+  border: 1px solid #d2d8df;
+  border-radius: 3px;
+  color: #a43122;
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-size: 14px;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 4px 8px;
+}
+.ga-remove-btn:hover { background: #fff0ee; border-color: #a43122; }

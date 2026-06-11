@@ -215,10 +215,10 @@
 
     <!-- Progress bar / wizard position indicator -->
     <div class="opt-progress-wrap" aria-label="Application progress">
-      <div class="opt-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="13" aria-valuenow="1">
+      <div class="opt-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="18" aria-valuenow="1">
         <div id="opt-progress-fill" class="opt-progress-fill" style="width:0%"></div>
       </div>
-      <p id="opt-progress-text" class="opt-progress-text" aria-live="polite">Section 1 of 13</p>
+      <p id="opt-progress-text" class="opt-progress-text" aria-live="polite">Section 1 of 18</p>
     </div>
 
     <form id="opt-application" class="opt-form" action="https://door.taolearning.org/api/form" method="POST">
@@ -234,7 +234,7 @@
       <input type="hidden" name="formType" value="opt">
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">1. Applicant Identity</legend>
+          <legend tabindex="-1">1. Identity</legend>
           <div class="grid">
             <div>
               <label for="legal_first_name">Legal First Name</label>
@@ -289,7 +289,7 @@
               <input id="current_zip" name="current_zip" autocomplete="postal-code">
             </div>
             <div class="wide">
-              <span class="label">Emergency Contact</span>
+              <h3>Emergency Contact</h3>
               <span class="field-help">For on-site placements. Optional, but strongly recommended.</span>
               <div class="grid" style="padding:0;border:0;box-shadow:none;margin:0;">
                 <div>
@@ -306,6 +306,15 @@
                 </div>
               </div>
             </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="section">
+        <fieldset>
+          <legend tabindex="-1">2. Portfolio</legend>
+          <p class="hint">Share where we can see your work. All fields optional.</p>
+          <div class="grid">
             <div class="wide">
               <label for="resume_url">Resume or CV Link</label>
               <input id="resume_url" name="resume_url" type="url" placeholder="https://...">
@@ -330,13 +339,17 @@
               <label for="scholar_or_orcid_url">Google Scholar, ORCID, or Publication Profile Link</label>
               <input id="scholar_or_orcid_url" name="scholar_or_orcid_url" type="url" placeholder="https://...">
             </div>
+            <div class="wide">
+              <label for="best_work_samples">Links to Work Samples, Papers, Pull Requests, Projects, or Portfolios</label>
+              <textarea id="best_work_samples" name="best_work_samples"></textarea>
+            </div>
           </div>
         </fieldset>
       </section>
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">2. School and Degree</legend>
+          <legend tabindex="-1">3. Education</legend>
           <div class="grid">
             <div>
               <label for="school_name">School Attending or Recently Attended</label>
@@ -429,7 +442,7 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">3. OPT and Work Authorization</legend>
+          <legend tabindex="-1">4. Work Authorization</legend>
           <div class="grid opt-grid-start">
             <div>
               <span class="label">Are you currently in the United States?</span>
@@ -484,7 +497,7 @@
               <input id="unemployment_days_used" name="unemployment_days_used" type="number" min="0">
             </div>
             <div class="wide">
-              <span class="label">Prior CPT, pre-completion OPT, post-completion OPT, or STEM OPT used? (check all that apply)</span>
+              <h3>Prior CPT, pre-completion OPT, post-completion OPT, or STEM OPT used? (check all that apply)</h3>
               <!-- UI checkboxes are unnamed; JS joins them into the hidden field below to preserve the D365 mapping -->
               <div class="options" id="prior-cpt-opt-checkboxes">
                 <label><input type="checkbox" data-prior-type="CPT (Curricular Practical Training)"> CPT (Curricular Practical Training)</label>
@@ -579,7 +592,7 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">4. Work Location, Housing, and Community Fit</legend>
+          <legend tabindex="-1">5. Community &amp; Culture</legend>
           <div class="grid">
             <div>
               <span class="label">Do you want to live on-site or work remote?</span>
@@ -637,43 +650,201 @@
 
       <section id="onsite-section" class="section conditional" aria-live="polite">
         <fieldset>
-          <legend tabindex="-1">5. On-Site Homesteading and Hospitality Skills</legend>
+          <legend tabindex="-1">6. On-Site Homesteading and Hospitality Skills</legend>
           <p class="hint">Use this section only for applicants interested in on-site, hybrid, or community housing placement.</p>
 
           <h3>Skill Ratings</h3>
-          <table class="matrix">
-            <thead>
-              <tr>
-                <th>Skill area</th>
-                <th>1<br>No skill</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5<br>Strong</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>Hospitality and guest care</td><td><input type="radio" name="skill_hospitality" value="1"></td><td><input type="radio" name="skill_hospitality" value="2"></td><td><input type="radio" name="skill_hospitality" value="3"></td><td><input type="radio" name="skill_hospitality" value="4"></td><td><input type="radio" name="skill_hospitality" value="5"></td></tr>
-              <tr><td>Culinary arts, meal prep, or food service</td><td><input type="radio" name="skill_culinary" value="1"></td><td><input type="radio" name="skill_culinary" value="2"></td><td><input type="radio" name="skill_culinary" value="3"></td><td><input type="radio" name="skill_culinary" value="4"></td><td><input type="radio" name="skill_culinary" value="5"></td></tr>
-              <tr><td>Agriculture, gardening, or greenhouse work</td><td><input type="radio" name="skill_agriculture" value="1"></td><td><input type="radio" name="skill_agriculture" value="2"></td><td><input type="radio" name="skill_agriculture" value="3"></td><td><input type="radio" name="skill_agriculture" value="4"></td><td><input type="radio" name="skill_agriculture" value="5"></td></tr>
-              <tr><td>Land management, landscaping, or outdoor work</td><td><input type="radio" name="skill_land_management" value="1"></td><td><input type="radio" name="skill_land_management" value="2"></td><td><input type="radio" name="skill_land_management" value="3"></td><td><input type="radio" name="skill_land_management" value="4"></td><td><input type="radio" name="skill_land_management" value="5"></td></tr>
-              <tr><td>Home restoration or preservation</td><td><input type="radio" name="skill_home_restoration" value="1"></td><td><input type="radio" name="skill_home_restoration" value="2"></td><td><input type="radio" name="skill_home_restoration" value="3"></td><td><input type="radio" name="skill_home_restoration" value="4"></td><td><input type="radio" name="skill_home_restoration" value="5"></td></tr>
-              <tr><td>Construction or remodeling</td><td><input type="radio" name="skill_construction" value="1"></td><td><input type="radio" name="skill_construction" value="2"></td><td><input type="radio" name="skill_construction" value="3"></td><td><input type="radio" name="skill_construction" value="4"></td><td><input type="radio" name="skill_construction" value="5"></td></tr>
-              <tr><td>Carpentry</td><td><input type="radio" name="skill_carpentry" value="1"></td><td><input type="radio" name="skill_carpentry" value="2"></td><td><input type="radio" name="skill_carpentry" value="3"></td><td><input type="radio" name="skill_carpentry" value="4"></td><td><input type="radio" name="skill_carpentry" value="5"></td></tr>
-              <tr><td>Electrical</td><td><input type="radio" name="skill_electrical" value="1"></td><td><input type="radio" name="skill_electrical" value="2"></td><td><input type="radio" name="skill_electrical" value="3"></td><td><input type="radio" name="skill_electrical" value="4"></td><td><input type="radio" name="skill_electrical" value="5"></td></tr>
-              <tr><td>Plumbing</td><td><input type="radio" name="skill_plumbing" value="1"></td><td><input type="radio" name="skill_plumbing" value="2"></td><td><input type="radio" name="skill_plumbing" value="3"></td><td><input type="radio" name="skill_plumbing" value="4"></td><td><input type="radio" name="skill_plumbing" value="5"></td></tr>
-              <tr><td>HVAC</td><td><input type="radio" name="skill_hvac" value="1"></td><td><input type="radio" name="skill_hvac" value="2"></td><td><input type="radio" name="skill_hvac" value="3"></td><td><input type="radio" name="skill_hvac" value="4"></td><td><input type="radio" name="skill_hvac" value="5"></td></tr>
-              <tr><td>Roofing</td><td><input type="radio" name="skill_roofing" value="1"></td><td><input type="radio" name="skill_roofing" value="2"></td><td><input type="radio" name="skill_roofing" value="3"></td><td><input type="radio" name="skill_roofing" value="4"></td><td><input type="radio" name="skill_roofing" value="5"></td></tr>
-              <tr><td>Architecture or architectural design</td><td><input type="radio" name="skill_architecture" value="1"></td><td><input type="radio" name="skill_architecture" value="2"></td><td><input type="radio" name="skill_architecture" value="3"></td><td><input type="radio" name="skill_architecture" value="4"></td><td><input type="radio" name="skill_architecture" value="5"></td></tr>
-              <tr><td>Project management</td><td><input type="radio" name="skill_project_management" value="1"></td><td><input type="radio" name="skill_project_management" value="2"></td><td><input type="radio" name="skill_project_management" value="3"></td><td><input type="radio" name="skill_project_management" value="4"></td><td><input type="radio" name="skill_project_management" value="5"></td></tr>
-              <tr><td>Leadership</td><td><input type="radio" name="skill_leadership" value="1"></td><td><input type="radio" name="skill_leadership" value="2"></td><td><input type="radio" name="skill_leadership" value="3"></td><td><input type="radio" name="skill_leadership" value="4"></td><td><input type="radio" name="skill_leadership" value="5"></td></tr>
-              <tr><td>Communication</td><td><input type="radio" name="skill_communication" value="1"></td><td><input type="radio" name="skill_communication" value="2"></td><td><input type="radio" name="skill_communication" value="3"></td><td><input type="radio" name="skill_communication" value="4"></td><td><input type="radio" name="skill_communication" value="5"></td></tr>
-              <tr><td>Office 365 or Microsoft 365</td><td><input type="radio" name="skill_m365" value="1"></td><td><input type="radio" name="skill_m365" value="2"></td><td><input type="radio" name="skill_m365" value="3"></td><td><input type="radio" name="skill_m365" value="4"></td><td><input type="radio" name="skill_m365" value="5"></td></tr>
-              <tr><td>Research and documentation</td><td><input type="radio" name="skill_research" value="1"></td><td><input type="radio" name="skill_research" value="2"></td><td><input type="radio" name="skill_research" value="3"></td><td><input type="radio" name="skill_research" value="4"></td><td><input type="radio" name="skill_research" value="5"></td></tr>
-              <tr><td>Agile or Scrum participation</td><td><input type="radio" name="skill_agile" value="1"></td><td><input type="radio" name="skill_agile" value="2"></td><td><input type="radio" name="skill_agile" value="3"></td><td><input type="radio" name="skill_agile" value="4"></td><td><input type="radio" name="skill_agile" value="5"></td></tr>
-              <tr><td>Sales, reservations, or customer follow-up</td><td><input type="radio" name="skill_sales" value="1"></td><td><input type="radio" name="skill_sales" value="2"></td><td><input type="radio" name="skill_sales" value="3"></td><td><input type="radio" name="skill_sales" value="4"></td><td><input type="radio" name="skill_sales" value="5"></td></tr>
-            </tbody>
-          </table>
+          <p class="hint">1 = No skill &middot; 5 = Strong</p>
+          <div class="rating-row">
+            <span class="rating-label">Hospitality and guest care</span>
+            <div class="rating-chips" role="group" aria-label="Hospitality and guest care rating">
+              <label class="rating-chip"><input type="radio" name="skill_hospitality" value="1" class="visually-hidden" aria-label="Hospitality and guest care — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hospitality" value="2" class="visually-hidden" aria-label="Hospitality and guest care — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hospitality" value="3" class="visually-hidden" aria-label="Hospitality and guest care — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hospitality" value="4" class="visually-hidden" aria-label="Hospitality and guest care — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hospitality" value="5" class="visually-hidden" aria-label="Hospitality and guest care — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Culinary arts, meal prep, or food service</span>
+            <div class="rating-chips" role="group" aria-label="Culinary arts, meal prep, or food service rating">
+              <label class="rating-chip"><input type="radio" name="skill_culinary" value="1" class="visually-hidden" aria-label="Culinary arts, meal prep, or food service — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_culinary" value="2" class="visually-hidden" aria-label="Culinary arts, meal prep, or food service — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_culinary" value="3" class="visually-hidden" aria-label="Culinary arts, meal prep, or food service — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_culinary" value="4" class="visually-hidden" aria-label="Culinary arts, meal prep, or food service — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_culinary" value="5" class="visually-hidden" aria-label="Culinary arts, meal prep, or food service — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Agriculture, gardening, or greenhouse work</span>
+            <div class="rating-chips" role="group" aria-label="Agriculture, gardening, or greenhouse work rating">
+              <label class="rating-chip"><input type="radio" name="skill_agriculture" value="1" class="visually-hidden" aria-label="Agriculture, gardening, or greenhouse work — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agriculture" value="2" class="visually-hidden" aria-label="Agriculture, gardening, or greenhouse work — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agriculture" value="3" class="visually-hidden" aria-label="Agriculture, gardening, or greenhouse work — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agriculture" value="4" class="visually-hidden" aria-label="Agriculture, gardening, or greenhouse work — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agriculture" value="5" class="visually-hidden" aria-label="Agriculture, gardening, or greenhouse work — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Land management, landscaping, or outdoor work</span>
+            <div class="rating-chips" role="group" aria-label="Land management, landscaping, or outdoor work rating">
+              <label class="rating-chip"><input type="radio" name="skill_land_management" value="1" class="visually-hidden" aria-label="Land management, landscaping, or outdoor work — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_land_management" value="2" class="visually-hidden" aria-label="Land management, landscaping, or outdoor work — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_land_management" value="3" class="visually-hidden" aria-label="Land management, landscaping, or outdoor work — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_land_management" value="4" class="visually-hidden" aria-label="Land management, landscaping, or outdoor work — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_land_management" value="5" class="visually-hidden" aria-label="Land management, landscaping, or outdoor work — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Home restoration or preservation</span>
+            <div class="rating-chips" role="group" aria-label="Home restoration or preservation rating">
+              <label class="rating-chip"><input type="radio" name="skill_home_restoration" value="1" class="visually-hidden" aria-label="Home restoration or preservation — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_home_restoration" value="2" class="visually-hidden" aria-label="Home restoration or preservation — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_home_restoration" value="3" class="visually-hidden" aria-label="Home restoration or preservation — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_home_restoration" value="4" class="visually-hidden" aria-label="Home restoration or preservation — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_home_restoration" value="5" class="visually-hidden" aria-label="Home restoration or preservation — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Construction or remodeling</span>
+            <div class="rating-chips" role="group" aria-label="Construction or remodeling rating">
+              <label class="rating-chip"><input type="radio" name="skill_construction" value="1" class="visually-hidden" aria-label="Construction or remodeling — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_construction" value="2" class="visually-hidden" aria-label="Construction or remodeling — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_construction" value="3" class="visually-hidden" aria-label="Construction or remodeling — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_construction" value="4" class="visually-hidden" aria-label="Construction or remodeling — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_construction" value="5" class="visually-hidden" aria-label="Construction or remodeling — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Carpentry</span>
+            <div class="rating-chips" role="group" aria-label="Carpentry rating">
+              <label class="rating-chip"><input type="radio" name="skill_carpentry" value="1" class="visually-hidden" aria-label="Carpentry — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_carpentry" value="2" class="visually-hidden" aria-label="Carpentry — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_carpentry" value="3" class="visually-hidden" aria-label="Carpentry — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_carpentry" value="4" class="visually-hidden" aria-label="Carpentry — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_carpentry" value="5" class="visually-hidden" aria-label="Carpentry — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Electrical</span>
+            <div class="rating-chips" role="group" aria-label="Electrical rating">
+              <label class="rating-chip"><input type="radio" name="skill_electrical" value="1" class="visually-hidden" aria-label="Electrical — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_electrical" value="2" class="visually-hidden" aria-label="Electrical — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_electrical" value="3" class="visually-hidden" aria-label="Electrical — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_electrical" value="4" class="visually-hidden" aria-label="Electrical — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_electrical" value="5" class="visually-hidden" aria-label="Electrical — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Plumbing</span>
+            <div class="rating-chips" role="group" aria-label="Plumbing rating">
+              <label class="rating-chip"><input type="radio" name="skill_plumbing" value="1" class="visually-hidden" aria-label="Plumbing — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_plumbing" value="2" class="visually-hidden" aria-label="Plumbing — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_plumbing" value="3" class="visually-hidden" aria-label="Plumbing — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_plumbing" value="4" class="visually-hidden" aria-label="Plumbing — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_plumbing" value="5" class="visually-hidden" aria-label="Plumbing — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">HVAC</span>
+            <div class="rating-chips" role="group" aria-label="HVAC rating">
+              <label class="rating-chip"><input type="radio" name="skill_hvac" value="1" class="visually-hidden" aria-label="HVAC — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hvac" value="2" class="visually-hidden" aria-label="HVAC — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hvac" value="3" class="visually-hidden" aria-label="HVAC — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hvac" value="4" class="visually-hidden" aria-label="HVAC — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_hvac" value="5" class="visually-hidden" aria-label="HVAC — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Roofing</span>
+            <div class="rating-chips" role="group" aria-label="Roofing rating">
+              <label class="rating-chip"><input type="radio" name="skill_roofing" value="1" class="visually-hidden" aria-label="Roofing — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_roofing" value="2" class="visually-hidden" aria-label="Roofing — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_roofing" value="3" class="visually-hidden" aria-label="Roofing — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_roofing" value="4" class="visually-hidden" aria-label="Roofing — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_roofing" value="5" class="visually-hidden" aria-label="Roofing — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Architecture or architectural design</span>
+            <div class="rating-chips" role="group" aria-label="Architecture or architectural design rating">
+              <label class="rating-chip"><input type="radio" name="skill_architecture" value="1" class="visually-hidden" aria-label="Architecture or architectural design — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_architecture" value="2" class="visually-hidden" aria-label="Architecture or architectural design — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_architecture" value="3" class="visually-hidden" aria-label="Architecture or architectural design — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_architecture" value="4" class="visually-hidden" aria-label="Architecture or architectural design — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_architecture" value="5" class="visually-hidden" aria-label="Architecture or architectural design — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Project management</span>
+            <div class="rating-chips" role="group" aria-label="Project management rating">
+              <label class="rating-chip"><input type="radio" name="skill_project_management" value="1" class="visually-hidden" aria-label="Project management — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_project_management" value="2" class="visually-hidden" aria-label="Project management — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_project_management" value="3" class="visually-hidden" aria-label="Project management — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_project_management" value="4" class="visually-hidden" aria-label="Project management — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_project_management" value="5" class="visually-hidden" aria-label="Project management — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Leadership</span>
+            <div class="rating-chips" role="group" aria-label="Leadership rating">
+              <label class="rating-chip"><input type="radio" name="skill_leadership" value="1" class="visually-hidden" aria-label="Leadership — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_leadership" value="2" class="visually-hidden" aria-label="Leadership — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_leadership" value="3" class="visually-hidden" aria-label="Leadership — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_leadership" value="4" class="visually-hidden" aria-label="Leadership — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_leadership" value="5" class="visually-hidden" aria-label="Leadership — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Communication</span>
+            <div class="rating-chips" role="group" aria-label="Communication rating">
+              <label class="rating-chip"><input type="radio" name="skill_communication" value="1" class="visually-hidden" aria-label="Communication — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_communication" value="2" class="visually-hidden" aria-label="Communication — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_communication" value="3" class="visually-hidden" aria-label="Communication — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_communication" value="4" class="visually-hidden" aria-label="Communication — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_communication" value="5" class="visually-hidden" aria-label="Communication — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Office 365 or Microsoft 365</span>
+            <div class="rating-chips" role="group" aria-label="Office 365 or Microsoft 365 rating">
+              <label class="rating-chip"><input type="radio" name="skill_m365" value="1" class="visually-hidden" aria-label="Office 365 or Microsoft 365 — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_m365" value="2" class="visually-hidden" aria-label="Office 365 or Microsoft 365 — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_m365" value="3" class="visually-hidden" aria-label="Office 365 or Microsoft 365 — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_m365" value="4" class="visually-hidden" aria-label="Office 365 or Microsoft 365 — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_m365" value="5" class="visually-hidden" aria-label="Office 365 or Microsoft 365 — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Research and documentation</span>
+            <div class="rating-chips" role="group" aria-label="Research and documentation rating">
+              <label class="rating-chip"><input type="radio" name="skill_research" value="1" class="visually-hidden" aria-label="Research and documentation — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_research" value="2" class="visually-hidden" aria-label="Research and documentation — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_research" value="3" class="visually-hidden" aria-label="Research and documentation — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_research" value="4" class="visually-hidden" aria-label="Research and documentation — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_research" value="5" class="visually-hidden" aria-label="Research and documentation — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Agile or Scrum participation</span>
+            <div class="rating-chips" role="group" aria-label="Agile or Scrum participation rating">
+              <label class="rating-chip"><input type="radio" name="skill_agile" value="1" class="visually-hidden" aria-label="Agile or Scrum participation — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agile" value="2" class="visually-hidden" aria-label="Agile or Scrum participation — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agile" value="3" class="visually-hidden" aria-label="Agile or Scrum participation — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agile" value="4" class="visually-hidden" aria-label="Agile or Scrum participation — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_agile" value="5" class="visually-hidden" aria-label="Agile or Scrum participation — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-label">Sales, reservations, or customer follow-up</span>
+            <div class="rating-chips" role="group" aria-label="Sales, reservations, or customer follow-up rating">
+              <label class="rating-chip"><input type="radio" name="skill_sales" value="1" class="visually-hidden" aria-label="Sales, reservations, or customer follow-up — 1 of 5"><span>1</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_sales" value="2" class="visually-hidden" aria-label="Sales, reservations, or customer follow-up — 2 of 5"><span>2</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_sales" value="3" class="visually-hidden" aria-label="Sales, reservations, or customer follow-up — 3 of 5"><span>3</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_sales" value="4" class="visually-hidden" aria-label="Sales, reservations, or customer follow-up — 4 of 5"><span>4</span></label>
+              <label class="rating-chip"><input type="radio" name="skill_sales" value="5" class="visually-hidden" aria-label="Sales, reservations, or customer follow-up — 5 of 5"><span>5</span></label>
+            </div>
+          </div>
 
           <h3>Certifications and Practical Constraints</h3>
           <div class="grid">
@@ -709,8 +880,8 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">6. Dream Quest Fit</legend>
-          <p class="hint">If accepted, you will move through all stages of the Dream Quest pathway. This section helps us understand your interests and learning preferences — your selections here do not determine your placement.</p>
+          <legend tabindex="-1">7. Industry</legend>
+          <p class="hint">These questions help us understand your interests and goals. Your selections do not determine your placement.</p>
           <div class="grid">
             <div class="wide">
               <span class="label">Which Learning Areas Interest You?</span>
@@ -746,13 +917,61 @@
               <label for="focus_goal">What focused outcome would you want to build, research, launch, publish, or improve?</label>
               <textarea id="focus_goal" name="focus_goal"></textarea>
             </div>
+            <div>
+              <span class="label">Industry Experience</span>
+              <div class="options">
+                <label><input type="checkbox" name="industry_experience" value="agriculture"> Agriculture or food systems</label>
+                <label><input type="checkbox" name="industry_experience" value="architecture_construction"> Architecture, construction, or built environment</label>
+                <label><input type="checkbox" name="industry_experience" value="ai_data"> AI, data, or emerging technology</label>
+                <label><input type="checkbox" name="industry_experience" value="biotech_health"> Biotech, health, or life sciences</label>
+                <label><input type="checkbox" name="industry_experience" value="energy"> Energy or climate</label>
+                <label><input type="checkbox" name="industry_experience" value="hospitality"> Hospitality, tourism, or property operations</label>
+                <label><input type="checkbox" name="industry_experience" value="manufacturing"> Manufacturing or materials</label>
+                <label><input type="checkbox" name="industry_experience" value="software"> Software, cloud, or cybersecurity</label>
+                <label><input type="checkbox" name="industry_experience" value="transportation"> Transportation, aerospace, or logistics</label>
+                <label><input type="checkbox" name="industry_experience" value="none"> No industry experience yet</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="industry_experience_details">Describe any industry experience.</label>
+              <textarea id="industry_experience_details" name="industry_experience_details" placeholder="Include employers, industries, roles, dates, tools, methods, and measurable outcomes where possible."></textarea>
+            </div>
+            <div class="wide">
+              <span class="label">Which industries interest you most? (check all that apply)</span>
+              <div class="options inline">
+                <label><input type="checkbox" name="industry_interest" value="technology_software"> Technology and software</label>
+                <label><input type="checkbox" name="industry_interest" value="healthcare_life_sciences"> Healthcare and life sciences</label>
+                <label><input type="checkbox" name="industry_interest" value="agriculture_food"> Agriculture and food</label>
+                <label><input type="checkbox" name="industry_interest" value="hospitality_tourism"> Hospitality and tourism</label>
+                <label><input type="checkbox" name="industry_interest" value="construction_real_estate"> Construction and real estate</label>
+                <label><input type="checkbox" name="industry_interest" value="manufacturing"> Manufacturing</label>
+                <label><input type="checkbox" name="industry_interest" value="energy_utilities"> Energy and utilities</label>
+                <label><input type="checkbox" name="industry_interest" value="finance_insurance"> Finance and insurance</label>
+                <label><input type="checkbox" name="industry_interest" value="education"> Education</label>
+                <label><input type="checkbox" name="industry_interest" value="government_public_sector"> Government and public sector</label>
+                <label><input type="checkbox" name="industry_interest" value="aerospace_defense"> Aerospace and defense</label>
+                <label><input type="checkbox" name="industry_interest" value="nonprofit_ngo"> Non-profit and NGO</label>
+                <label><input type="checkbox" name="industry_interest" value="media_entertainment"> Media and entertainment</label>
+                <label><input type="checkbox" name="industry_interest" value="transportation_logistics"> Transportation and logistics</label>
+                <label><input type="checkbox" name="industry_interest" value="retail_ecommerce"> Retail and e-commerce</label>
+                <label><input type="checkbox" name="industry_interest" value="other"> Other</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="industry_choice_reason">Why do these industries interest you?</label>
+              <textarea id="industry_choice_reason" name="industry_choice_reason"></textarea>
+            </div>
+            <div class="wide">
+              <label for="industry_degree_alignment">How does your industry interest relate to your degree or field of study?</label>
+              <textarea id="industry_degree_alignment" name="industry_degree_alignment"></textarea>
+            </div>
           </div>
         </fieldset>
       </section>
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">7. Technical, Research, and Professional Skills</legend>
+          <legend tabindex="-1">8. Technical, Research, and Professional Skills</legend>
           <div class="grid">
             <div>
               <span class="label">Technical Skills</span>
@@ -781,10 +1000,6 @@
               </div>
             </div>
             <div class="wide">
-              <label for="best_work_samples">Links to Work Samples, Papers, Pull Requests, Projects, or Portfolios</label>
-              <textarea id="best_work_samples" name="best_work_samples"></textarea>
-            </div>
-            <div class="wide">
               <label for="skills_summary">What skills are strongest, and what skills do you most want to develop?</label>
               <textarea id="skills_summary" name="skills_summary"></textarea>
             </div>
@@ -794,7 +1009,7 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">8. Government, Industry, Grants, and Publications</legend>
+          <legend tabindex="-1">9. Government Relations</legend>
           <div class="grid">
             <div>
               <span class="label">Government Experience</span>
@@ -807,68 +1022,50 @@
                 <label><input type="checkbox" name="government_experience_type" value="none"> No government experience yet</label>
               </div>
             </div>
-            <div>
-              <span class="label">Industry Experience</span>
-              <div class="options">
-                <label><input type="checkbox" name="industry_experience" value="agriculture"> Agriculture or food systems</label>
-                <label><input type="checkbox" name="industry_experience" value="architecture_construction"> Architecture, construction, or built environment</label>
-                <label><input type="checkbox" name="industry_experience" value="ai_data"> AI, data, or emerging technology</label>
-                <label><input type="checkbox" name="industry_experience" value="biotech_health"> Biotech, health, or life sciences</label>
-                <label><input type="checkbox" name="industry_experience" value="energy"> Energy or climate</label>
-                <label><input type="checkbox" name="industry_experience" value="hospitality"> Hospitality, tourism, or property operations</label>
-                <label><input type="checkbox" name="industry_experience" value="manufacturing"> Manufacturing or materials</label>
-                <label><input type="checkbox" name="industry_experience" value="software"> Software, cloud, or cybersecurity</label>
-                <label><input type="checkbox" name="industry_experience" value="transportation"> Transportation, aerospace, or logistics</label>
-                <label><input type="checkbox" name="industry_experience" value="none"> No industry experience yet</label>
+            <div class="wide">
+              <h3>Government Agencies You Have Worked With, Supported, Applied To, Researched, or Delivered Work For</h3>
+              <div id="gov-agency-rows">
+                <!-- rows injected by JS -->
               </div>
-            </div>
-            <div class="wide">
-              <span class="label">Government Agencies You Have Worked With, Supported, Applied to, Researched, or Delivered Work For</span>
-              <div class="options inline">
-                <label><input type="checkbox" name="government_agencies" value="nsf"> National Science Foundation (NSF)</label>
-                <label><input type="checkbox" name="government_agencies" value="nih"> National Institutes of Health (NIH)</label>
-                <label><input type="checkbox" name="government_agencies" value="doe"> Department of Energy (DOE)</label>
-                <label><input type="checkbox" name="government_agencies" value="dod"> Department of Defense (DoD)</label>
-                <label><input type="checkbox" name="government_agencies" value="darpa"> DARPA</label>
-                <label><input type="checkbox" name="government_agencies" value="nasa"> NASA</label>
-                <label><input type="checkbox" name="government_agencies" value="usda"> Department of Agriculture (USDA)</label>
-                <label><input type="checkbox" name="government_agencies" value="noaa"> NOAA</label>
-                <label><input type="checkbox" name="government_agencies" value="epa"> Environmental Protection Agency (EPA)</label>
-                <label><input type="checkbox" name="government_agencies" value="dhs"> Department of Homeland Security (DHS)</label>
-                <label><input type="checkbox" name="government_agencies" value="fema"> FEMA</label>
-                <label><input type="checkbox" name="government_agencies" value="hhs"> Health and Human Services (HHS)</label>
-                <label><input type="checkbox" name="government_agencies" value="cdc"> CDC</label>
-                <label><input type="checkbox" name="government_agencies" value="fda"> FDA</label>
-                <label><input type="checkbox" name="government_agencies" value="nist"> NIST</label>
-                <label><input type="checkbox" name="government_agencies" value="commerce"> Department of Commerce</label>
-                <label><input type="checkbox" name="government_agencies" value="eda"> Economic Development Administration (EDA)</label>
-                <label><input type="checkbox" name="government_agencies" value="sba"> Small Business Administration (SBA)</label>
-                <label><input type="checkbox" name="government_agencies" value="dot"> Department of Transportation (DOT)</label>
-                <label><input type="checkbox" name="government_agencies" value="faa"> FAA</label>
-                <label><input type="checkbox" name="government_agencies" value="education"> Department of Education</label>
-                <label><input type="checkbox" name="government_agencies" value="interior"> Department of the Interior</label>
-                <label><input type="checkbox" name="government_agencies" value="labor"> Department of Labor</label>
-                <label><input type="checkbox" name="government_agencies" value="state"> Department of State</label>
-                <label><input type="checkbox" name="government_agencies" value="usaid"> USAID</label>
-                <label><input type="checkbox" name="government_agencies" value="va"> Department of Veterans Affairs (VA)</label>
-                <label><input type="checkbox" name="government_agencies" value="gsa"> General Services Administration (GSA)</label>
-                <label><input type="checkbox" name="government_agencies" value="hud"> Housing and Urban Development (HUD)</label>
-                <label><input type="checkbox" name="government_agencies" value="treasury"> Department of the Treasury</label>
-                <label><input type="checkbox" name="government_agencies" value="state_agency"> State agency</label>
-                <label><input type="checkbox" name="government_agencies" value="local_agency"> City, county, or local agency</label>
-                <label><input type="checkbox" name="government_agencies" value="tribal_agency"> Tribal agency</label>
-                <label><input type="checkbox" name="government_agencies" value="non_us_agency"> Non-U.S. agency</label>
-                <label><input type="checkbox" name="government_agencies" value="other"> Other agency</label>
-                <label><input type="checkbox" name="government_agencies" value="none"> None yet</label>
-              </div>
-            </div>
-            <div class="wide">
-              <label for="industry_experience_details">Describe any industry experience.</label>
-              <textarea id="industry_experience_details" name="industry_experience_details" placeholder="Include employers, industries, roles, dates, tools, methods, and measurable outcomes where possible."></textarea>
-            </div>
-            <div class="wide">
-              <label for="government_experience_details">Describe any government or agency-related experience.</label>
-              <textarea id="government_experience_details" name="government_experience_details" placeholder="Include agency, project, role, dates, contract/grant number if known, and what you contributed."></textarea>
+              <button type="button" class="btn_1 opt-secondary" id="add-gov-agency-row" style="margin-top:8px;" aria-label="Add another agency row">+ Add another agency</button>
+              <input type="hidden" id="government_agencies" name="government_agencies">
+              <textarea id="government_experience_details" name="government_experience_details" class="visually-hidden" aria-hidden="true" tabindex="-1" readonly></textarea>
+              <datalist id="dl-gov-agencies">
+                <option value="National Science Foundation (NSF)">
+                <option value="National Institutes of Health (NIH)">
+                <option value="Department of Energy (DOE)">
+                <option value="Department of Defense (DoD)">
+                <option value="DARPA">
+                <option value="NASA">
+                <option value="Department of Agriculture (USDA)">
+                <option value="NOAA">
+                <option value="Environmental Protection Agency (EPA)">
+                <option value="Department of Homeland Security (DHS)">
+                <option value="FEMA">
+                <option value="Health and Human Services (HHS)">
+                <option value="CDC">
+                <option value="FDA">
+                <option value="NIST">
+                <option value="Department of Commerce">
+                <option value="Economic Development Administration (EDA)">
+                <option value="Small Business Administration (SBA)">
+                <option value="Department of Transportation (DOT)">
+                <option value="FAA">
+                <option value="Department of Education">
+                <option value="Department of the Interior">
+                <option value="Department of Labor">
+                <option value="Department of State">
+                <option value="USAID">
+                <option value="Department of Veterans Affairs (VA)">
+                <option value="General Services Administration (GSA)">
+                <option value="Housing and Urban Development (HUD)">
+                <option value="Department of the Treasury">
+                <option value="State agency">
+                <option value="City, county, or local agency">
+                <option value="Tribal agency">
+                <option value="Non-U.S. agency">
+                <option value="Other agency">
+              </datalist>
             </div>
             <div class="wide">
               <span class="label">Have you ever served in one of these roles on a government-led or government-funded project?</span>
@@ -880,33 +1077,9 @@
                 <label><input type="checkbox" name="government_project_roles" value="none"> None yet</label>
               </div>
             </div>
-            <div>
-              <label for="publication_count">Total Number of Publications</label>
-              <input id="publication_count" name="publication_count" type="number" min="0" placeholder="0">
-            </div>
             <div class="wide">
               <label for="government_project_role_details">Project-Role Details</label>
               <textarea id="government_project_role_details" name="government_project_role_details" placeholder="List project title, sponsor, role, dates, proposal/award status, and any public link if available."></textarea>
-            </div>
-            <div>
-              <label for="grants_gov_interest">Grants.gov Opportunity That Piqued Your Interest
-                <button type="button" class="info-tooltip-btn" popovertarget="tip-grants-gov" aria-label="What is Grants.gov?">&#9432;</button>
-                <a class="info-link" href="https://www.grants.gov/search-grants" target="_blank" rel="noopener noreferrer" aria-label="Learn more about Grants.gov (opens in new tab)">Learn more</a>
-              </label>
-              <div id="tip-grants-gov" popover class="info-popover">Grants.gov lists every federal grant opportunity. Checking this means you want to help find and prepare federal grant applications.</div>
-              <textarea id="grants_gov_interest" name="grants_gov_interest" placeholder="Paste opportunity link, opportunity number, title, agency, or search terms."></textarea>
-            </div>
-            <div>
-              <label for="sam_gov_interest">SAM.gov Notice or Opportunity That Piqued Your Interest
-                <button type="button" class="info-tooltip-btn" popovertarget="tip-sam-gov" aria-label="What is SAM.gov?">&#9432;</button>
-                <a class="info-link" href="https://sam.gov/content/opportunities" target="_blank" rel="noopener noreferrer" aria-label="Learn more about SAM.gov (opens in new tab)">Learn more</a>
-              </label>
-              <div id="tip-sam-gov" popover class="info-popover">SAM.gov is where federal contract opportunities are posted and where entities register to do business with the U.S. government.</div>
-              <textarea id="sam_gov_interest" name="sam_gov_interest" placeholder="Paste notice link, solicitation number, title, agency, or search terms."></textarea>
-            </div>
-            <div class="wide">
-              <label for="grant_interest_reason">Why do these grants, notices, or agencies interest you?</label>
-              <textarea id="grant_interest_reason" name="grant_interest_reason"></textarea>
             </div>
           </div>
         </fieldset>
@@ -914,7 +1087,125 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">9. Focus Hive, GitOps, and Agile Readiness</legend>
+          <legend tabindex="-1">10. Non-Profit and Volunteering</legend>
+          <div class="grid">
+            <div>
+              <span class="label">Non-profit, NGO, or volunteer organizations you have worked or volunteered with (check all that apply)</span>
+              <div class="options">
+                <label><input type="checkbox" name="ngo_experience" value="united_nations"> United Nations (UN)</label>
+                <label><input type="checkbox" name="ngo_experience" value="red_cross_red_crescent"> Red Cross / Red Crescent</label>
+                <label><input type="checkbox" name="ngo_experience" value="cancer_research"> Cancer research organizations (e.g., American Cancer Society)</label>
+                <label><input type="checkbox" name="ngo_experience" value="doctors_without_borders"> Doctors Without Borders (MSF)</label>
+                <label><input type="checkbox" name="ngo_experience" value="habitat_for_humanity"> Habitat for Humanity</label>
+                <label><input type="checkbox" name="ngo_experience" value="peace_corps_americorps"> Peace Corps / AmeriCorps</label>
+                <label><input type="checkbox" name="ngo_experience" value="unicef"> UNICEF</label>
+                <label><input type="checkbox" name="ngo_experience" value="world_food_programme"> World Food Programme</label>
+                <label><input type="checkbox" name="ngo_experience" value="faith_based"> Faith-based organization</label>
+                <label><input type="checkbox" name="ngo_experience" value="environmental_org"> Environmental organization</label>
+                <label><input type="checkbox" name="ngo_experience" value="local_community_org"> Local community organization</label>
+                <label><input type="checkbox" name="ngo_experience" value="student_org_service"> Student service organization</label>
+                <label><input type="checkbox" name="ngo_experience" value="animal_welfare"> Animal welfare organization</label>
+                <label><input type="checkbox" name="ngo_experience" value="other"> Other</label>
+                <label><input type="checkbox" name="ngo_experience" value="none_yet"> None yet</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="volunteer_experience_details">Describe your non-profit or volunteer experience, roles, and approximate hours.</label>
+              <textarea id="volunteer_experience_details" name="volunteer_experience_details"></textarea>
+            </div>
+            <div class="wide">
+              <h3>Grants</h3>
+              <div class="grid" style="padding:0;border:0;box-shadow:none;margin:0;">
+                <div>
+                  <label for="grants_gov_interest">Grants.gov Opportunity That Piqued Your Interest
+                    <button type="button" class="info-tooltip-btn" popovertarget="tip-grants-gov" aria-label="What is Grants.gov?">&#9432;</button>
+                    <a class="info-link" href="https://www.grants.gov/search-grants" target="_blank" rel="noopener noreferrer" aria-label="Learn more about Grants.gov (opens in new tab)">Learn more</a>
+                  </label>
+                  <div id="tip-grants-gov" popover class="info-popover">Grants.gov lists every federal grant opportunity. Checking this means you want to help find and prepare federal grant applications.</div>
+                  <textarea id="grants_gov_interest" name="grants_gov_interest" placeholder="Paste opportunity link, opportunity number, title, agency, or search terms."></textarea>
+                </div>
+                <div>
+                  <label for="sam_gov_interest">SAM.gov Notice or Opportunity That Piqued Your Interest
+                    <button type="button" class="info-tooltip-btn" popovertarget="tip-sam-gov" aria-label="What is SAM.gov?">&#9432;</button>
+                    <a class="info-link" href="https://sam.gov/content/opportunities" target="_blank" rel="noopener noreferrer" aria-label="Learn more about SAM.gov (opens in new tab)">Learn more</a>
+                  </label>
+                  <div id="tip-sam-gov" popover class="info-popover">SAM.gov is where federal contract opportunities are posted and where entities register to do business with the U.S. government.</div>
+                  <textarea id="sam_gov_interest" name="sam_gov_interest" placeholder="Paste notice link, solicitation number, title, agency, or search terms."></textarea>
+                </div>
+                <div class="wide">
+                  <label for="grant_interest_reason">Why do these grants, notices, or agencies interest you?</label>
+                  <textarea id="grant_interest_reason" name="grant_interest_reason"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="section">
+        <fieldset>
+          <legend tabindex="-1">11. Social Clubs and Organizations</legend>
+          <div class="grid">
+            <div>
+              <span class="label">Clubs or organizations you belong to (check all that apply)</span>
+              <div class="options">
+                <label><input type="checkbox" name="social_clubs" value="professional_association"> Professional association (IEEE, ACM, ASCE, AMA, etc.)</label>
+                <label><input type="checkbox" name="social_clubs" value="honor_society"> Honor society</label>
+                <label><input type="checkbox" name="social_clubs" value="toastmasters"> Toastmasters</label>
+                <label><input type="checkbox" name="social_clubs" value="rotary_lions_kiwanis"> Rotary, Lions, or Kiwanis</label>
+                <label><input type="checkbox" name="social_clubs" value="fraternity_sorority"> Fraternity or sorority</label>
+                <label><input type="checkbox" name="social_clubs" value="sports_club"> Sports or athletic club</label>
+                <label><input type="checkbox" name="social_clubs" value="cultural_club"> Cultural or international student club</label>
+                <label><input type="checkbox" name="social_clubs" value="student_government"> Student government</label>
+                <label><input type="checkbox" name="social_clubs" value="hobby_club"> Hobby or special interest club</label>
+                <label><input type="checkbox" name="social_clubs" value="debate_speech"> Debate or speech club</label>
+                <label><input type="checkbox" name="social_clubs" value="music_arts"> Music or arts organization</label>
+                <label><input type="checkbox" name="social_clubs" value="other"> Other</label>
+                <label><input type="checkbox" name="social_clubs" value="none_yet"> None yet</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="social_clubs_details">Tell us about clubs or organizations you belong to and any leadership roles you have held.</label>
+              <textarea id="social_clubs_details" name="social_clubs_details"></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="section">
+        <fieldset>
+          <legend tabindex="-1">12. Publications</legend>
+          <div class="grid">
+            <div>
+              <label for="publication_count">Total Number of Publications</label>
+              <input id="publication_count" name="publication_count" type="number" min="0" placeholder="0">
+            </div>
+            <div>
+              <span class="label">Types of publications (check all that apply)</span>
+              <div class="options">
+                <label><input type="checkbox" name="publication_types" value="journal_article"> Journal article</label>
+                <label><input type="checkbox" name="publication_types" value="conference_paper"> Conference paper</label>
+                <label><input type="checkbox" name="publication_types" value="thesis_dissertation"> Thesis or dissertation</label>
+                <label><input type="checkbox" name="publication_types" value="preprint"> Preprint</label>
+                <label><input type="checkbox" name="publication_types" value="book_chapter"> Book chapter</label>
+                <label><input type="checkbox" name="publication_types" value="patent"> Patent</label>
+                <label><input type="checkbox" name="publication_types" value="technical_report"> Technical report</label>
+                <label><input type="checkbox" name="publication_types" value="poster"> Poster</label>
+                <label><input type="checkbox" name="publication_types" value="blog_technical_writing"> Blog or technical writing</label>
+                <label><input type="checkbox" name="publication_types" value="none_yet"> None yet</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="publication_list">List your most significant publications (title, venue, year) or link to them.</label>
+              <textarea id="publication_list" name="publication_list"></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="section">
+        <fieldset>
+          <legend tabindex="-1">13. Project Management Readiness</legend>
           <div class="grid">
             <div>
               <span class="label">Can you participate in Focus Hive agile routines?</span>
@@ -930,6 +1221,47 @@
               </div>
             </div>
             <div>
+              <span class="label">Project management methodologies you have used</span>
+              <div class="options">
+                <label><input type="checkbox" name="pm_methodologies" value="agile"> Agile</label>
+                <label><input type="checkbox" name="pm_methodologies" value="scrum"> Scrum</label>
+                <label><input type="checkbox" name="pm_methodologies" value="kanban"> Kanban</label>
+                <label><input type="checkbox" name="pm_methodologies" value="six_sigma"> Six Sigma</label>
+                <label><input type="checkbox" name="pm_methodologies" value="lean"> Lean</label>
+                <label><input type="checkbox" name="pm_methodologies" value="waterfall"> Waterfall</label>
+                <label><input type="checkbox" name="pm_methodologies" value="safe"> SAFe</label>
+                <label><input type="checkbox" name="pm_methodologies" value="prince2"> PRINCE2</label>
+                <label><input type="checkbox" name="pm_methodologies" value="other"> Other</label>
+                <label><input type="checkbox" name="pm_methodologies" value="none_yet"> None yet</label>
+              </div>
+            </div>
+            <div>
+              <span class="label">Project management certifications you hold or are pursuing</span>
+              <div class="options">
+                <label><input type="checkbox" name="pm_certifications" value="pmp"> PMP</label>
+                <label><input type="checkbox" name="pm_certifications" value="capm"> CAPM</label>
+                <label><input type="checkbox" name="pm_certifications" value="csm_psm"> Certified ScrumMaster / Professional Scrum Master</label>
+                <label><input type="checkbox" name="pm_certifications" value="safe_cert"> SAFe certification</label>
+                <label><input type="checkbox" name="pm_certifications" value="six_sigma_belt"> Six Sigma belt (any level)</label>
+                <label><input type="checkbox" name="pm_certifications" value="prince2_cert"> PRINCE2 certification</label>
+                <label><input type="checkbox" name="pm_certifications" value="pmi_acp"> PMI-ACP</label>
+                <label><input type="checkbox" name="pm_certifications" value="other"> Other</label>
+                <label><input type="checkbox" name="pm_certifications" value="none_yet"> None yet</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="team_process_experience">Describe your experience with agile, Scrum, Six Sigma, project management, research notebooks, or meeting participation.</label>
+              <textarea id="team_process_experience" name="team_process_experience"></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="section">
+        <fieldset>
+          <legend tabindex="-1">14. GitOps Readiness</legend>
+          <div class="grid">
+            <div>
               <span class="label">Assessment Evidence You Are Comfortable With</span>
               <div class="options">
                 <label><input type="checkbox" name="assessment_evidence" value="spark_score"> SPARK Score <button type="button" class="info-tooltip-btn" popovertarget="tip-spark" aria-label="Learn more about SPARK Score">&#9432;</button></label>
@@ -943,13 +1275,24 @@
               <div id="tip-focus-tracker" popover class="info-popover">Logs time on focused, deep work versus distractions to measure productive engagement.</div>
               <div id="tip-git-impact" popover class="info-popover">Measures code contributions, reviews, and collaboration impact across Git projects.</div>
             </div>
+            <div>
+              <span class="label">Tools and practices you have hands-on experience with</span>
+              <div class="options">
+                <label><input type="checkbox" name="gitops_tools" value="git"> Git</label>
+                <label><input type="checkbox" name="gitops_tools" value="github_gitlab"> GitHub or GitLab</label>
+                <label><input type="checkbox" name="gitops_tools" value="ci_cd"> CI/CD pipelines</label>
+                <label><input type="checkbox" name="gitops_tools" value="jupyter"> Jupyter notebooks</label>
+                <label><input type="checkbox" name="gitops_tools" value="kubernetes"> Kubernetes</label>
+                <label><input type="checkbox" name="gitops_tools" value="docker_containers"> Docker or containers</label>
+                <label><input type="checkbox" name="gitops_tools" value="infrastructure_as_code"> Infrastructure as code</label>
+                <label><input type="checkbox" name="gitops_tools" value="solution_architecture_tools"> Solution or cloud architecture (diagrams, ADRs, cloud design)</label>
+                <label><input type="checkbox" name="gitops_tools" value="terminal_linux"> Terminal / Linux command line</label>
+                <label><input type="checkbox" name="gitops_tools" value="none_yet"> None yet</label>
+              </div>
+            </div>
             <div class="wide">
               <label for="gitops_experience">Describe your experience with GitHub, GitLab, issues, pull requests, commits, reviews, project boards, or release notes.</label>
               <textarea id="gitops_experience" name="gitops_experience"></textarea>
-            </div>
-            <div class="wide">
-              <label for="team_process_experience">Describe your experience with agile, Scrum, Six Sigma, project management, research notebooks, or meeting participation.</label>
-              <textarea id="team_process_experience" name="team_process_experience"></textarea>
             </div>
           </div>
         </fieldset>
@@ -957,7 +1300,86 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">10. Documents and Evidence Status</legend>
+          <legend tabindex="-1">15. Security Readiness</legend>
+          <div class="grid">
+            <div>
+              <span class="label">Security certifications you hold or are pursuing</span>
+              <div class="options">
+                <label><input type="checkbox" name="security_certifications" value="security_plus"> CompTIA Security+</label>
+                <label><input type="checkbox" name="security_certifications" value="cissp"> CISSP</label>
+                <label><input type="checkbox" name="security_certifications" value="cism"> CISM</label>
+                <label><input type="checkbox" name="security_certifications" value="cisa"> CISA</label>
+                <label><input type="checkbox" name="security_certifications" value="ceh"> CEH</label>
+                <label><input type="checkbox" name="security_certifications" value="oscp"> OSCP</label>
+                <label><input type="checkbox" name="security_certifications" value="cloud_security"> Cloud security certification (AWS/Azure/GCP security)</label>
+                <label><input type="checkbox" name="security_certifications" value="other"> Other</label>
+                <label><input type="checkbox" name="security_certifications" value="none_yet"> None yet</label>
+              </div>
+            </div>
+            <div>
+              <span class="label">Have you ever helped take an organization through SOC 2 compliance?</span>
+              <div class="options">
+                <label><input type="radio" name="soc2_experience" value="yes"> Yes</label>
+                <label><input type="radio" name="soc2_experience" value="no"> No</label>
+                <label><input type="radio" name="soc2_experience" value="partial"> Contributed to parts of it</label>
+              </div>
+            </div>
+            <div>
+              <span class="label">Have you assisted with CMMC posturing or NIST 800-171 readiness?</span>
+              <div class="options">
+                <label><input type="radio" name="cmmc_experience" value="yes"> Yes</label>
+                <label><input type="radio" name="cmmc_experience" value="no"> No</label>
+                <label><input type="radio" name="cmmc_experience" value="partial"> Contributed to parts of it</label>
+              </div>
+            </div>
+            <div>
+              <span class="label">Have you participated in security audits, assessments, or penetration tests?</span>
+              <div class="options">
+                <label><input type="radio" name="security_audit_experience" value="yes"> Yes</label>
+                <label><input type="radio" name="security_audit_experience" value="no"> No</label>
+              </div>
+            </div>
+            <div>
+              <label for="security_clearance">Do you hold or have you held a security clearance of any kind?</label>
+              <select id="security_clearance" name="security_clearance">
+                <option value="">Select one</option>
+                <option value="none">No clearance</option>
+                <option value="public_trust">Public Trust</option>
+                <option value="confidential">Confidential</option>
+                <option value="secret">Secret</option>
+                <option value="top_secret">Top Secret</option>
+                <option value="ts_sci">TS/SCI</option>
+                <option value="foreign_clearance">Clearance from another country</option>
+                <option value="prefer_not_to_say">Prefer not to say</option>
+              </select>
+            </div>
+            <div>
+              <span class="label">Do you have military experience?</span>
+              <div class="options">
+                <label><input type="radio" name="military_experience" value="no"> No</label>
+                <label><input type="radio" name="military_experience" value="us_military"> Yes — U.S. military</label>
+                <label><input type="radio" name="military_experience" value="foreign_military"> Yes — military of another country</label>
+                <label><input type="radio" name="military_experience" value="both"> Yes — both</label>
+              </div>
+            </div>
+            <div>
+              <span class="label">Have you worked with or supported the U.S. Department of Defense (Department of War) or defense contractors?</span>
+              <div class="options">
+                <label><input type="radio" name="dod_experience" value="yes"> Yes</label>
+                <label><input type="radio" name="dod_experience" value="no"> No</label>
+              </div>
+            </div>
+            <div class="wide">
+              <label for="security_experience_details">Describe any security, defense, audit, clearance, or related training or experience.</label>
+              <textarea id="security_experience_details" name="security_experience_details"></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="section">
+        <fieldset>
+          <legend tabindex="-1">16. Documents and Evidence Status</legend>
           <div class="grid">
             <div>
               <span class="label">Immigration and Identity Documents</span>
@@ -1007,7 +1429,7 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">11. Compliance Review Flags</legend>
+          <legend tabindex="-1">17. Compliance Review Flags</legend>
           <div class="grid">
             <div>
               <span class="label">Do any of these need review?</span>
@@ -1045,7 +1467,7 @@
 
       <section class="section">
         <fieldset>
-          <legend tabindex="-1">12. Applicant Statements</legend>
+          <legend tabindex="-1">18. Applicant Statements</legend>
           <div class="grid">
             <div class="wide">
               <label for="why_apply">Why do you want to join the OPT Dream Quest program?</label>
@@ -1075,7 +1497,7 @@
               <input id="best_contact_time" name="best_contact_time">
             </div>
             <div class="wide">
-              <span class="label">Acknowledgments</span>
+              <h3>Acknowledgments</h3>
               <div class="options">
                 <label><input type="checkbox" name="acknowledgments" value="not_legal_advice"> I understand this application is not legal advice and does not guarantee immigration, employment, housing, or school-program approval.</label>
                 <label><input type="checkbox" name="acknowledgments" value="truthful"> I confirm the information I provide is accurate to the best of my knowledge.</label>
@@ -1091,7 +1513,7 @@
       <section class="section section-internal-only">
         <p class="hint internal-only-hint">This section is for USIVA staff. Applicants may leave it blank.</p>
         <fieldset>
-          <legend tabindex="-1"><span class="internal-only-badge">Internal Use Only</span> 13. Internal Routing After Submission</legend>
+          <legend tabindex="-1"><span class="internal-only-badge">Internal Use Only</span> 19. Internal Routing After Submission</legend>
           <div class="grid">
             <div>
               <label for="recommended_case_system">Recommended Case System</label>
@@ -1261,6 +1683,171 @@
       syncPriorCptOpt();
 
       /* =====================================================
+         GOVERNMENT AGENCY ROW BUILDER
+      ===================================================== */
+      var govAgencyHidden  = document.getElementById('government_agencies');
+      var govExpDetails    = document.getElementById('government_experience_details');
+      var govRowsContainer = document.getElementById('gov-agency-rows');
+      var addGovRowBtn     = document.getElementById('add-gov-agency-row');
+
+      /* slug map: full agency name (lowercased) → existing checkbox value */
+      var GOV_AGENCY_SLUG_MAP = {
+        'national science foundation (nsf)': 'nsf',
+        'national science foundation': 'nsf',
+        'nsf': 'nsf',
+        'national institutes of health (nih)': 'nih',
+        'national institutes of health': 'nih',
+        'nih': 'nih',
+        'department of energy (doe)': 'doe',
+        'department of energy': 'doe',
+        'doe': 'doe',
+        'department of defense (dod)': 'dod',
+        'department of defense': 'dod',
+        'dod': 'dod',
+        'darpa': 'darpa',
+        'nasa': 'nasa',
+        'department of agriculture (usda)': 'usda',
+        'department of agriculture': 'usda',
+        'usda': 'usda',
+        'noaa': 'noaa',
+        'environmental protection agency (epa)': 'epa',
+        'environmental protection agency': 'epa',
+        'epa': 'epa',
+        'department of homeland security (dhs)': 'dhs',
+        'department of homeland security': 'dhs',
+        'dhs': 'dhs',
+        'fema': 'fema',
+        'health and human services (hhs)': 'hhs',
+        'health and human services': 'hhs',
+        'hhs': 'hhs',
+        'cdc': 'cdc',
+        'fda': 'fda',
+        'nist': 'nist',
+        'department of commerce': 'commerce',
+        'economic development administration (eda)': 'eda',
+        'economic development administration': 'eda',
+        'eda': 'eda',
+        'small business administration (sba)': 'sba',
+        'small business administration': 'sba',
+        'sba': 'sba',
+        'department of transportation (dot)': 'dot',
+        'department of transportation': 'dot',
+        'dot': 'dot',
+        'faa': 'faa',
+        'department of education': 'education',
+        'department of the interior': 'interior',
+        'department of labor': 'labor',
+        'department of state': 'state',
+        'usaid': 'usaid',
+        'department of veterans affairs (va)': 'va',
+        'department of veterans affairs': 'va',
+        'va': 'va',
+        'general services administration (gsa)': 'gsa',
+        'general services administration': 'gsa',
+        'gsa': 'gsa',
+        'housing and urban development (hud)': 'hud',
+        'housing and urban development': 'hud',
+        'hud': 'hud',
+        'department of the treasury': 'treasury',
+        'state agency': 'state_agency',
+        'city, county, or local agency': 'local_agency',
+        'tribal agency': 'tribal_agency',
+        'non-u.s. agency': 'non_us_agency',
+        'other agency': 'other',
+        'other': 'other'
+      };
+
+      function slugForAgency(name, country) {
+        if (!name) return '';
+        var key = name.trim().toLowerCase();
+        if (GOV_AGENCY_SLUG_MAP[key]) return GOV_AGENCY_SLUG_MAP[key];
+        if (country && country.trim().toLowerCase() !== 'united states' && country.trim().toLowerCase() !== 'us') {
+          return 'non_us_agency';
+        }
+        return 'other';
+      }
+
+      function syncGovAgencies() {
+        if (!govRowsContainer) return;
+        var rows = Array.from(govRowsContainer.querySelectorAll('.gov-agency-row'));
+        var slugs = [];
+        var lines = [];
+        rows.forEach(function (row) {
+          var country = (row.querySelector('.ga-country') || {}).value || '';
+          var agency  = (row.querySelector('.ga-agency')  || {}).value || '';
+          var role    = (row.querySelector('.ga-role')    || {}).value || '';
+          var dates   = (row.querySelector('.ga-dates')   || {}).value || '';
+          var desc    = (row.querySelector('.ga-desc')    || {}).value || '';
+          if (!country && !agency && !role && !dates && !desc) return;
+          var slug = slugForAgency(agency, country);
+          if (slug && slugs.indexOf(slug) === -1) slugs.push(slug);
+          var parts = [country, agency, role, dates, desc].filter(Boolean);
+          if (parts.length) lines.push(parts.join(' — '));
+        });
+        if (govAgencyHidden)  govAgencyHidden.value  = slugs.join(', ');
+        if (govExpDetails)    govExpDetails.value     = lines.join('\n');
+        saveDraft();
+      }
+
+      function createGovAgencyRow(data) {
+        data = data || {};
+        var row = document.createElement('div');
+        row.className = 'gov-agency-row';
+        var fields = document.createElement('div');
+        fields.className = 'gov-agency-row-fields';
+        function makeInput(cls, placeholder, label, val, list) {
+          var inp = document.createElement('input');
+          inp.type = 'text';
+          inp.className = cls;
+          inp.placeholder = placeholder;
+          inp.setAttribute('aria-label', label);
+          if (list) inp.setAttribute('list', list);
+          if (val) inp.value = val;
+          inp.addEventListener('input', syncGovAgencies);
+          inp.addEventListener('change', syncGovAgencies);
+          return inp;
+        }
+        fields.appendChild(makeInput('ga-country', 'Country',          'Country',          data.country, 'dl-countries'));
+        fields.appendChild(makeInput('ga-agency',  'Agency name',      'Agency name',      data.agency,  'dl-gov-agencies'));
+        fields.appendChild(makeInput('ga-role',    'Role or capacity', 'Role or capacity', data.role));
+        fields.appendChild(makeInput('ga-dates',   'e.g., 2023–2024',  'Dates',            data.dates));
+        fields.appendChild(makeInput('ga-desc',    'Brief description','Brief description',data.desc));
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'ga-remove-btn';
+        removeBtn.setAttribute('aria-label', 'Remove this agency row');
+        removeBtn.textContent = '✕';
+        removeBtn.style.minHeight = '32px';
+        removeBtn.style.minWidth  = '32px';
+        removeBtn.addEventListener('click', function () {
+          row.remove();
+          syncGovAgencies();
+        });
+        row.appendChild(fields);
+        row.appendChild(removeBtn);
+        return row;
+      }
+
+      function initGovAgencyRows(savedRows) {
+        if (!govRowsContainer) return;
+        govRowsContainer.innerHTML = '';
+        if (savedRows && savedRows.length) {
+          savedRows.forEach(function (d) { govRowsContainer.appendChild(createGovAgencyRow(d)); });
+        } else {
+          govRowsContainer.appendChild(createGovAgencyRow());
+        }
+        syncGovAgencies();
+      }
+
+      if (addGovRowBtn) {
+        addGovRowBtn.addEventListener('click', function () {
+          govRowsContainer.appendChild(createGovAgencyRow());
+        });
+      }
+
+      initGovAgencyRows();
+
+      /* =====================================================
          WIZARD: STEP MANAGEMENT
          steps[] = visible (non-conditional OR active conditional) sections
          currentStepIndex = 0-based index into steps[]
@@ -1397,6 +1984,19 @@
                 if (data[k]) { data[k] = [].concat(data[k], v); } else { data[k] = v; }
               }
             });
+            /* persist gov agency rows */
+            if (govRowsContainer) {
+              var rowData = Array.from(govRowsContainer.querySelectorAll('.gov-agency-row')).map(function (row) {
+                return {
+                  country: (row.querySelector('.ga-country') || {}).value || '',
+                  agency:  (row.querySelector('.ga-agency')  || {}).value || '',
+                  role:    (row.querySelector('.ga-role')    || {}).value || '',
+                  dates:   (row.querySelector('.ga-dates')   || {}).value || '',
+                  desc:    (row.querySelector('.ga-desc')    || {}).value || ''
+                };
+              });
+              data._govAgencyRows = rowData;
+            }
             localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
           } catch (e) { /* storage full or private mode */ }
         }, 600);
@@ -1422,6 +2022,10 @@
               }
             }
           });
+          /* restore gov agency rows */
+          if (data._govAgencyRows && Array.isArray(data._govAgencyRows)) {
+            initGovAgencyRows(data._govAgencyRows);
+          }
           updateOnsiteSection();
           showStep(savedStep);
           showDraftNotice();
