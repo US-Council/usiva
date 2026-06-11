@@ -1211,8 +1211,11 @@
           if (sec.classList.contains('conditional') && !sec.classList.contains('visible')) return;
           legend.childNodes.forEach(function (node) {
             if (node.nodeType === Node.TEXT_NODE) {
-              /* replace leading number like "5. " or "13. " */
-              node.textContent = node.textContent.replace(/^\d+\.\s*/, count + '. ');
+              /* replace leading number like "5. " or " 13. " (the Section 13
+                 legend has a badge <span> before the text node, so the text
+                 node starts with a leading space — tolerate it with \s* but
+                 keep the anchor so we never mangle digits elsewhere) */
+              node.textContent = node.textContent.replace(/^(\s*)\d+\.\s*/, '$1' + count + '. ');
             }
           });
           count++;
