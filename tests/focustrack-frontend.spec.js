@@ -301,20 +301,23 @@ test.describe('WP-F — apply-opt.html', () => {
   // Feature flag off: form unchanged
   // ------------------------------------------------------------------
 
-  test('when enabled:false (no mock param), form posts to existing funnel unchanged', async ({ page }) => {
+  test('when enabled:true (no mock param), sign-in button is visible and chip is shown', async ({ page }) => {
+    // WP-O: enabled is now true by default; this test verifies production mode (no ?focustrack=mock)
+    // MSAL will attempt real sign-in, but we only check the UI shell here.
     await page.goto(BASE + '/apply-opt.html');
     await page.waitForSelector('#opt-application', { state: 'visible' });
 
+    // form action unchanged at HTML level (FT intercepts submit via ft-submit-override event)
     const action = await page.locator('#opt-application').getAttribute('action');
     expect(action).toBe('https://door.taolearning.org/api/form');
 
-    // chip should still show (local-only mode)
+    // chip should show (FocusTrack enabled, not mock, so local-only chip while not signed in)
     const chip = await getChip(page);
     await expect(chip).toBeVisible();
 
-    // sign-in button should be hidden when disabled
+    // sign-in button MUST be visible now that enabled:true
     const signInBtn = page.locator('#ft-signin-btn');
-    await expect(signInBtn).toBeHidden();
+    await expect(signInBtn).toBeVisible();
   });
 
 });
@@ -472,8 +475,9 @@ test.describe('WP-G — portal.html', () => {
     await expect(uploadZone).toBeVisible();
   });
 
-  test('signed-out redirect when FocusTrack disabled', async ({ page }) => {
-    // Without mock param, sign-in wall should still be visible (not auto-redirected in disabled mode)
+  test('signed-out state: sign-in wall visible when not signed in (enabled:true)', async ({ page }) => {
+    // WP-O: enabled:true is now default; portal must still show sign-in wall until MSAL auth completes.
+    // Without ?focustrack=mock the MSAL init runs but user is not authenticated, so wall stays visible.
     await page.goto(BASE + '/portal.html');
     await page.waitForSelector('#ft-signin-wall', { state: 'visible' });
     await expect(page.locator('#ft-signin-wall')).toBeVisible();
