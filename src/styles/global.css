@@ -372,6 +372,93 @@
   }
 }
 
+/* Record Room styles */
+
+.record-hero {
+  background: var(--color-navy-deep);
+  color: var(--color-paper);
+  border-bottom: 1px solid rgb(230 237 243 / 24%);
+  padding-block: clamp(3rem, 5vw, 4.5rem);
+}
+
+.record-hero .eyebrow {
+  color: var(--color-highlight);
+}
+
+.record-hero h1 {
+  color: var(--color-paper);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  max-width: 12ch;
+}
+
+.record-hero__lede {
+  color: var(--color-on-dark-muted);
+  font-size: var(--step-1);
+  line-height: 1.55;
+  margin-block-start: var(--space-2);
+  max-width: 56ch;
+}
+
+.record-layout {
+  align-items: start;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+  padding-block-start: var(--space-4);
+}
+
+.record-content {
+  min-width: 0;
+}
+
+.card-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-start: var(--space-3);
+}
+
+.record-card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+}
+
+.record-card__tag {
+  color: var(--color-accent);
+  font-family: var(--font-body);
+  font-size: var(--step--2);
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.record-card__title {
+  color: var(--color-ink);
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.record-card__description {
+  color: var(--color-muted);
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+
+@media (max-width: 820px) {
+  .record-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (forced-colors: active) {
   :focus-visible {
     box-shadow: none;

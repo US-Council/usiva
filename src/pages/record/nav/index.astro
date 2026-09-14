@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Site Map | Record Room';
+const description = 'USIVA Record Room: site map and navigation structure.';
+const canonical = 'https://usiva.org/record/nav.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/nav.html"
+  canonical={canonical}
+  topbarMessage="Record Room · site map and navigation"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/nav.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Archive" title="Site map" description="The navigation structure of USIVA, showing how planning content is organized across routes and reference areas." />
+
+        <div class="card-grid">
+          <RecordCard title="Visa categories" description="Browse nonimmigrant and immigrant route categories with official source orientation and planning questions." tag="Research" href="/visa-categories.html" />
+          <RecordCard title="Routes & directories" description="The full route atlas covering A through V categories and special pathways." tag="Navigation" href="/visa-categories.html" />
+          <RecordCard title="Official tools" description="A directory of government case-status, visa, and employer resources for current instructions." tag="Sources" href="/official-tools.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Structure" title="Navigation hierarchy" description="How USIVA's pages are organized for discoverability and purpose." />
+
+        <div class="card-grid">
+          <RecordCard title="Planning lanes" description="Different stages need different planning conversations — before applying, during study, and for employers." tag="Structure" href="/services.html" />
+          <RecordCard title="Reference list" description="Continue with a purpose — choose the reference that answers the next question." tag="Navigation" href="/about.html" />
+          <RecordCard title="Sitemap" description="The XML sitemap provides the complete index of USIVA pages for search and discovery." tag="Technical" href="/sitemap.xml" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

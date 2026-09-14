@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Brand Guide | Record Room';
+const description = 'USIVA Record Room: brand guide and visual identity reference.';
+const canonical = 'https://usiva.org/record/style.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/style.html"
+  canonical={canonical}
+  topbarMessage="Record Room · brand guide and visual identity"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section section--mist" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/style.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Visual archive" title="Brand guide" description="The visual identity and design language of USIVA, including the color palette, typography, and component system." />
+
+        <div class="card-grid">
+          <RecordCard title="Color system" description="The USWDS-inspired semantic palette: surfaces, content, actions, and states defined in tokens.css." tag="Design" href="/about.html" />
+          <RecordCard title="Typography" description="Display type uses Arial Narrow; body type uses Inter, with a responsive step scale for hierarchy." tag="Design" href="/about.html" />
+          <RecordCard title="Brand mark" description="The USIVA logo marks the site's identity across all pages and components." tag="Brand" href="/about.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Identity" title="Visual identity" description="How USIVA's visual system is structured and applied across the site." />
+
+        <div class="card-grid">
+          <RecordCard title="Tokens" description="CSS variables define the color system, font stack, spacing scale, and responsive breakpoints." tag="Technical" href="/styles/global.css" />
+          <RecordCard title="Components" description="Reusable Astro components maintain visual consistency across all planning pages." tag="Engineering" href="/services.html" />
+          <RecordCard title="Editorial standard" description="Four habits keep a planning page honest: start with the decision, make the boundary explicit, leave a source trail, know when to hand off." tag="Standard" href="/about.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

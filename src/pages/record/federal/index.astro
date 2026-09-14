@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Federal Records | Record Room';
+const description = 'USIVA Record Room: federal registration, agency context, and official-source orientation.';
+const canonical = 'https://usiva.org/record/federal.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/federal.html"
+  canonical={canonical}
+  topbarMessage="Record Room · federal registration and agency context"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/federal.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Federal" title="Federal records" description="The federal agency context and registration framework that frames USIVA's planning orientation." />
+
+        <div class="card-grid">
+          <RecordCard title="USCIS" description="U.S. Citizenship and Immigration Services handles immigration benefit and naturalization services and related adjudications." tag="Agency" href="/official-tools.html" />
+          <RecordCard title="Department of State" description="The Department of State manages visa information, consular processing, and the visa category directory." tag="Agency" href="/official-tools.html" />
+          <RecordCard title="CBP" description="U.S. Customs and Border Protection conducts inspection and determines admissibility at ports of entry." tag="Agency" href="/official-tools.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Registration" title="Federal registration context" description="How federal registration and official-source awareness shapes USIVA's planning content." />
+
+        <div class="card-grid">
+          <RecordCard title="Source tracing" description="Every planning question names the official source with a check date so readers can verify current instructions before relying on them." tag="Standard" href="/briefs.html" />
+          <RecordCard title="Case-specific decisions" description="Eligibility, status, employment, and approval decisions belong to the responsible agency. USIVA orients; it does not adjudicate." tag="Boundary" href="/about.html" />
+          <RecordCard title="Official handoffs" description="Planning material ends with a question for the authority that can confirm the answer. Handoffs are named explicitly." tag="Practice" href="/briefs.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

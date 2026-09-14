@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../components/RecordSidebar.astro';
+import RecordCard from '../../components/RecordCard.astro';
+import SectionIntro from '../../components/SectionIntro.astro';
+
+const title = 'Company Facts | Record Room';
+const description = 'USIVA Record Room: company overview, legal identity, federal registration, and capability areas.';
+const canonical = 'https://usiva.org/record.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record.html"
+  canonical={canonical}
+  topbarMessage="Record Room · company facts and organizational reference"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="record-hero" aria-labelledby="page-title">
+    <div class="shell-container">
+      <p class="eyebrow">Record Room</p>
+      <h1 id="page-title">Company Facts</h1>
+      <p class="record-hero__lede">The organizational, legal, and operational reference for USIVA. These facts describe the organization and its planning context.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="overview-heading">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Overview" title="Company overview" description="USIVA is a US Council companion site that organizes visa and immigration planning questions, evidence, and official-source handoffs for individuals, families, employers, and organizations." />
+
+        <div class="card-grid">
+          <RecordCard title="What USIVA is" description="A public planning companion that helps readers organize records, timing, source checks, and responsible handoffs across visa and immigration categories." tag="Identity" href="/about.html" />
+          <RecordCard title="Planning inputs" description="Stage, activity, date, and source owner form the working frame for every planning question on the site." tag="Method" href="/services.html" />
+          <RecordCard title="Audience" description="Students, researchers, families, employers, coordinators, and organizations navigating US visa and immigration questions." tag="Scope" href="/services.html" />
+          <RecordCard title="Source awareness" description="Every page names the official source and the responsible authority. USIVA orients; the authority decides." tag="Standard" href="/briefs.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Identity" title="Legal identity" description="The organizational identity behind USIVA and its role within the US Council planning ecosystem." />
+
+        <div class="card-grid">
+          <RecordCard title="Organization" description="U.S. Immigration and Visa Association — a US Council companion site providing informational planning content." tag="Legal" href="/about.html" />
+          <RecordCard title="Governing context" description="USIVA operates alongside universities, employers, sponsors, and research programs while each retains responsibility for its own instructions." tag="Governance" href="/about.html" />
+          <RecordCard title="Boundary" description="USIVA provides orientation and organization. Legal advice, eligibility, admission, and approval decisions belong to the responsible authority." tag="Scope" href="/about.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper" aria-labelledby="registration-heading">
+    <div class="shell-container">
+      <SectionIntro eyebrow="03 · Registration" title="Federal registration" description="The federal registration and agency context that frames USIVA's planning orientation." />
+
+      <div class="card-grid">
+        <RecordCard title="Agency awareness" description="USIVA references USCIS, the Department of State, and CBP as the agencies with authority over visa, immigration, and admission decisions." tag="Federal" href="/official-tools.html" />
+        <RecordCard title="Official sources" description="Every planning page points back to the current official source. Government instructions control when they differ from general planning content." tag="Sources" href="/official-tools.html" />
+        <RecordCard title="Record readiness" description="Evidence organization follows a traceable chain: who issued it, when, what it supports, and which questions require another source." tag="Practice" href="/briefs.html" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="capability-heading">
+    <div class="shell-container">
+      <SectionIntro eyebrow="04 · Capability" title="Capability areas" description="The planning areas USIVA covers, organized by the type of question a reader may bring." />
+
+      <div class="card-grid">
+        <RecordCard title="Visa categories" description="Browse and compare nonimmigrant and immigrant route categories with official source orientation and planning questions." tag="Research" href="/visa-categories.html" />
+        <RecordCard title="Evidence & records" description="Organize identity, purpose, funding, authorization, and history records into a traceable readiness file." tag="Evidence" href="/briefs.html" />
+        <RecordCard title="Employer orientation" description="Frame Form I-9, E-Verify, and employment-verification questions before a handoff to the responsible authority." tag="Employers" href="/employers.html" />
+        <RecordCard title="Research briefs" description="Short, source-led notes about planning and compliance questions across visa routes and activity types." tag="Research" href="/briefs.html" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-hero {
+    background: var(--color-navy-deep);
+    color: var(--color-paper);
+    border-bottom: 1px solid rgb(230 237 243 / 24%);
+    padding-block: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .record-hero .eyebrow {
+    color: var(--color-highlight);
+  }
+
+  .record-hero h1 {
+    color: var(--color-paper);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    max-width: 12ch;
+  }
+
+  .record-hero__lede {
+    color: var(--color-on-dark-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+    margin-block-start: var(--space-2);
+    max-width: 56ch;
+  }
+
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

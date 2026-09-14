@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Source Register | Record Room';
+const description = 'USIVA Record Room: source register and official-source verification.';
+const canonical = 'https://usiva.org/record/verify.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/verify.html"
+  canonical={canonical}
+  topbarMessage="Record Room · source register and verification"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/verify.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Sources" title="Source register" description="The verified official-source library that underpins USIVA's planning content." />
+
+        <div class="card-grid">
+          <RecordCard title="State Department" description="Directory of visa categories, visitor, student, immigrant, and visa statistics resources." tag="Agency" href="/official-tools.html" />
+          <RecordCard title="USCIS" description="About USCIS, policy manual, green card processes, case status, and processing times." tag="Agency" href="/official-tools.html" />
+          <RecordCard title="DHS & CBP" description="Immigration statistics, I-94 records, and admission guidance from the Department of Homeland Security." tag="Agency" href="/official-tools.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Verification" title="Source verification" description="How USIVA ensures planning material stays connected to current official instructions." />
+
+        <div class="card-grid">
+          <RecordCard title="Last checked dates" description="Every source carries a check date so readers can assess currency before relying on it." tag="Standard" href="/briefs.html" />
+          <RecordCard title="Source trail" description="Briefs preserve the complete activity description and ask the authority responsible for the classification." tag="Practice" href="/briefs.html" />
+          <RecordCard title="Boundary statement" description="USIVA provides informational planning content. Legal advice and eligibility decisions belong to the responsible authority." tag="Policy" href="/about.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

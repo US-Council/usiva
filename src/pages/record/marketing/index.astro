@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Market Profile | Record Room';
+const description = 'USIVA Record Room: market profile and audience orientation.';
+const canonical = 'https://usiva.org/record/marketing.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/marketing.html"
+  canonical={canonical}
+  topbarMessage="Record Room · market profile and audience orientation"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/marketing.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Market" title="Market profile" description="The audience segments and planning contexts that USIVA serves across the visa and immigration landscape." />
+
+        <div class="card-grid">
+          <RecordCard title="Individuals" description="Students, researchers, and travelers organizing study, work, and family planning questions." tag="Audience" href="/services.html" />
+          <RecordCard title="Families" description="Families navigating dependent, travel, change-of-circumstance, and status questions." tag="Audience" href="/tips-faq.html" />
+          <RecordCard title="Employers" description="Companies framing worker, role, timing, sponsorship, and compliance questions." tag="Audience" href="/employers.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Orientation" title="Audience segmentation" description="How USIVA matches planning content to the reader's stage and activity type." />
+
+        <div class="card-grid">
+          <RecordCard title="Study & exchange" description="F-1, J-1, school, SEVIS, funding, and document questions before a program decision." tag="Segment" href="/services.html" />
+          <RecordCard title="Work & talent" description="Employment, practical training, status timing, and the evidence a role may require." tag="Segment" href="/services.html" />
+          <RecordCard title="Residence & transition" title="Residence and transition" description="Organize the question, the record, and the right handoff when a temporary route may change." tag="Segment" href="/contacts.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

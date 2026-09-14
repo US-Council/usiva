@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Leadership | Record Room';
+const description = 'USIVA Record Room: leadership, organizational structure, and planning governance.';
+const canonical = 'https://usiva.org/record/leadership.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/leadership.html"
+  canonical={canonical}
+  topbarMessage="Record Room · leadership and organizational structure"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/leadership.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Leadership" title="Leadership" description="The organizational leadership and planning governance that guide USIVA's editorial and operational direction." />
+
+        <div class="card-grid">
+          <RecordCard title="Editorial leadership" description="Content is guided by a source-aware editorial standard that keeps planning material connected to official sources and responsible authorities." tag="Governance" href="/about.html" />
+          <RecordCard title="Planning governance" description="Each person's case receives its own review by the responsible authority. USIVA organizes questions; it does not make eligibility determinations." tag="Policy" href="/about.html" />
+          <RecordCard title="Collaboration model" description="USIVA works alongside universities, employers, sponsors, and connected research programs while each provider remains responsible for its own instructions." tag="Partnerships" href="/about.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Structure" title="Organizational structure" description="How USIVA's planning content is organized and maintained." />
+
+        <div class="card-grid">
+          <RecordCard title="Content sections" description="Planning content is organized into categories, stages, and reference areas that match how readers frame their questions." tag="Content" href="/visa-categories.html" />
+          <RecordCard title="Research desk" description="Briefs and articles provide source-led analysis, keeping the official source and check date visible at every step." tag="Research" href="/briefs.html" />
+          <RecordCard title="Evidence standards" description="Every claim is traceable to a named source with a check date, so readers can verify the current version before relying on it." tag="Standards" href="/briefs.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

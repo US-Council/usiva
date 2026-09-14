@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecordSidebar from '../../../components/RecordSidebar.astro';
+import RecordCard from '../../../components/RecordCard.astro';
+import SectionIntro from '../../../components/SectionIntro.astro';
+
+const title = 'Decision Briefs | Record Room';
+const description = 'USIVA Record Room: decision briefs and planning research.';
+const canonical = 'https://usiva.org/record/journeys.html';
+
+const sidebarGroups = [
+  {
+    label: 'Company',
+    items: [
+      { label: 'Company facts', href: '/record.html' },
+      { label: 'Leadership', href: '/record/leadership.html' },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { label: 'Federal records', href: '/record/federal.html' },
+      { label: 'Source register', href: '/record/verify.html' },
+      { label: 'Documents', href: '/record/files.html' },
+    ],
+  },
+  {
+    label: 'Website archive',
+    items: [
+      { label: 'Site map', href: '/record/nav.html' },
+      { label: 'Content inventory', href: '/record/metrics.html' },
+      { label: 'Visual archive', href: '/record/style.html' },
+    ],
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Business status', href: '/record/ops.html' },
+      { label: 'Brand guide', href: '/record/style.html' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activePath="/record/journeys.html"
+  canonical={canonical}
+  topbarMessage="Record Room · decision briefs and planning research"
+  topbarLink={{ label: 'Open official tools', href: '/official-tools.html' }}
+>
+  <section class="section section--paper" aria-labelledby="page-title">
+    <div class="shell-container record-layout">
+      <RecordSidebar activePath="/record/journeys.html" groups={sidebarGroups} />
+
+      <div class="record-content">
+        <SectionIntro eyebrow="01 · Research" title="Decision briefs" description="The research briefs that organize planning questions with source-led analysis and traceable references." />
+
+        <div class="card-grid">
+          <RecordCard title="Purpose of travel" description="Purpose of travel is the first classification question. Record the activity, host, and timing before comparing categories." tag="Brief" href="/briefs.html" />
+          <RecordCard title="Immigrant vs. nonimmigrant" description="Draw the route before the form. Make a one-page route map with the goal, location, petitioner, next agency, record number, and open question." tag="Brief" href="/briefs.html" />
+          <RecordCard title="Agency roles" description="USCIS, State, and CBP are different desks. A clean handoff starts by naming the decision being requested." tag="Brief" href="/briefs.html" />
+        </div>
+
+        <SectionIntro eyebrow="02 · Evidence" title="Evidence briefs" description="The evidence desk research that supports readiness file organization and record readiness." />
+
+        <div class="card-grid">
+          <RecordCard title="Record readiness" description="Evidence is a chain of custody for your own facts. Traceability matters more than volume." tag="Evidence" href="/briefs.html" />
+          <RecordCard title="Employer orientation" description="Form I-9, E-Verify, and the authorization record: a current employer-side sequence for compliant hiring." tag="Evidence" href="/briefs.html" />
+          <RecordCard title="Case status" description="Case status is a handoff map for the current record. Start from the agency named on the notice." tag="Evidence" href="/briefs.html" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .record-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+    padding-block-start: var(--space-4);
+  }
+
+  .record-content {
+    min-width: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: var(--space-3);
+  }
+
+  @media (max-width: 820px) {
+    .record-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
