@@ -16,6 +16,7 @@ const staticRoutes = [
   '/contacts.html',
   '/e-verify.html',
   '/employers.html',
+  '/f-1-opt-curiosity-opportunity.html',
   '/guides/evidence-checklists.html',
   '/guides/f-1-readiness.html',
   '/guides/opt.html',
