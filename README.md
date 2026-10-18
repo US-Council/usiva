@@ -59,3 +59,4 @@ git push https://git.developerdojo.org/US-Council/usiva.git main
 ```
 
 Do not restore legacy files or manually edit `gh-pages`. GitHub Pages deploys `gh-pages` from the repository root at `usiva.org`; use the DNS provider targets shown by GitHub for the apex domain and point any `www` CNAME directly to the organization's GitHub Pages host. Keep the internal GitLab Pages URL out of public DNS. See the [deployment runbook](docs/deployment/README.md) for the release checks and current deployment model.
+This repository is mirrored to GitHub by git-mirror-sync (infrastructure#521).
