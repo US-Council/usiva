@@ -19,7 +19,7 @@ See the [deployment runbook](docs/deployment/README.md) for the exact artifact c
 
 ## Astro development
 
-Use Node.js 22.13.0, pnpm 11.22.0, and the committed pnpm lockfile. From a clean checkout:
+Use Node.js 24.22.0, pnpm 11.22.0, and the committed pnpm lockfile. From a clean checkout:
 
 ```bash
 corepack pnpm --version
