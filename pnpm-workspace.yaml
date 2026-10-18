@@ -1,2 +1,11 @@
 allowBuilds:
   esbuild: true
+
+# Transitive security floors (US-Council/usiva#31). Astro's own dependency
+# ranges still resolve to vulnerable releases of these packages, so pin them to
+# the patched versions. Remove an entry once the upstream chain requires a
+# patched version by itself (check with `pnpm why <pkg>`).
+overrides:
+  undici: 8.12.2 # GHSA-2gqq-gqf2-x968 et al., via astro > unifont
+  source-map-js: 1.2.2 # GHSA-68fv-2mgg-jv7q, via astro > magicast / svgo
+  fast-uri: 4.2.2 # dev-only, via @astrojs/check > language-server > ajv
