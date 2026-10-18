@@ -15,7 +15,7 @@ The old static site, legacy branch contents, and repository mirrors are not depl
 Both deployment jobs run the same locked build contract:
 
 1. Require `package.json` and `pnpm-lock.yaml`.
-2. Use Node.js `22.13.0` and install pnpm `11.22.0`.
+2. Use Node.js `24.22.0` and install pnpm `11.22.0`.
 3. Run `pnpm install --frozen-lockfile --config.allowBuilds.esbuild=true`; this explicitly permits only Astro's esbuild dependency to run its build step.
 4. Run `pnpm run build`, `pnpm run check`, `pnpm test`, `pnpm run audit`, and `pnpm audit --prod`.
 5. Require `dist/index.html` and `dist/assets/`.

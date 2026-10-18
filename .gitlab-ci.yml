@@ -12,7 +12,7 @@ stages:
 
 deploy-demo-pages:
   stage: deploy
-  image: node:22.13.0-bookworm-slim
+  image: node:24.22.0-bookworm-slim
   variables:
     CI: "true"
   script:
