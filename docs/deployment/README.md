@@ -36,7 +36,7 @@ To promote a reviewed source revision to the demo branch, update `demo` with the
 
 ## Public GitHub Pages deployment
 
-The workflow at [`.github/workflows/publish-pages.yml`](../../.github/workflows/publish-pages.yml) runs on pushes to `main` and on a manual run started from `main`. It checks out `main`, builds the Astro site, validates the artifact contract, and replaces `gh-pages` with only the sealed output.
+The workflow at [`.github/workflows/publish-pages.yml`](../../.github/workflows/publish-pages.yml) runs on pushes to `main` and `release/live` and on manual runs started from either. It checks out the triggering commit, builds the Astro site, runs the release quality gates, and validates the artifact contract. Only runs on `release/live` then replace `gh-pages` with the sealed output; runs on `main` stop after validation. Promote `main` by merging it into `release/live` once the owner approves.
 
 Configure the GitHub repository's Pages settings once:
 
@@ -48,21 +48,20 @@ Configure the GitHub repository's Pages settings once:
 
 GitHub's branch-based Pages configuration is documented in [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). The workflow's `GITHUB_TOKEN` push does not trigger itself because it publishes only `gh-pages`; subsequent public publication is handled by the branch-based Pages setting.
 
-Do not edit `gh-pages` by hand. A successful `main` workflow is the only supported way to replace the public artifact. A failed build leaves the previous `gh-pages` commit in place; it does not fall back to a legacy site.
+Do not edit `gh-pages` by hand. A successful `release/live` workflow is the only supported way to replace the public artifact. A failed build leaves the previous `gh-pages` commit in place; it does not fall back to a legacy site.
 
 ## Rollback
 
-The preferred rollback is a reviewed revert on `main`:
+The preferred rollback is a reviewed revert on `release/live`:
 
 ```bash
-git switch main
-git pull --ff-only https://github.com/US-Council/usiva.git main
-git revert <bad-main-commit>
-git push https://github.com/US-Council/usiva.git main
-git push https://git.developerdojo.org/US-Council/usiva.git main
+git switch release/live
+git pull --ff-only https://git.developerdojo.org/US-Council/usiva.git release/live
+git revert <bad-commit>
+git push https://git.developerdojo.org/US-Council/usiva.git release/live
 ```
 
-The public workflow then rebuilds the reverted source with the lockfile and replaces `gh-pages`. If a workflow failed before publishing, fix or revert `main` and rerun it from the `main` branch. Never restore the public site by copying files from an old branch or mirror.
+The public workflow then rebuilds the reverted source with the lockfile and replaces `gh-pages`. If a workflow failed before publishing, fix forward on `release/live` and rerun it from that branch. Never restore the public site by copying files from an old branch or mirror.
 
 If the source rollback itself is not yet approved, stop the public workflow and preserve the current `gh-pages` artifact while the change is reviewed. Record the relevant workflow run and commit SHA in the release ticket; do not put credentials or private deployment data in this repository.
 
