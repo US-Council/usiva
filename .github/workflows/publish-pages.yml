@@ -1,9 +1,15 @@
 name: Publish public GitHub Pages artifact
 
+# Release model (US-Council/usiva#31): every push to main or release/live runs
+# the full build and quality gates, but ONLY release/live publishes to gh-pages.
+# main is the integration branch; promoting it to production is an explicit,
+# owner-approved merge of main into release/live (see README, "Publishing").
+
 on:
   push:
     branches:
       - main
+      - release/live
   workflow_dispatch:
 
 permissions:
@@ -15,20 +21,20 @@ concurrency:
 
 jobs:
   build-and-publish:
-    # Manual runs are allowed only when started from main. Pushes are already
-    # limited to main above, so another branch cannot publish publicly.
-    if: github.event_name == 'push' || github.ref == 'refs/heads/main'
+    # Pushes and manual runs are limited to main (verify only) and release/live
+    # (verify and publish); no other branch can build or publish.
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/live'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
       CI: true
       TZ: UTC
     steps:
-      - name: Checkout main source
+      - name: Checkout triggering source
         # actions/checkout v4.2.2
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: main
+          ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
 
@@ -47,7 +53,7 @@ jobs:
         # actions/setup-node v4.4.0
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: '22.13.0'
+          node-version: '24.22.0'
 
       - name: Set up locked pnpm
         shell: bash
@@ -89,6 +95,9 @@ jobs:
           test ! -s dist/.nojekyll
 
       - name: Publish only dist to gh-pages
+        # Production publishes come from release/live only. main stops after the
+        # gates above, so unapproved content never reaches usiva.org.
+        if: github.ref == 'refs/heads/release/live'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
