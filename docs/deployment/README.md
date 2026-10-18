@@ -24,7 +24,7 @@ Both deployment jobs run the same locked build contract:
 
 The public GitHub artifact then writes exactly `usiva.org` to its root `CNAME` and an empty root `.nojekyll`. The internal GitLab demo artifact removes any `CNAME` copied from source and writes only `.nojekyll`, so the public domain cannot be routed to the internal Pages site.
 
-The GitHub workflow creates an orphan `gh-pages` commit from this directory and force-replaces that branch. This is intentional: the branch is an artifact, not a second source tree, and it must not retain legacy files. The workflow uses only the repository-provided `GITHUB_TOKEN`; no long-lived token or DNS credential is stored in the repository.
+The `site:publish` job replaces the tree of GitLab `gh-pages` with this directory in a new fast-forward commit. The branch is an artifact, not a second source tree, and it must not retain legacy files. The only credential is the protected, masked CI variable `USIVA_GHPAGES_TOKEN` (AKV `omlab-secrets/usiva-ghpages-publish-token`); nothing is stored in the repository.
 
 ## GitLab demo deployment
 
@@ -36,7 +36,7 @@ To promote a reviewed source revision to the demo branch, update `demo` with the
 
 ## Public GitHub Pages deployment
 
-The workflow at [`.github/workflows/publish-pages.yml`](../../.github/workflows/publish-pages.yml) runs on pushes to `main` and `release/live` and on manual runs started from either. It checks out the triggering commit, builds the Astro site, runs the release quality gates, and validates the artifact contract. Only runs on `release/live` then replace `gh-pages` with the sealed output; runs on `main` stop after validation. Promote `main` by merging it into `release/live` once the owner approves.
+Publishing is owned by GitLab CI ([`.gitlab-ci.yml`](../../.gitlab-ci.yml)). `site:gates` runs on merge requests and on pushes to `main` and `release/live`: it builds the Astro site with Node.js 24.22.0, runs the release quality gates, and validates and seals the artifact contract. Only `site:publish` on `release/live` then commits the sealed output to GitLab `gh-pages` (fast-forward, never forced, token passed through `GIT_ASKPASS`); `main` stops after validation. The GitLab push mirror (fast-forward only, `keep_divergent_refs=false`) carries `gh-pages` to GitHub. Promote `main` by merging it into `release/live` once the owner approves.
 
 Configure the GitHub repository's Pages settings once:
 
@@ -46,9 +46,9 @@ Configure the GitHub repository's Pages settings once:
 4. Set the custom domain to `usiva.org` and enable HTTPS after DNS is correct.
 5. Do not select `main`, `demo`, or a GitHub Actions Pages artifact as the publishing source.
 
-GitHub's branch-based Pages configuration is documented in [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). The workflow's `GITHUB_TOKEN` push does not trigger itself because it publishes only `gh-pages`; subsequent public publication is handled by the branch-based Pages setting.
+GitHub's branch-based Pages configuration is documented in [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). Public publication is handled by the branch-based Pages setting once the mirror delivers `gh-pages`.
 
-Do not edit `gh-pages` by hand. A successful `release/live` workflow is the only supported way to replace the public artifact. A failed build leaves the previous `gh-pages` commit in place; it does not fall back to a legacy site.
+Do not edit `gh-pages` by hand. A successful `release/live` GitLab pipeline is the only supported way to replace the public artifact. A failed build leaves the previous `gh-pages` commit in place; it does not fall back to a legacy site.
 
 ## Rollback
 
@@ -61,9 +61,9 @@ git revert <bad-commit>
 git push https://git.developerdojo.org/US-Council/usiva.git release/live
 ```
 
-The public workflow then rebuilds the reverted source with the lockfile and replaces `gh-pages`. If a workflow failed before publishing, fix forward on `release/live` and rerun it from that branch. Never restore the public site by copying files from an old branch or mirror.
+The `release/live` pipeline then rebuilds the reverted source with the lockfile and publishes it to `gh-pages`. If a pipeline failed before publishing, fix forward on `release/live` and rerun it from that branch. Never restore the public site by copying files from an old branch or mirror.
 
-If the source rollback itself is not yet approved, stop the public workflow and preserve the current `gh-pages` artifact while the change is reviewed. Record the relevant workflow run and commit SHA in the release ticket; do not put credentials or private deployment data in this repository.
+If the source rollback itself is not yet approved, stop the `site:publish` job and preserve the current `gh-pages` artifact while the change is reviewed. Record the relevant pipeline and commit SHA in the release ticket; do not put credentials or private deployment data in this repository.
 
 ## DNS and custom domain
 
