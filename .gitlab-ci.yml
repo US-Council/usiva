@@ -1,14 +1,152 @@
 ---
-# Internal/demo Pages only. The public artifact is produced by GitHub Actions
-# in https://github.com/US-Council/usiva and is published from gh-pages.
+# GitLab is the source of truth (FocusApiary/infrastructure#538).
+#
+# - demo        -> internal GitLab Pages preview (noindex), see deploy-demo-pages.
+# - main        -> quality gates only (site:gates); never publishes.
+# - release/live-> gates, then site:publish commits the sealed build to the
+#                  GitLab `gh-pages` branch. The GitLab push mirror (fast-forward
+#                  only, keep_divergent_refs=false) carries gh-pages to GitHub,
+#                  where branch-based GitHub Pages serves usiva.org.
+# Nothing publishes from GitHub Actions any more.
 
 workflow:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "demo"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "demo" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "release/live"'
     - when: never
 
 stages:
+  - verify
+  - publish
   - deploy
+
+variables:
+  NODE_IMAGE: node:24.22.0-bookworm
+  PNPM_VERSION: 11.22.0
+
+.site-job:
+  image: ${NODE_IMAGE}
+  variables:
+    CI: "true"
+    TZ: UTC
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+      - scheduler_failure
+
+# Source assurance and the exact artifact that release/live publishes: build,
+# astro check, tests, production audit, dependency audit, then seal dist with
+# CNAME (usiva.org) and an empty .nojekyll.
+site:gates:
+  extends: .site-job
+  stage: verify
+  script:
+    - |
+      set -euo pipefail
+      test "$(node --version)" = "v24.22.0"
+      test -f package.json
+      test -f pnpm-lock.yaml
+      pnpm_prefix="$CI_PROJECT_DIR/.pnpm-bin"
+      npm install --global --prefix "$pnpm_prefix" "pnpm@${PNPM_VERSION}"
+      export PATH="$pnpm_prefix/bin:$PATH"
+      test "$(pnpm --version)" = "${PNPM_VERSION}"
+      pnpm install --frozen-lockfile --config.allowBuilds.esbuild=true
+      pnpm run build
+      pnpm run check
+      pnpm test
+      pnpm run audit
+      pnpm audit --prod
+      test -d dist
+      test -s dist/index.html
+      test -d dist/assets
+      if [ -d dist/_astro ] || find dist -type f -path '*/_astro/*' -print -quit | grep -q .; then
+        echo 'Astro assets must use the non-underscore assets directory' >&2
+        exit 1
+      fi
+      printf '%s\n' 'usiva.org' > dist/CNAME
+      : > dist/.nojekyll
+      test "$(cat dist/CNAME)" = "usiva.org"
+      test ! -s dist/.nojekyll
+  artifacts:
+    name: usiva-site-$CI_COMMIT_SHORT_SHA
+    expire_in: 1 day
+    paths:
+      - dist/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "release/live"'
+
+# Commit the sealed artifact to GitLab gh-pages as a normal fast-forward commit.
+# - Only on release/live, only after site:gates passes.
+# - Uses USIVA_GHPAGES_TOKEN (project access token usiva-ghpages-publish,
+#   Developer, write_repository; AKV omlab-secrets/usiva-ghpages-publish-token;
+#   masked + protected CI variable). Passed through GIT_ASKPASS, never in a URL.
+# - Never forces. If gh-pages moved since the clone the push is rejected; rerun.
+# - If the tree is unchanged nothing is committed.
+site:publish:
+  extends: .site-job
+  stage: publish
+  needs:
+    - job: site:gates
+      artifacts: true
+  resource_group: usiva-ghpages
+  script:
+    - |
+      set -eu
+      : "${USIVA_GHPAGES_TOKEN:?USIVA_GHPAGES_TOKEN must be a protected masked project variable}"
+      test "${CI_COMMIT_BRANCH:-}" = "release/live"
+      test -s dist/index.html
+      test "$(cat dist/CNAME)" = "usiva.org"
+      test -f dist/.nojekyll
+      test ! -s dist/.nojekyll
+
+      askpass="$(mktemp)"
+      trap 'rm -f "${askpass}"' EXIT
+      cat > "${askpass}" <<'ASKPASS'
+      #!/bin/sh
+      case "$1" in
+        *Username*) printf '%s\n' 'oauth2' ;;
+        *) printf '%s\n' "${USIVA_GHPAGES_TOKEN}" ;;
+      esac
+      ASKPASS
+      chmod 700 "${askpass}"
+      export GIT_ASKPASS="${askpass}" GIT_TERMINAL_PROMPT=0
+
+      repo_url="${CI_SERVER_URL}/${CI_PROJECT_PATH}.git"
+      publish_dir="$(mktemp -d)"
+      git clone --quiet --depth 1 --single-branch --branch gh-pages "${repo_url}" "${publish_dir}"
+      base_sha="$(git -C "${publish_dir}" rev-parse HEAD)"
+      git -C "${publish_dir}" config user.name "usiva-ci"
+      git -C "${publish_dir}" config user.email "ci-ghpages-publish@${CI_SERVER_HOST}"
+
+      # Replace the tree with the artifact; history stays append-only.
+      git -C "${publish_dir}" rm -r -q --ignore-unmatch -- .
+      git -C "${publish_dir}" clean -fdxq
+      cp -a dist/. "${publish_dir}/"
+      git -C "${publish_dir}" add --all -- .
+
+      if git -C "${publish_dir}" diff --cached --quiet; then
+        echo "gh-pages already contains this artifact (${base_sha})"
+        exit 0
+      fi
+
+      git -C "${publish_dir}" commit --quiet \
+        -m "Publish USIVA release ${CI_COMMIT_SHORT_SHA} from release/live" \
+        -m "Source: ${CI_PROJECT_URL}/-/commit/${CI_COMMIT_SHA}" \
+        -m "Pipeline: ${CI_PIPELINE_URL}"
+      test "$(git -C "${publish_dir}" rev-parse HEAD^)" = "${base_sha}"
+
+      # Normal push (no --force); ci.skip avoids a pipeline on gh-pages.
+      git -C "${publish_dir}" push --quiet -o ci.skip origin HEAD:refs/heads/gh-pages
+
+      new_sha="$(git -C "${publish_dir}" rev-parse HEAD)"
+      remote_sha="$(git ls-remote "${repo_url}" refs/heads/gh-pages | awk 'NF {print $1; exit}')"
+      test "${remote_sha}" = "${new_sha}"
+      echo "Published ${CI_COMMIT_SHA} to gh-pages as ${new_sha} (was ${base_sha})"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "release/live" && $CI_PIPELINE_SOURCE == "push"'
 
 deploy-demo-pages:
   stage: deploy
