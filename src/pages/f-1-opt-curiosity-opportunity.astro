@@ -1,0 +1,827 @@
+---
+import ActionLinks from '../components/ActionLinks.astro';
+import BoundaryGrid from '../components/BoundaryGrid.astro';
+import EvidenceGrid from '../components/EvidenceGrid.astro';
+import SectionIntro from '../components/SectionIntro.astro';
+import SourceList from '../components/SourceList.astro';
+import type { Action } from '../components/types';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const heroActions: Action[] = [
+  { label: 'Review OPT planning guide', href: '/guides/opt.html', tone: 'gold' },
+  { label: 'Open US Fellows context', href: 'https://usfellows.org/resident-rd-scholar.html', tone: 'outline', external: true },
+];
+
+const overviewItems = [
+  {
+    marker: '01',
+    title: 'F-1 students in valid status',
+    text: 'Graduates who have completed a degree program and hold, or expect, Post-Completion OPT authorization (or STEM OPT extension where eligible).',
+  },
+  {
+    marker: '02',
+    title: 'CIP-aligned activity mix',
+    text: 'Activity assignments are scoped to the degree CIP listed in SEVIS. The exact mix depends on CIP alignment, program needs, supervisor assignment, and timing.',
+  },
+  {
+    marker: '03',
+    title: 'Structured weekly commitment',
+    text: 'On-site / hybrid placement designed to meet OPT qualifying employment standards — typically ≥20 hours per week, full-time where required — for up to 12 months of OPT authorization.',
+  },
+  {
+    marker: '04',
+    title: 'Field-related training duties',
+    text: 'Participants contribute to research, community education, and funding missions while deepening expertise directly related to their field of study.',
+  },
+  {
+    marker: '05',
+    title: 'US Fellows pathways where eligible',
+    text: 'May connect to International Graduate Fellow, Resident R&D Scholar, or Career Advancement Track pathways when independently eligible — affiliation is separate and not guaranteed.',
+  },
+  {
+    marker: '06',
+    title: 'Non-guarantee by design',
+    text: 'This opportunity does not guarantee that every participant will perform every activity. The list below is illustrative, not a promise of inclusion.',
+  },
+];
+
+const activityAreas = [
+  {
+    id: 'curiosity-spaces',
+    number: '01',
+    title: 'Curating Curiosity cottages with Curiosity corners',
+    what: 'Design, set up, maintain, and improve physical or program spaces that encourage exploration, hands-on learning, and discovery — “Curiosity corners” within welcoming “Curiosity cottage” environments for visitors, residents, and program participants.',
+    activities: [
+      'Help design, set up, and maintain Curiosity corners for exploration, reading, prototyping, and hands-on learning',
+      'Support curation of Curiosity cottages as welcoming environments',
+      'Develop guides, signage, and onboarding for users of the space',
+      'Document and improve spaces over time (usage notes, what works, what to change)',
+      'Coordinate materials, supplies, and equipment access within organizational policy',
+      'Connect space programming to the participant’s field of study where possible',
+    ],
+    cip: 'Education CIPs (e.g., 13.0101): coaching and learning-space design are directly field-aligned. STEM CIPs: discipline-themed curiosity corners (science demos, data exhibits, AI demos) can be field-aligned as science communication. Design CIPs (e.g., 04.0801): space curation and environmental design can be core field work.',
+  },
+  {
+    id: 'curiosity-coaching',
+    number: '02',
+    title: 'Acting as a Curiosity coach at local community colleges',
+    what: 'Serve as a mentor/coach at partner local community colleges — supporting workshops, study sessions, project teams, and enrichment activities that build curiosity-driven learning habits.',
+    activities: [
+      'Act as a Curiosity coach at partner local community colleges',
+      'Support workshops, study sessions, project teams, or enrichment activities',
+      'Coordinate with college staff on scheduling, content, participant feedback, and follow-up',
+      'Help students connect coursework to real-world applications and public-interest careers',
+      'Model learning behaviors: asking good questions, normalizing iteration, encouraging persistence',
+      'Document coaching impact (attendance, feedback, short reflections) for program improvement',
+    ],
+    cip: 'Education / teaching CIPs: coaching is core field practice. STEM CIPs: discipline-specific coaching (STEM tutoring, project mentoring, research-methods workshops) is field-aligned when content is rooted in the degree field. Psychology / human development CIPs: coaching and mentoring models map to developmental and learning theories.',
+    note: 'Coaching and instruction at a partner college must be scoped as organizational activity under the OPT employer’s program (not unauthorized secondary employment). Host arrangements and supervision should be documented.',
+  },
+  {
+    id: 'cip-research',
+    number: '03',
+    title: 'Conducting research in your field of study (CIP-aligned)',
+    what: 'Plan and carry out research activities that are directly related to your degree CIP as listed in SEVIS — the core OPT requirement. OPT requires a direct relationship between the degree field and training duties.',
+    activities: [
+      'Plan and carry out research activities directly related to your degree CIP',
+      'Use lab and research infrastructure under mentor supervision',
+      'Conduct literature reviews, background research, requirements analysis, or evidence mapping',
+      'Support experiments, prototypes, analytical workflows, or technical documentation',
+      'Produce research outputs: written summaries, data analyses, technical reports, briefings, or presentation materials',
+      'Maintain accurate records, disclose uncertainty, and protect research information',
+      'Follow IRB/IACUC or other approvals where human/animal subjects or controlled data are involved',
+    ],
+    cip: 'Research must extend the academic field — not drift into unrelated management, clerical, or general labor work. Examples: Physics (40.0801) experimental/computational research; Biology (26.0101) lab/field research; Computer Science (11.0701) algorithms and applied ML; Agriculture (01.0101) field trials and systems analysis.',
+  },
+  {
+    id: 'ai-automation',
+    number: '04',
+    title: 'Deepening AI and automation understanding in your field of study',
+    what: 'Study and apply AI and automation within your specific field — not general IT work outside your major — so emerging tools strengthen (rather than replace) discipline-specific expertise. “AI in your field” means domain-grounded applications always anchored to the degree CIP.',
+    activities: [
+      'Study how artificial intelligence and automation apply within your specific field (not generic IT outside your major)',
+      'Apply AI/automation tools to problems that arise naturally in your CIP-aligned research or organizational operations',
+      'Evaluate tools for accuracy, bias, uncertainty, and fitness for purpose in your domain',
+      'Document workflows, limitations, and human-accountability requirements',
+      'Reflect on implications for practice, ethics, workforce impact, and public good in your discipline',
+      'Produce short technical notes, demos, or training materials for colleagues or students',
+    ],
+    cip: 'Physics (40.0801): ML for data reduction, simulation automation. Computer Science (11.0701): model development, evaluation, governance. Education (13.0101): learning analytics, adaptive tools. Agriculture (01.0101): precision ag, sensing/automation. Business/MIS: process automation, decision-support systems. Nursing/Health: clinical decision-support literacy.',
+    note: 'Guardrails: AI work must remain connected to the degree field and supervised training. No use of AI tools that mishandles restricted, export-controlled, or personally sensitive information. Human accountability for outputs remains with the participant and supervisor.',
+  },
+  {
+    id: 'grants-nofo',
+    number: '05',
+    title: 'Applying for grants, NOFO research, and contract management',
+    what: 'Learn to find funding opportunities (including NOFOs), apply for grants in your field of study, and understand contract management so you can support the organization’s pursuit and stewardship of funding. Distinguish grant application writing (pre-award) from contract/award management (post-award) — participants may support both under supervision.',
+    activities: [
+      'Assist with identifying and applying for grants in your field of study',
+      'Learn contract management fundamentals as they apply to the organization’s funded work',
+      'Support searching for NOFOs (Grants.gov, SAM.gov, agency sites) and preparing funding applications on behalf of the organization',
+      'Understand how a pursuit moves from opportunity → application → award → managed contract',
+      'Contribute technical sections, problem statements, approaches, and budgets (scoped to CIP where required for OPT defensibility)',
+      'Maintain opportunity trackers, deadline calendars, and compliance checklists',
+      'Support post-award reporting templates and lessons-learned under supervisor guidance',
+    ],
+    cip: 'For OPT purposes, grant/NOFO/contract work must be defensible as related to the degree field or as organizational training tightly coupled to the participant’s research/technical role. Purely administrative or clerical grant filing unrelated to the degree is not appropriate as primary OPT duty. Best practice: anchor grant pursuits to research topics in the participant’s field — physics → NSF physical-science programs; CS → computing/AI NOFOs; agriculture → USDA/NIFA; education → NSF ATE when coaching community colleges.',
+    note: 'A NOFO (Notice of Funding Opportunity) is the official federal document announcing a funding opportunity. Competitive NOFOs are generally available ~60 days per 2 CFR Part 200 Appendix. Organizations need an active SAM.gov registration and Unique Entity Identifier (UEI) before receiving federal awards.',
+  },
+];
+
+const cipExamples = [
+  { field: 'Physics', cip: '40.0801 – Physics, General', alignment: 'CIP-aligned research; AI/automation for analysis and modeling; grants in physical-science programs' },
+  { field: 'Computer Science', cip: '11.0701 – Computer Science', alignment: 'Research and applied AI/automation; NOFO research for computing/AI programs; technical coaching' },
+  { field: 'Information Technology', cip: '11.0103 – Information Technology, General', alignment: 'AI/automation systems work; NOFO research for IT/digital programs; coaching with technical content' },
+  { field: 'Agriculture', cip: '01.0101 – Agriculture, General', alignment: 'Field-of-study research; AI/automation in ag systems; grants in ag/rural development programs' },
+  { field: 'Education', cip: '13.0101 – Education, General', alignment: 'Curiosity coaching; learning-space curation; education-focused grant applications' },
+  { field: 'Biology', cip: '26.0101 – Biology/Biological Sciences, General', alignment: 'Lab/field research; automation for data collection and analysis; STEM research funding applications' },
+  { field: 'Business Administration', cip: '52.0201 – Business Administration/Management, General*', alignment: 'Contract management processes; proposal and budget support; organizational funding strategy' },
+  { field: 'Engineering (general)', cip: '14.0101 – Engineering, General', alignment: 'Applied research; automation of engineering workflows; technical NOFO contributions' },
+];
+
+const hoursRows = [
+  { category: 'Core training', description: 'Field research, doctrine/module study, self-checks, documentation', hours: '5–10 hrs' },
+  { category: 'Applied lab / program work', description: 'Research tasks, curiosity space curation, coaching prep, NOFO research, proposal support', hours: '8–15 hrs' },
+  { category: 'Structured activities', description: 'Workshops, college coaching sessions, gate reviews, presentations, debriefs', hours: '3–6 hrs' },
+  { category: 'Employer-authorized leave', description: 'Conferences, IRB prep, government agency travel', hours: 'Variable — counts as employment where authorized' },
+  { category: 'Total', description: 'Meets OPT qualifying employment standard', hours: '≥20 hrs/week (or full-time if required)' },
+];
+
+const complianceChecks = [
+  {
+    title: 'Direct CIP relationship',
+    text: 'Training duties must maintain a direct relationship between the degree CIP (as listed in SEVIS) and assigned activities. No unrelated clerical, general labor, or non-CIP work as primary duties.',
+  },
+  {
+    title: 'Research vs. organizational split',
+    text: 'Keep a clear distinction between research activities and applied/organizational activities when both are involved. Partner-site coaching is documented under the organizational program, not as unauthorized secondary employment.',
+  },
+  {
+    title: 'Responsible AI use',
+    text: 'AI tools are used responsibly; no mishandling of restricted, export-controlled, or personally identifiable information. Human accountability for outputs remains with the participant and supervisor.',
+  },
+  {
+    title: 'Employment standard',
+    text: 'Structured training activities must meet applicable OPT employment hour requirements. Variable-schedule periods are averaged within each calendar month per SEVP OPT guidance. Every activity has a named supervisor and documented learning objectives.',
+  },
+  {
+    title: 'US Fellows boundary',
+    text: 'US Fellows affiliation (if any) does not itself confer OPT employment authorization. A scholarly designation is not a promise of employment, compensation, visa sponsorship, clearance, funding, or advancement.',
+  },
+  {
+    title: 'Unemployment limits',
+    text: '90 days during standard OPT; an additional 60 days during STEM OPT; 150 days total maximum.',
+  },
+];
+
+const outcomes = [
+  { marker: '01', title: 'Research output', text: 'A documented research output or technical report in their field of study.' },
+  { marker: '02', title: 'Coaching or curation evidence', text: 'Evidence of curiosity-space curation or community-college coaching impact.' },
+  { marker: '03', title: 'AI literacy in discipline', text: 'Demonstrated working knowledge of AI/automation applied to their discipline.' },
+  { marker: '04', title: 'Funding lifecycle exposure', text: 'Hands-on exposure to NOFO research, grant application support, and contract management basics.' },
+  { marker: '05', title: 'Reflective contribution record', text: 'A reflective record of contribution usable for US Fellows or graduate/career advancement discussions.' },
+  { marker: '06', title: 'I-983 milestone evidence', text: 'Milestone evidence suitable for I-983 evaluations (if STEM OPT).' },
+];
+
+const disclaimers = [
+  'This opportunity does not guarantee grant funding, contract awards, STEM OPT extension, US Fellows designation, or any future employment beyond the authorized training period.',
+  'Activity mix varies by participant CIP, program needs, and timing — not every opportunity includes every activity.',
+  'STEM OPT extension (if any) would be a separate arrangement with its own terms and review.',
+  'US Fellows affiliation (if pursued) is a separate application/designation and does not promise employment, compensation, visa sponsorship, clearance, or funding.',
+  'All activities remain subject to USCIS/SEVP rules, organizational policy, and applicable export-control / data-protection requirements.',
+  'Nothing on this page constitutes legal or immigration advice.',
+];
+
+const references = [
+  { label: 'USCIS: Optional Practical Training for F-1 Students', href: 'https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students' },
+  { label: 'ICE: Practical Training', href: 'https://www.ice.gov/sevis/practical-training' },
+  { label: 'DHS Study in the States: Working in the United States', href: 'https://studyinthestates.dhs.gov/students/resources/working' },
+  { label: 'Grants.gov — find and apply for federal funding', href: 'https://www.grants.gov/' },
+  { label: 'SAM.gov — entity registration and opportunities', href: 'https://sam.gov/' },
+  { label: 'SBIR.gov — small-business R&D solicitations', href: 'https://sbir.gov/' },
+  { label: 'USASpending.gov — past awards research', href: 'https://www.usaspending.gov/' },
+  { label: 'US Fellows: Resident R&D Scholar', href: 'https://usfellows.org/resident-rd-scholar.html' },
+  { label: 'US Fellows: R&D Scholars (five designations)', href: 'https://usfellows.org/scholars.html' },
+  { label: 'US Fellows: Career Advancement Track', href: 'https://usfellows.org/career-advancement.html' },
+];
+
+const finalActions: Action[] = [
+  { label: 'Open OPT planning guide', href: '/guides/opt.html', tone: 'gold' },
+  { label: 'Prepare a question brief', href: '/contacts.html#brief-heading', tone: 'light' },
+];
+---
+
+<BaseLayout
+  title="F-1 OPT Curiosity Opportunity | USIVA"
+  description="Program brief for the F-1 OPT Curiosity Research, Community & Funding Track: CIP-aligned research, curiosity coaching, AI literacy, and grant/NOFO activity areas with non-guarantee language."
+  activePath="/f-1-opt-curiosity-opportunity.html"
+  topbarMessage="A CIP-aligned OPT opportunity brief — informational planning, not a promise of placement."
+  topbarLink={{ label: 'Open the OPT guide', href: '/guides/opt.html' }}
+  ogImage="/assets/photos/usiva-study-research.webp"
+>
+  <section class="opt-hero" aria-labelledby="opt-title">
+    <div class="shell-container opt-hero__inner">
+      <div class="opt-hero__copy">
+        <p class="eyebrow">Program brief / F-1 OPT</p>
+        <h1 id="opt-title">F-1 OPT Curiosity Research, Community &amp; Funding Opportunity.</h1>
+        <p class="opt-hero__lede">
+          A structured practical-training opportunity for F-1 graduates authorized for Post-Completion OPT (or STEM OPT extension where eligible), covering five CIP-aligned activity areas with explicit non-guarantee language throughout.
+        </p>
+        <ActionLinks actions={heroActions} />
+      </div>
+
+      <figure class="opt-hero__figure">
+        <img
+          src="/assets/photos/usiva-study-research.webp"
+          alt="A researcher works at a microscope in a laboratory setting."
+          width="1536"
+          height="1024"
+          sizes="(min-width: 1100px) 40vw, (min-width: 700px) 48vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <figcaption>
+          <span>Brief / 01</span>
+          Activity mix varies by CIP alignment, program needs, supervisor assignment, and timing.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--paper" id="overview">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Program definition and scope"
+        title="What this opportunity is — and what it does not promise."
+        description="Target participants, modality, and the core concept, with the non-guarantee rule stated up front: the exact mix of activities depends on CIP alignment, program needs, supervisor assignment, and timing."
+      />
+      <EvidenceGrid items={overviewItems} />
+      <aside class="opt-callout" role="note">
+        <strong>Non-guarantee.</strong> This opportunity does not guarantee that every participant will perform every activity. Activity assignments are scoped to the degree field; the list of activity areas below is illustrative, not exhaustive, and not a promise of inclusion.
+      </aside>
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--mist" id="activity-areas">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Five activity areas"
+        title="CIP-aligned activities participants may engage in."
+        description="Each area is framed as a may — not a guarantee that every placement includes every item. Research activity must maintain a direct relationship between the degree CIP (as listed in SEVIS) and assigned duties."
+      />
+
+      <div class="activity-list">
+        {activityAreas.map((area) => (
+          <article class="activity-card" id={area.id}>
+            <header class="activity-card__head">
+              <span class="activity-card__number" aria-hidden="true">{area.number}</span>
+              <h3>{area.title}</h3>
+            </header>
+            <p class="activity-card__what">{area.what}</p>
+            <div class="activity-card__body">
+              <div>
+                <h4>Typical activities</h4>
+                <ul>
+                  {area.activities.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+              <div class="activity-card__aside">
+                <h4>CIP alignment</h4>
+                <p>{area.cip}</p>
+                {area.note && (
+                  <p class="activity-card__note"><strong>Note.</strong> {area.note}</p>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--paper" id="cip-alignment">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="CIP code alignment"
+        title="Direct relationship between degree CIP and assigned activities."
+        description="Primary CIP must align with the degree as listed in SEVIS. Secondary CIP may reflect applied methods, analytics, or interdisciplinary emphasis (e.g., AI/automation applied within the field). Examples below are illustrative, not exhaustive."
+      />
+
+      <div class="cip-table-wrap" role="region" aria-label="CIP alignment examples" tabindex="0">
+        <p class="cip-table-hint">Scroll horizontally to compare all columns.</p>
+        <table>
+          <caption>Example CIP alignment by participant field</caption>
+          <thead>
+            <tr>
+              <th scope="col">Participant field</th>
+              <th scope="col">Primary CIP</th>
+              <th scope="col">Example activity alignment</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cipExamples.map((row) => (
+              <tr>
+                <th scope="row">{row.field}</th>
+                <td>{row.cip}</td>
+                <td>{row.alignment}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="opt-fineprint">
+        * Business/management CIPs require careful scoping: OPT duties must still avoid pure clerical or unrelated management work; pair with technical or research components consistent with the program. Other CIP codes may qualify when duties are scoped accordingly.
+      </p>
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--mist" id="structure">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Structure, hours, and supervision"
+        title="Weekly commitment designed to meet the OPT employment standard."
+        description="Variable-schedule periods are averaged within each calendar month per SEVP OPT guidance. Every activity has a named supervisor and documented learning objectives; midpoint and final evaluations are documented (I-983 evaluations if STEM OPT)."
+      />
+
+      <div class="cip-table-wrap" role="region" aria-label="Weekly hours structure" tabindex="0">
+        <p class="cip-table-hint">Scroll horizontally to compare all columns.</p>
+        <table>
+          <caption>Typical weekly hours by activity category</caption>
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Typical hours/week</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hoursRows.map((row) => (
+              <tr>
+                <th scope="row">{row.category}</th>
+                <td>{row.description}</td>
+                <td>{row.hours}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--night" id="compliance">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Visa and compliance notes"
+        title="Critical checks that keep activities OPT-defensible."
+        description="Primary compliance documents may include Form I-983 (STEM OPT training plan, if pursued), employment verification / I-20 handling by the employer of record, and US Fellows program materials where affiliated. Scholarly designation is not employment or visa sponsorship."
+      />
+      <BoundaryGrid items={complianceChecks} />
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--paper" id="outcomes">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Outcomes a participant may build"
+        title="What someone might leave with — where activities occur."
+        description="Outcomes vary by placement and are not guaranteed for every participant. Where activities occur, a participant may leave with any of the following."
+      />
+      <EvidenceGrid items={outcomes} />
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--mist" id="disclaimers">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Important disclaimers"
+        title="What this brief does not promise."
+        description="Read these boundaries alongside the activity areas above. They govern the entire opportunity."
+      />
+      <ul class="disclaimer-list">
+        {disclaimers.map((item) => <li>{item}</li>)}
+      </ul>
+      <aside class="opt-callout opt-callout--warning" role="note">
+        <strong>Boundary.</strong> USIVA provides informational visa and immigration planning content. This page organizes opportunity, activity, CIP, reporting, and source questions; legal advice, eligibility, filing, employment, work authorization, visa issuance, and government decisions belong to the responsible school, agency, employer, or qualified counsel. Verify current official guidance before acting.
+      </aside>
+    </div>
+  </section>
+
+  <section class="opt-section opt-section--paper" id="references">
+    <div class="shell-container">
+      <SectionIntro
+        eyebrow="Key references"
+        title="Official sources and program context."
+        description="Use these as orientation points. Recheck them before acting, and pair them with school-specific instructions or individualized professional advice when the facts require it."
+      />
+      <div class="references-layout">
+        <SourceList sources={references} />
+        <aside class="references-actions" aria-label="Reference actions">
+          <p class="references-actions__label">Start here</p>
+          <p>Use USCIS for current OPT authorization guidance, Grants.gov and SAM.gov for federal funding discovery, and the school or DSO for program-specific instructions.</p>
+          <ActionLinks actions={finalActions} />
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="opt-next" aria-labelledby="next-title">
+    <div class="shell-container opt-next__inner">
+      <div>
+        <p class="eyebrow">Two clean handoffs</p>
+        <h2 id="next-title">Use the OPT guide for planning questions. Use US Fellows for program context.</h2>
+        <p>Keep the opportunity brief, the visa-readiness file, and the fellowship pathway connected — with each page serving its own purpose and handoff.</p>
+      </div>
+      <ActionLinks actions={heroActions} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .opt-hero {
+    background: var(--color-navy-deep);
+    color: var(--color-paper);
+  }
+
+  .opt-hero__inner {
+    align-items: end;
+    display: grid;
+    gap: clamp(2rem, 5vw, 5.5rem);
+    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+    padding-block: clamp(2.75rem, 5vw, 5rem);
+  }
+
+  .opt-hero .eyebrow,
+  .opt-next .eyebrow {
+    color: var(--color-paper);
+  }
+
+  .opt-hero h1 {
+    color: var(--color-paper);
+    font-size: clamp(2.45rem, 4.5vw, 4.35rem);
+    max-width: 16ch;
+  }
+
+  .opt-hero__lede {
+    color: var(--color-on-dark-muted);
+    font-size: clamp(1rem, 0.94rem + 0.25vw, 1.15rem);
+    line-height: 1.58;
+    margin-block-start: var(--space-3);
+    max-width: 58ch;
+  }
+
+  .opt-hero__figure {
+    border: 1px solid rgba(214, 225, 229, 0.28);
+    margin: 0;
+    padding: 0.55rem;
+  }
+
+  .opt-hero__figure img {
+    aspect-ratio: 4 / 3;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .opt-hero figcaption {
+    color: var(--color-on-dark-muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    padding: 0.8rem 0.35rem 0.15rem;
+  }
+
+  .opt-hero figcaption span {
+    color: var(--color-highlight);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    margin-block-end: 0.2rem;
+    text-transform: uppercase;
+  }
+
+  .opt-section {
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+
+  .opt-section--paper {
+    background: var(--color-paper);
+  }
+
+  .opt-section--mist {
+    background: var(--color-mist);
+  }
+
+  .opt-section--night,
+  .opt-next {
+    background: var(--color-navy);
+    color: var(--color-paper);
+  }
+
+  .opt-section--night h2,
+  .opt-section--night h3,
+  .opt-section--night h4,
+  .opt-next h2 {
+    color: var(--color-paper);
+  }
+
+  .opt-section--night p,
+  .opt-next p {
+    color: var(--color-on-dark-muted);
+  }
+
+  .opt-section .section-intro h2 {
+    font-size: clamp(2rem, 3.3vw, 3.15rem);
+    max-width: 22ch;
+  }
+
+  .opt-section .section-intro > p:last-child {
+    font-size: var(--step--1);
+    max-width: 68ch;
+  }
+
+  .opt-callout {
+    background: var(--color-warning-surface);
+    border-inline-start: 4px solid var(--color-warning);
+    color: var(--color-ink);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    margin-block-start: clamp(2rem, 4vw, 3rem);
+    max-width: 78ch;
+    padding: clamp(1.1rem, 2vw, 1.6rem) clamp(1.2rem, 2.5vw, 1.8rem);
+  }
+
+  .opt-callout--warning {
+    background: var(--color-error-surface);
+    border-inline-start-color: var(--color-accent);
+  }
+
+  .opt-callout strong {
+    color: var(--color-ink);
+  }
+
+  .activity-list {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-block-start: clamp(2.25rem, 4vw, 3.8rem);
+  }
+
+  .activity-card {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-top: 3px solid var(--color-gold);
+    min-width: 0;
+    padding: clamp(1.4rem, 3vw, 2.4rem);
+  }
+
+  .activity-card__head {
+    align-items: baseline;
+    display: flex;
+    gap: 1rem;
+    margin-block-end: var(--space-2);
+  }
+
+  .activity-card__number {
+    color: var(--color-accent);
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .activity-card h3 {
+    font-size: clamp(1.35rem, 1.15rem + 0.6vw, 1.9rem);
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .activity-card__what {
+    color: var(--color-soft);
+    font-size: var(--step-0);
+    line-height: 1.55;
+    margin-block-end: var(--space-3);
+    max-width: 80ch;
+  }
+
+  .activity-card__body {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .activity-card h4 {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .activity-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .activity-card li {
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    padding-inline-start: 1.15rem;
+    position: relative;
+  }
+
+  .activity-card li + li {
+    margin-block-start: 0.55rem;
+  }
+
+  .activity-card li::before {
+    color: var(--color-accent);
+    content: '—';
+    left: 0;
+    position: absolute;
+  }
+
+  .activity-card__aside p {
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .activity-card__note {
+    background: var(--color-mist);
+    border-inline-start: 3px solid var(--color-teal);
+    margin-block-start: 1rem !important;
+    padding: 0.85rem 1rem;
+  }
+
+  .activity-card__note strong {
+    color: var(--color-teal);
+  }
+
+  .cip-table-wrap {
+    border: 1px solid var(--color-line);
+    margin-block-start: clamp(2.25rem, 4vw, 3.8rem);
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+  }
+
+  .cip-table-wrap:focus-visible {
+    outline: 0.15rem solid var(--color-focus);
+    outline-offset: 0.15rem;
+  }
+
+  .cip-table-hint {
+    background: var(--color-mist);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    margin: 0;
+    padding: 0.55rem 0.85rem;
+  }
+
+  .cip-table-wrap table {
+    border-collapse: collapse;
+    font-size: var(--step--1);
+    width: 100%;
+  }
+
+  .cip-table-wrap caption {
+    background: var(--color-navy-deep);
+    color: var(--color-paper);
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  .cip-table-wrap th,
+  .cip-table-wrap td {
+    border-top: 1px solid var(--color-line);
+    padding: 0.85rem 1rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .cip-table-wrap thead th {
+    background: var(--color-mist);
+    color: var(--color-ink);
+    font-size: var(--step--2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .cip-table-wrap tbody th {
+    color: var(--color-ink);
+    font-weight: 700;
+    min-width: 10rem;
+  }
+
+  .cip-table-wrap td {
+    color: var(--color-muted);
+    min-width: 12rem;
+  }
+
+  .opt-fineprint {
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    margin-block-start: 1rem;
+    max-width: 80ch;
+  }
+
+  .disclaimer-list {
+    border-top: 1px solid var(--color-line);
+    list-style: none;
+    margin-block-start: clamp(2.25rem, 4vw, 3.8rem);
+    max-width: 85ch;
+  }
+
+  .disclaimer-list li {
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    padding-block: 1rem;
+    padding-inline-start: 1.5rem;
+    position: relative;
+  }
+
+  .disclaimer-list li::before {
+    color: var(--color-accent);
+    content: '!';
+    font-family: var(--font-mono);
+    font-weight: 800;
+    left: 0;
+    position: absolute;
+  }
+
+  .references-layout {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: minmax(0, 1.3fr) minmax(14rem, 0.7fr);
+    margin-block-start: clamp(2.25rem, 4vw, 3.8rem);
+  }
+
+  .references-actions {
+    background: var(--color-mist);
+    border-top: 3px solid var(--color-accent);
+    padding: clamp(1.2rem, 2.5vw, 1.8rem);
+  }
+
+  .references-actions__label {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    margin-block-end: 1rem;
+    text-transform: uppercase;
+  }
+
+  .references-actions p {
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    margin-block-end: 1rem;
+  }
+
+  .opt-next {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .opt-next__inner {
+    align-items: center;
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  }
+
+  .opt-next h2 {
+    font-size: clamp(1.7rem, 2.8vw, 2.6rem);
+    max-width: 22ch;
+  }
+
+  .opt-next p {
+    font-size: var(--step--1);
+    margin-block-start: 0.85rem;
+    max-width: 58ch;
+  }
+
+  @media (max-width: 900px) {
+    .opt-hero__inner,
+    .activity-card__body,
+    .references-layout,
+    .opt-next__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .opt-hero__figure {
+      order: -1;
+    }
+  }
+</style>
