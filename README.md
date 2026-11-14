@@ -1,5 +1,7 @@
 # USIVA — U.S. Immigration and Visa Association
 
+_Last verified: 2026-11-13._
+
 USIVA is the US Council's informational planning and official-source navigation space for people and organizations working through U.S. immigration and visa questions. Its content is designed to help readers organize records, understand which public authority owns the next step, and prepare a responsible handoff. USIVA is not a law firm: it does not provide legal advice or representation, make eligibility determinations, submit applications, or guarantee admission, employment, funding, visa issuance, or government approval.
 
 Source of truth: [US-Council/usiva on GitLab](https://git.developerdojo.org/US-Council/usiva); GitHub is a mirror that only receives refs and serves GitHub Pages. `release/live` is the only branch that publishes the public site; `main` is the integration branch. The current public release is live on GitHub Pages at [usiva.org](https://usiva.org/), with the internal preview kept at the GitLab Pages URL documented below.
@@ -34,11 +36,11 @@ corepack pnpm run preview
 
 ## Authoring routes and content
 
-- Add file-based routes under `src/pages/`. The file path is the URL contract; preserve the existing trailing-slash and canonical URL policy. Dynamic routes such as `src/pages/articles/[slug].astro` must enumerate every publishable entry with `getStaticPaths()` and exclude drafts.
-- Add editorial entries under the appropriate `src/content/` collection. Keep collection schemas and required metadata in `src/content.config.ts`; use validated fields for title, description, publication state, dates, authors, relationships, canonical URLs, and image alt text.
-- Put processable editorial media in `src/assets/` and use Astro's asset pipeline. Use `public/` only for exact-copy files such as favicons, manifests, verification files, or downloads. The Astro configuration must keep generated assets in `assets/`, not the underscore-prefixed `_astro/` directory.
+- Add file-based routes under `src/pages/`. The file path is the URL contract: `astro.config.mjs` builds static files (`build.format: 'file'`, `trailingSlash: 'never'`), so `src/pages/about.astro` is `/about.html`; preserve that and the canonical URL policy. Dynamic routes (`src/pages/visa/{nonimmigrant,immigrant}/[slug].astro` and `family/[family].astro`) enumerate every entry of their typed catalog with `getStaticPaths()`.
+- There are no Astro content collections. Editorial data is typed TypeScript in `src/data/`: `visa-categories.ts` (the visa directory), `briefs.ts` (articles, briefs and the pages that list them), `official-resources.ts` (official links and tools) and `media-manifest.ts` (every photo with its required `alt` text). Long-form guides are Markdown pages in `src/pages/guides/` with `layout: ../../layouts/GuideLayout.astro` and frontmatter for `title`, `description`, `route`, `guideType`, `reviewedOn`, `status` and `sourceIds` (ids from `official-resources.ts`).
+- Media lives in `public/assets/` (photos in `public/assets/photos/`, logos and the social card beside them) and is copied as is; register each photo in `media-manifest.ts`. The Astro configuration keeps generated assets in `assets/`, never the underscore-prefixed `_astro/` directory, and CI fails the build if `_astro/` appears.
 - Keep page files thin: select typed content and compose existing layouts/components. Add a component only when the semantic pattern is reused; add client hydration only when a real interaction requires it.
-- For every new route or collection entry, run `pnpm run check`, `pnpm run build`, and the relevant route/accessibility tests. Inspect the built route rather than relying only on source compilation.
+- For every new route or data entry, run `pnpm run check`, `pnpm run build`, `pnpm test` (`tests/audit-production.test.mjs`) and `pnpm run audit` (the strict production audit of `dist/`). Inspect the built route rather than relying only on source compilation.
 
 The visa directory is generated from the typed catalog in `src/data/visa-categories.ts`. It intentionally covers principal nonimmigrant and immigrant families plus the published subcategories, while each route sends readers to the controlling USCIS, Department of State, DHS, SEVP, or employer resource. The directory is an orientation index—not an eligibility engine.
 
