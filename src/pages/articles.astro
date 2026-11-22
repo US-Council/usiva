@@ -45,8 +45,8 @@ const citationsFor = (brief: (typeof immigrationBriefs)[number], sourceIds: read
             workflow, explicit caveats, and direct links to the official sources checked on {briefsLastChecked}.
           </p>
         </div>
-        <aside class="articles-hero__note">
-          <p class="articles-hero__note-label">Reading contract</p>
+        <aside class="articles-hero__note" aria-labelledby="reading-contract-label">
+          <p class="articles-hero__note-label" id="reading-contract-label">Reading contract</p>
           <p class="articles-hero__note-title">Orient first. Verify before action.</p>
           <p>
             These are static editorial documents for public reading. Each provides a thesis, source trail, caveat,
@@ -84,7 +84,7 @@ const citationsFor = (brief: (typeof immigrationBriefs)[number], sourceIds: read
             </header>
 
             <div class="research-article__grid">
-              <aside class="research-article__rail">
+              <aside class="research-article__rail" aria-label={`${brief.title}: thesis and contents`}>
                 <div class="article-thesis">
                   <p class="article-thesis__label">Working thesis</p>
                   <p>{brief.thesis}</p>
@@ -158,7 +158,7 @@ const citationsFor = (brief: (typeof immigrationBriefs)[number], sourceIds: read
                       </div>
                     )}
 
-                    {section.note && <aside class="article-note"><strong>Boundary note.</strong> {section.note}</aside>}
+                    {section.note && <aside class="article-note" aria-label={`Boundary note: ${section.heading}`}><strong>Boundary note.</strong> {section.note}</aside>}
 
                     {section.sourceIds && citationsFor(brief, section.sourceIds).length > 0 && (
                       <p class="article-section__sources">
