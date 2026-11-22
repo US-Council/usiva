@@ -186,6 +186,7 @@ function extractDocument(html) {
   const anchors = extractPairedElements(html, 'a');
   const areas = extractOpeningTags(html, 'area');
   const forms = extractOpeningTags(html, 'form');
+  const landmarks = [...extractOpeningTags(html, 'nav'), ...extractOpeningTags(html, 'aside')];
   const mainElements = extractPairedElements(html, 'main');
   const h1s = extractPairedElements(html, 'h1');
   const headings = [...html.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h[1-6]\s*>/gi)]
@@ -217,6 +218,7 @@ function extractDocument(html) {
     anchors,
     areas,
     forms,
+    landmarks,
     mainElements,
     mainText: mainElements[0] ? stripNonContent(mainElements[0].inner) : '',
     visibleText: stripNonContent(html),
@@ -581,6 +583,13 @@ function checkDocument(report, routeInfo, documents, fileSet, options) {
     if (!image.attributes.src) addIssue(report, 'error', 'image-src', 'Every img element needs a non-empty src.', imageContext);
     if (!image.attributes.width || !image.attributes.height) {
       addIssue(report, 'warning', 'image-dimensions', 'Image is missing intrinsic width and/or height attributes.', imageContext);
+    }
+  }
+  for (const landmark of document.landmarks) {
+    const name = landmark.attributes['aria-label']?.trim() || landmark.attributes['aria-labelledby']?.trim() || '';
+    if (!name) {
+      const tag = landmark.raw.slice(1).split(/[\s>]/, 1)[0].toLowerCase();
+      addIssue(report, 'error', 'landmark-name', `Every <${tag}> landmark needs aria-label or aria-labelledby so assistive technology can tell repeated landmarks apart.`, issueContext(route, file, { source: tag }));
     }
   }
   for (const iframe of document.iframes) {

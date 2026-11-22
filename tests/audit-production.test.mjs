@@ -107,7 +107,7 @@ test('fails broken links, duplicate SEO, placeholder content, missing alt, sitem
     title: 'Duplicate route title | Example',
     description: sharedDescription,
     h1: 'Duplicate route heading',
-    extra: '<img src="/assets/hero.svg"><a href="/missing/">Broken destination</a><a href="#missing">Broken fragment</a><a href="#">Placeholder link</a><p>lorem ipsum temporary copy</p>',
+    extra: '<img src="/assets/hero.svg"><a href="/missing/">Broken destination</a><a href="#missing">Broken fragment</a><a href="#">Placeholder link</a><p>lorem ipsum temporary copy</p><aside><p>Unnamed complementary note</p></aside>',
   });
   const duplicatePage = page({
     route: '/about/',
@@ -147,6 +147,7 @@ test('fails broken links, duplicate SEO, placeholder content, missing alt, sitem
     'placeholder-url',
     'placeholder-copy',
     'image-alt',
+    'landmark-name',
     'duplicate-title',
     'duplicate-description',
     'duplicate-h1',
