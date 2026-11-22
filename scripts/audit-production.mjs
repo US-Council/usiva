@@ -584,6 +584,9 @@ function checkDocument(report, routeInfo, documents, fileSet, options) {
     if (!image.attributes.width || !image.attributes.height) {
       addIssue(report, 'warning', 'image-dimensions', 'Image is missing intrinsic width and/or height attributes.', imageContext);
     }
+    if (!image.attributes.loading || !image.attributes.decoding) {
+      addIssue(report, 'warning', 'image-loading-hints', 'Image needs explicit loading (eager above the fold, lazy below) and decoding="async" attributes.', imageContext);
+    }
   }
   for (const landmark of document.landmarks) {
     const name = landmark.attributes['aria-label']?.trim() || landmark.attributes['aria-labelledby']?.trim() || '';

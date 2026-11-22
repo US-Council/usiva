@@ -6,10 +6,12 @@ interface Props {
 
 const { tone = 'default', alt = 'USIVA' } = Astro.props;
 const logoSource = tone === 'inverse' ? '/assets/usiva_dark.svg' : '/assets/usiva.svg';
+// The default tone sits in the header (above the fold); the inverse tone sits in the footer.
+const loading = tone === 'inverse' ? 'lazy' : 'eager';
 ---
 
 <span class:list={['brand-mark', `brand-mark--${tone}`]}>
-  <img class="brand-mark__logo" src={logoSource} alt={alt} width="219" height="72" decoding="async" />
+  <img class="brand-mark__logo" src={logoSource} alt={alt} width="219" height="72" loading={loading} decoding="async" />
 </span>
 
 <style>
