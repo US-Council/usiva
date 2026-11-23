@@ -68,6 +68,9 @@ import BrandMark from './BrandMark.astro';
 
 <style>
   .site-footer {
+    /* Always below the fold: skip its rendering work until it nears the viewport. */
+    contain-intrinsic-size: auto 36rem;
+    content-visibility: auto;
     background: var(--color-navy-deep);
     color: var(--color-on-dark-muted);
     padding-block: var(--space-4) var(--space-3);

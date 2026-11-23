@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import { speculationRulesJson } from '../data/speculation-rules';
 import '../styles/global.css';
 
 const { frontmatter } = Astro.props;
@@ -54,6 +55,7 @@ const structuredData = {
     <meta name="twitter:image:alt" content="USIVA — visa-readiness and compliance planning" />
     <title>{title}</title>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>
+    <script type="speculationrules" is:inline set:html={speculationRulesJson}></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
