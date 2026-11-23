@@ -60,7 +60,7 @@ async function writeHealthyBuild(root) {
       title: 'Production home route | Example',
       description: sharedDescription,
       h1: 'A useful production home route',
-      extra: '<img src="/assets/hero.svg" alt="A route audit illustration" width="1200" height="700">',
+      extra: '<img src="/assets/hero.svg" alt="A route audit illustration" width="1200" height="700" loading="eager" decoding="async">',
     }),
     'about/index.html': page({
       route: '/about/',
@@ -148,6 +148,7 @@ test('fails broken links, duplicate SEO, placeholder content, missing alt, sitem
     'placeholder-copy',
     'image-alt',
     'landmark-name',
+    'image-loading-hints',
     'duplicate-title',
     'duplicate-description',
     'duplicate-h1',
